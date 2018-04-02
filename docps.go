@@ -17,7 +17,7 @@ type Docker struct {
 	Status     string `json:"status"`
 }
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	var container []Docker
 
 	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
@@ -64,7 +64,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/", indexHandler)
+	log.Println("Listening:8080..")
+	http.HandleFunc("/", IndexHandler)
 	http.ListenAndServe(":8080", nil)
 
 }
