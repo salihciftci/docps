@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -22,10 +21,19 @@ func TestIndexHandler(t *testing.T) {
 	if res.StatusCode != http.StatusOK {
 		t.Errorf("expected status OK; got %v", res.Status)
 	}
+}
 
-	_, err = ioutil.ReadAll(res.Body)
+func TestRouting(t *testing.T) {
+	srv := httptest.NewServer(handler())
+	defer srv.Close()
+
+	res, err := http.Get(srv.URL)
 	if err != nil {
-		t.Fatalf("could not read response: %v", err)
+		t.Fatalf("could not send GET request: %v", err)
+	}
+
+	if res.StatusCode != http.StatusOK {
+		t.Errorf("exğected status OK; got %v", res.Status)
 	}
 
 }
