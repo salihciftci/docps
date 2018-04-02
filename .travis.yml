@@ -1,0 +1,9 @@
+language: go
+
+branches:
+        only:
+                - "master"
+
+go:
+        - "1.10"
+        - "1.9"
