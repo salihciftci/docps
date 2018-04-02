@@ -2,6 +2,8 @@
 
 docps is basic docker process state web application. Written with Go.
 
+It's basically gathering `docker ps -a` but without Commands and Ports and serving.
+
 ### Why?
 -Too lazy to ssh.
 -Want to check with my phone.
