@@ -17,9 +17,10 @@ type Docker struct {
 	Status     string `json:"status"`
 }
 
+//IndexHandler Execute the docker ps -a command and reading the stdout
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	var container []Docker
-
+	// Docker ps -a argument with \t for splitting string later.
 	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
 
 	cmd := exec.Command("docker", cmdArgs...)
@@ -63,9 +64,18 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func handler() http.Handler {
+	r := http.NewServeMux()
+	r.HandleFunc("/", IndexHandler)
+	return r
+}
+
 func main() {
 	log.Println("Listening:8080..")
-	http.HandleFunc("/", IndexHandler)
-	http.ListenAndServe(":8080", nil)
+
+	err := http.ListenAndServe(":8080", handler())
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
