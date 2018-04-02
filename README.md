@@ -8,5 +8,13 @@ docps is basic docker process state web application. Written with Go.
 
 ## Screenshots
 
-<p><img src="https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/web.png"><img src="https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/mobil.png">
-</p>
+<table>
+<tr>
+<td valign="top">
+<img src="https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/web.png">
+</td>
+<td valign="top">
+<img src="https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/mobil.png" height="290">
+</td>
+</tr>
+</table>
