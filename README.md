@@ -9,6 +9,15 @@ It's basically gathering `docker ps -a` but without Commands and Ports and servi
 -Too lazy to ssh.
 -Want to check with my phone.
 
+## Installation
+
+### Dockerfile
+
+``` bash
+$ docker build -t docps .
+$ docker run -dit --name docps --restart always -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock docps
+```
+
 ## Screenshots
 
 <table>
