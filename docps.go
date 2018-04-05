@@ -19,15 +19,30 @@ type Docker struct {
 
 //IndexHandler Execute the docker ps -a command and reading the stdout
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	var container []Docker
-	// Docker ps -a argument with \t for splitting string later.
+
 	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	container := ps(cmdArgs)
+
+	t, err := template.ParseFiles("static/index.html")
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = t.Execute(w, container)
+	if err != nil {
+		log.Println(err)
+	}
+
+}
+
+func ps(cmdArgs []string) []Docker {
+	var container []Docker
 
 	cmd := exec.Command("docker", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
 		log.Println(err.Error())
-		return
+		return nil
 	}
 
 	scanner := bufio.NewScanner(cmdReader)
@@ -50,17 +65,16 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	err = cmd.Start()
 	if err != nil {
 		log.Println(err.Error())
-		return
+		return nil
 	}
 
 	err = cmd.Wait()
 	if err != nil {
 		log.Println(err.Error())
-		return
+		return nil
 	}
 
-	t, _ := template.ParseFiles("static/index.html")
-	t.Execute(w, container)
+	return container
 
 }
 
