@@ -9,6 +9,7 @@ docps is basic docker monitoring web application. Written with Go.
 - Volumes
 
 ## Installation
+### Host
 
 ``` bash
 $ go get github.com/salihciftci/docps
@@ -16,7 +17,7 @@ $ go build
 $ ./docps
 ```
 
-### Deploy
+### Docker
 
 ``` bash
 $ docker build -t docps .
