@@ -1,48 +1,199 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
     crossorigin="anonymous">
-    <!-- Fontawesome 4.7.0 CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    
-    <title>Docps</title>
-    <link rel="shortcut icon" type="image/png" href="https://avatars0.githubusercontent.com/u/5429470"/>
-    <meta http-equiv="refresh" content="10" >
-  </head>
-  <body>
-          <table class="table">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col">Image</th>
-                  <th scope="col">Size</th>
-                  <th scope="col">Created</th>
-                  <th scope="col">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {{ range .}}
-                <tr>
-                  <td>{{ .Name }}</th>
-                  <td>{{ .Image }}</td>
-                  <td>{{ .Size }}</td>
-                  <td>{{ .RunningFor }}</td>
-                  <td>
+  <!-- Fontawesome 4.7.0 CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+    crossorigin="anonymous">
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
+
+  <title>Docps</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
+  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/salihciftci/docps/master/static/images/favicon.png" />
+</head>
+
+<body>
+  <style>
+    .main {
+      margin-right: 1rem;
+      margin-left: 1rem;
+      line-height: 1.5;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .nav-pills>li>a.active {
+      background-color: #EEEEEE !important;
+      color: #3E3E3E !important;
+    }
+
+    .nav-pills>li>a:hover,
+    a {
+      color: #3E3E3E !important;
+    }
+
+    .nav-link-color {
+      color: #3E3E3E !important;
+    }
+
+    .nav>li>a {
+      padding-top: 15px;
+      padding-bottom: 15px;
+    }
+  </style>
+  <div style="background-color:#81C14B; height:5px;"></div>
+
+  <ul class="nav nav-pills nav-fill mb-3" id="pills-tab" role="tablist" style="background-color:#EEEEEE;">
+    <li class="nav-item">
+      <a class="nav-link active" id="pills-dashboard-tab" data-toggle="pill" href="#pills-dashboard" role="tab" aria-controls="pills-dashboard"
+        aria-selected="true">Dashboard</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-container-tab" data-toggle="pill" href="#pills-container" role="tab" aria-controls="pills-container"
+        aria-selected="false">Containers</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#pills-images" role="tab" aria-controls="pills-images"
+        aria-selected="false">Images</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes"
+        aria-selected="false">Volumes</a>
+    </li>
+  </ul>
+
+  <div class="main">
+    <div class="tab-content" id="pills-tabContent">
+      <!-- Dashboard -->
+      <div class="tab-pane fade show active" id="pills-dashboard" role="tabpanel" aria-labelledby="pills-dashboard-tab">
+        <div class="card-deck">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Containers</h5>
+              <ul class="list-group">
+                {{ range index . 0 }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ .Name }}
+                  <span class="badge">
                     {{ if eq .Status "U" }}
                     <i class="fa fa-check text-success" aria-hidden="true"></i>
                     {{ else }}
                     <i class="fa fa-times text-danger" aria-hidden="true"></i>
                     {{ end }}
-                  </td>
-                </tr>
+                  </span>
+                </li>
                 {{ end }}
-              </tbody>
-            </table>
-  </body>
+              </ul>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Images</h5>
+              <ul class="list-group">
+                {{ range index . 1 }}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ .Repository }}
+                  <span class="badge">
+                    {{ .Tag }}
+                  </span>
+                </li>
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Containers -->
+      <div class="tab-pane fade" id="pills-container" role="tabpanel" aria-labelledby="pills-container-tab">
+        <table class="table">
+          <thead class="thead" style="background-color:#EEEEEE;">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Image</th>
+              <th scope="col">Size</th>
+              <th scope="col">Created</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range index . 0 }}
+            <tr>
+              <td>{{ .Name }}</th>
+                <td>{{ .Image }}</td>
+                <td>{{ .Size }}</td>
+                <td>{{ .RunningFor }}</td>
+                <td>
+                  {{ if eq .Status "U" }}
+                  <i class="fa fa-check text-success" aria-hidden="true"></i>
+                  {{ else }}
+                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
+                  {{ end }}
+                </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+      <!-- Images -->
+      <div class="tab-pane fade" id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
+        <table class="table">
+          <thead class="thead" style="background-color:#EEEEEE;">
+            <tr>
+              <th scope="col">Repository</th>
+              <th scope="col">Tag</th>
+              <th scope="col">Created</th>
+              <th scope="col">Size</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range index . 1 }}
+            <tr>
+              <td>{{ .Repository }}</th>
+                <td>{{ .Tag }}</td>
+                <td>{{ .Created }}</td>
+                <td>{{ .Size }}</td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+      <div class="tab-pane fade" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
+        <table class="table">
+          <thead class="thead" style="background-color:#EEEEEE;">
+            <tr>
+              <th scope="col">Driver</th>
+              <th scope="col">Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range index . 2 }}
+            <tr>
+              <td>{{ .Driver }}</th>
+                <td>{{ .Name }}</td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+
+</body>
+
 </html>

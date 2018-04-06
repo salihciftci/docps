@@ -17,21 +17,96 @@ type Docker struct {
 	Status     string `json:"status"`
 }
 
-//IndexHandler Execute the docker ps -a command and reading the stdout
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
+type Images struct {
+	Repository string `json:"repository"`
+	Tag        string `json:"tag"`
+	Created    string `json:"created"`
+	Size       string `json:"size"`
+}
 
-	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
-	container := ps(cmdArgs)
+type Volumes struct {
+	Driver string `json:"driver"`
+	Name   string `json:"name"`
+}
 
-	t, err := template.ParseFiles("static/index.html")
+func getVolumes(cmdArgs []string) []Volumes {
+	var volumes []Volumes
+
+	cmd := exec.Command("docker", cmdArgs...)
+	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
+		return nil
 	}
 
-	err = t.Execute(w, container)
+	scanner := bufio.NewScanner(cmdReader)
+	go func() {
+		for scanner.Scan() {
+			outPut := scanner.Text()
+
+			s := strings.Split(outPut, "\t")
+
+			volumes = append(volumes,
+				Volumes{Driver: s[0],
+					Name: s[1],
+				})
+		}
+	}()
+
+	err = cmd.Start()
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
+		return nil
 	}
+
+	err = cmd.Wait()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	return volumes
+}
+
+func getImages(cmdArgs []string) []Images {
+	var images []Images
+
+	cmd := exec.Command("docker", cmdArgs...)
+	cmdReader, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	scanner := bufio.NewScanner(cmdReader)
+	go func() {
+		for scanner.Scan() {
+			outPut := scanner.Text()
+
+			s := strings.Split(outPut, "\t")
+
+			images = append(images,
+				Images{Repository: s[0],
+					Tag:     s[1],
+					Created: s[2],
+					Size:    s[3],
+				})
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	return images
 
 }
 
@@ -75,6 +150,35 @@ func ps(cmdArgs []string) []Docker {
 	}
 
 	return container
+
+}
+
+//IndexHandler Execute the docker ps -a command and reading the stdout
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+
+	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	container := ps(cmdArgs)
+
+	cmdArgs = []string{"image", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
+	images := getImages(cmdArgs)
+
+	cmdArgs = []string{"volume", "ls", "--format", "{{.Driver}}\t{{.Name}}"}
+	volumes := getVolumes(cmdArgs)
+
+	var out []interface{}
+	out = append(out, container)
+	out = append(out, images)
+	out = append(out, volumes)
+
+	t, err := template.ParseFiles("static/index.html")
+	if err != nil {
+		log.Println(err)
+	}
+
+	err = t.Execute(w, out)
+	if err != nil {
+		log.Println(err)
+	}
 
 }
 
