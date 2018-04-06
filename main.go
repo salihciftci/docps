@@ -241,6 +241,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func handler() http.Handler {
 	r := http.NewServeMux()
 	r.HandleFunc("/", IndexHandler)
+	r.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	return r
 }
 
