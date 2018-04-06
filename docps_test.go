@@ -6,6 +6,36 @@ import (
 	"testing"
 )
 
+func TestPS(t *testing.T) {
+	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	value := ps(cmdArgs)
+
+	if value == nil {
+		t.Errorf("process state returned nil")
+	}
+
+}
+
+func TestGetImages(t *testing.T) {
+	cmdArgs := []string{"image", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
+	value := getImages(cmdArgs)
+
+	if value == nil {
+		t.Errorf("images returned nil")
+	}
+
+}
+
+func TestGetVolumes(t *testing.T) {
+	cmdArgs := []string{"volume", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
+	value := getVolumes(cmdArgs)
+
+	if value == nil {
+		t.Errorf("volumes returned nil")
+	}
+
+}
+
 func TestIndexHandler(t *testing.T) {
 	req, err := http.NewRequest("GET", "localhost:8080", nil)
 	if err != nil {
