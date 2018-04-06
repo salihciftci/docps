@@ -7,6 +7,16 @@ import (
 	"testing"
 )
 
+func TestGetStats(t *testing.T) {
+	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	value := getStats(cmdArgs)
+
+	if value == nil {
+		log.Println("stats returned nil")
+	}
+
+}
+
 func TestPS(t *testing.T) {
 	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
 	value := ps(cmdArgs)
