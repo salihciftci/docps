@@ -29,6 +29,58 @@ type Volumes struct {
 	Name   string `json:"name"`
 }
 
+type Stats struct {
+	Name     string `json:"name"`
+	CPU      string `json:"cpu"`
+	MemUsage string `json:"memUsage"`
+	MemPerc  string `json:"memPerc"`
+	NetIO    string `json:"netIO"`
+	BlockIO  string `json:"blockIO"`
+}
+
+func getStats(cmdArgs []string) []Stats {
+	var stats []Stats
+
+	cmd := exec.Command("docker", cmdArgs...)
+	cmdReader, err := cmd.StdoutPipe()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	scanner := bufio.NewScanner(cmdReader)
+	go func() {
+		for scanner.Scan() {
+			outPut := scanner.Text()
+
+			s := strings.Split(outPut, "\t")
+
+			stats = append(stats,
+				Stats{Name: s[0],
+					CPU:      s[1],
+					MemUsage: s[2],
+					MemPerc:  s[3],
+					NetIO:    s[4],
+					BlockIO:  s[5],
+				})
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		log.Println(err.Error())
+		return nil
+	}
+
+	return stats
+}
+
 func getVolumes(cmdArgs []string) []Volumes {
 	var volumes []Volumes
 
@@ -165,10 +217,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	cmdArgs = []string{"volume", "ls", "--format", "{{.Driver}}\t{{.Name}}"}
 	volumes := getVolumes(cmdArgs)
 
+	cmdArgs = []string{"stats", "--no-stream", "--format", "{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}"}
+	stats := getStats(cmdArgs)
+
 	var out []interface{}
 	out = append(out, container)
 	out = append(out, images)
 	out = append(out, volumes)
+	out = append(out, stats)
 
 	t, err := template.ParseFiles("static/index.html")
 	if err != nil {

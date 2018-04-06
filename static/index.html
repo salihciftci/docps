@@ -17,7 +17,8 @@
 
   <title>Docps</title>
   <link rel="stylesheet" type="text/css" href="/static/css/style.css" />
-  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/salihciftci/docps/master/static/images/favicon.png" />
+  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/salihciftci/docps/master/static/images/favicon.png"
+  />
 </head>
 
 <body>
@@ -66,6 +67,9 @@
     <li class="nav-item">
       <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes"
         aria-selected="false">Volumes</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats" aria-selected="false">Stats</a>
     </li>
   </ul>
 
@@ -164,6 +168,7 @@
           </tbody>
         </table>
       </div>
+      <!-- Volumes -->
       <div class="tab-pane fade" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
         <table class="table">
           <thead class="thead" style="background-color:#EEEEEE;">
@@ -177,6 +182,33 @@
             <tr>
               <td>{{ .Driver }}</th>
                 <td>{{ .Name }}</td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+      <!-- Stats -->
+      <div class="tab-pane fade" id="pills-stats" role="tabpanel" aria-labelledby="pills-stats-tab">
+        <table class="table">
+          <thead class="thead" style="background-color:#EEEEEE;">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">CPU %</th>
+              <th scope="col">Mem Usage</th>
+              <th scope="col">Mem %</th>
+              <th scope="col">NET I/O</th>
+              <th scope="col">BLOCK IO</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{ range index . 3 }}
+            <tr>
+              <td>{{ .Name }}</td>
+              <td>{{ .CPU }}</td>
+              <td>{{ .MemUsage }}</td>
+              <td>{{ .MemPerc }}</td>
+              <td>{{ .NetIO }}</td>
+              <td>{{ .BlockIO }}</td>
             </tr>
             {{ end }}
           </tbody>
