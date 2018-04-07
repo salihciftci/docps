@@ -1,9 +1,7 @@
 body {
     background-color: #EDF1F5;
 }
-.main {
-  margin-right: 1rem;
-  margin-left: 1rem;
+.container-fluid {
   line-height: 1.5;
   font-family: 'Lato', sans-serif;
 }
