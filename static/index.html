@@ -17,16 +17,17 @@
 
   <title>Docps</title>
   <link rel="stylesheet" type="text/css" href="/static/style.css" />
-  <link rel="shortcut icon" type="image/png" href="https://raw.githubusercontent.com/salihciftci/docps/master/static/images/favicon.png"
+  <link rel="shortcut icon" type="image/png" href="/static/images/favicon.png"
   />
 </head>
+
 <body>
   <div class="head"></div>
 
-  <ul class="nav nav-pills nav-fill mb-3 bg-ee" id="pills-tab" role="tablist">
+  <ul class="nav nav-pills nav-fill bg-ee" id="pills-tab" role="tablist">
     <li class="nav-item">
-      <a class="nav-link active" id="pills-dashboard-tab" data-toggle="pill" href="#pills-dashboard" role="tab" aria-controls="pills-dashboard"
-        aria-selected="true">Dashboard</a>
+      <a class="nav-link active" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats"
+        aria-selected="true">Stats</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" id="pills-container-tab" data-toggle="pill" href="#pills-container" role="tab" aria-controls="pills-container"
@@ -40,155 +41,133 @@
       <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes"
         aria-selected="false">Volumes</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats" aria-selected="false">Stats</a>
-    </li>
+
   </ul>
 
-  <div class="main">
-    <div class="tab-content" id="pills-tabContent">
-      <!-- Dashboard -->
-      <div class="tab-pane fade show active" id="pills-dashboard" role="tabpanel" aria-labelledby="pills-dashboard-tab">
-        <div class="card-deck">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Containers</h5>
-              <ul class="list-group">
-                {{ range index . 0 }}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  {{ .Name }}
-                  <span class="badge">
+  <div class="head mb-3"></div>
+
+  <div class="tab-content" id="pills-tabContent">
+    <!-- Containers -->
+    <div class="tab-pane fade" id="pills-container" role="tabpanel" aria-labelledby="pills-container-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Containers</h5>
+          <table class="table table-bordered">
+            <thead class="thead bg-ee">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Size</th>
+                <th scope="col">Created</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range index . 0 }}
+              <tr>
+                <td>{{ .Name }}</th>
+                  <td>{{ .Image }}</td>
+                  <td>{{ .Size }}</td>
+                  <td>{{ .RunningFor }}</td>
+                  <td>
                     {{ if eq .Status "U" }}
                     <i class="fa fa-check text-success" aria-hidden="true"></i>
                     {{ else }}
                     <i class="fa fa-times text-danger" aria-hidden="true"></i>
                     {{ end }}
-                  </span>
-                </li>
-                {{ end }}
-              </ul>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Images</h5>
-              <ul class="list-group">
-                {{ range index . 1 }}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  {{ .Repository }}
-                  <span class="badge">
-                    {{ .Tag }}
-                  </span>
-                </li>
-                {{ end }}
-              </ul>
-            </div>
-          </div>
+                  </td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
         </div>
       </div>
-      <!-- Containers -->
-      <div class="tab-pane fade" id="pills-container" role="tabpanel" aria-labelledby="pills-container-tab">
-        <table class="table">
-          <thead class="thead bg-ee">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Image</th>
-              <th scope="col">Size</th>
-              <th scope="col">Created</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{ range index . 0 }}
-            <tr>
-              <td>{{ .Name }}</th>
-                <td>{{ .Image }}</td>
-                <td>{{ .Size }}</td>
-                <td>{{ .RunningFor }}</td>
-                <td>
-                  {{ if eq .Status "U" }}
-                  <i class="fa fa-check text-success" aria-hidden="true"></i>
-                  {{ else }}
-                  <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                  {{ end }}
-                </td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
+    </div>
+    <!-- Images -->
+    <div class="tab-pane fade" id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Images</h5>
+          <table class="table table-bordered">
+            <thead class="thead bg-ee">
+              <tr>
+                <th scope="col">Repository</th>
+                <th scope="col">Tag</th>
+                <th scope="col">Created</th>
+                <th scope="col">Size</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range index . 1 }}
+              <tr>
+                <td>{{ .Repository }}</th>
+                  <td>{{ .Tag }}</td>
+                  <td>{{ .Created }}</td>
+                  <td>{{ .Size }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <!-- Images -->
-      <div class="tab-pane fade" id="pills-images" role="tabpanel" aria-labelledby="pills-images-tab">
-        <table class="table">
-          <thead class="thead bg-ee">
-            <tr>
-              <th scope="col">Repository</th>
-              <th scope="col">Tag</th>
-              <th scope="col">Created</th>
-              <th scope="col">Size</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{ range index . 1 }}
-            <tr>
-              <td>{{ .Repository }}</th>
-                <td>{{ .Tag }}</td>
-                <td>{{ .Created }}</td>
-                <td>{{ .Size }}</td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
+    </div>
+    <!-- Volumes -->
+    <div class="tab-pane fade" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Volumes</h5>
+          <table class="table table-bordered">
+            <thead class="thead bg-ee">
+              <tr>
+                <th scope="col">Driver</th>
+                <th scope="col">Name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range index . 2 }}
+              <tr>
+                <td>{{ .Driver }}</th>
+                  <td>{{ .Name }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <!-- Volumes -->
-      <div class="tab-pane fade" id="pills-volumes" role="tabpanel" aria-labelledby="pills-volumes-tab">
-        <table class="table">
-          <thead class="thead bg-ee">
-            <tr>
-              <th scope="col">Driver</th>
-              <th scope="col">Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{ range index . 2 }}
-            <tr>
-              <td>{{ .Driver }}</th>
+    </div>
+    <!-- Stats -->
+    <div class="tab-pane fade show active" id="pills-stats" role="tabpanel" aria-labelledby="pills-stats-tab">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Stats</h5>
+          <table class="table table-bordered">
+            <thead class="thead bg-ee">
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">CPU %</th>
+                <th scope="col">Mem Usage</th>
+                <th scope="col">Mem %</th>
+                <th scope="col">NET I/O</th>
+                <th scope="col">BLOCK IO</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{ range index . 3 }}
+              <tr>
                 <td>{{ .Name }}</td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
-      </div>
-      <!-- Stats -->
-      <div class="tab-pane fade" id="pills-stats" role="tabpanel" aria-labelledby="pills-stats-tab">
-        <table class="table">
-          <thead class="thead bg-ee">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">CPU %</th>
-              <th scope="col">Mem Usage</th>
-              <th scope="col">Mem %</th>
-              <th scope="col">NET I/O</th>
-              <th scope="col">BLOCK IO</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{ range index . 3 }}
-            <tr>
-              <td>{{ .Name }}</td>
-              <td>{{ .CPU }}</td>
-              <td>{{ .MemUsage }}</td>
-              <td>{{ .MemPerc }}</td>
-              <td>{{ .NetIO }}</td>
-              <td>{{ .BlockIO }}</td>
-            </tr>
-            {{ end }}
-          </tbody>
-        </table>
+                <td>{{ .CPU }}</td>
+                <td>{{ .MemUsage }}</td>
+                <td>{{ .MemPerc }}</td>
+                <td>{{ .NetIO }}</td>
+                <td>{{ .BlockIO }}</td>
+              </tr>
+              {{ end }}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -197,7 +176,6 @@
     crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-
 </body>
 
 </html>

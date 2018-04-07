@@ -1,3 +1,6 @@
+body {
+    background-color: #EDF1F5;
+}
 .main {
   margin-right: 1rem;
   margin-left: 1rem;
@@ -11,7 +14,7 @@
 }
 
 .nav-pills>li>a.active {
-  background-color: #EEEEEE !important;
+  background-color: #FFFFFF !important;
   color: #3E3E3E !important;
 }
 
@@ -30,5 +33,5 @@ a {
 }
 
 .bg-ee {
-    background-color:#EEEEEE;
+    background-color:#FFFFFF;
 }
