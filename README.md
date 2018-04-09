@@ -4,6 +4,7 @@
 docps is basic docker monitoring web application. Written with Go.
 
 ### Features
+- Stats
 - Process State
 - Images
 - Volumes
@@ -27,6 +28,6 @@ Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in L
 
 ## Screenshots
 
-![](https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/dashboard.png)
+![](https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/stats.png)
 ![](https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/containers.png)
 ![](https://raw.githubusercontent.com/salihciftci/docps/master/screenshots/images.png)
