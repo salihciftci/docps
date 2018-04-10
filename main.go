@@ -9,6 +9,7 @@ import (
 	"strings"
 )
 
+//PS docker ps -a
 type PS struct {
 	Name       string `json:"name"`
 	Image      string `json:"image"`
@@ -17,6 +18,7 @@ type PS struct {
 	Status     string `json:"status"`
 }
 
+//Images docker image ls
 type Images struct {
 	Repository string `json:"repository"`
 	Tag        string `json:"tag"`
@@ -24,11 +26,13 @@ type Images struct {
 	Size       string `json:"size"`
 }
 
+//Volume docker volume ls
 type Volumes struct {
 	Driver string `json:"driver"`
 	Name   string `json:"name"`
 }
 
+//Stats docker stats --no-stream
 type Stats struct {
 	Name     string `json:"name"`
 	CPU      string `json:"cpu"`
@@ -205,7 +209,6 @@ func ps(cmdArgs []string) []PS {
 
 }
 
-//IndexHandler Execute the docker ps -a command and reading the stdout
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	cmdArgs := []string{
 		"ps",
