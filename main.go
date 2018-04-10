@@ -249,7 +249,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	out = append(out, volumes)
 	out = append(out, stats)
 
-	t, err := template.ParseFiles("static/index.html")
+	t, err := template.ParseFiles("static/index.tmpl")
 	if err != nil {
 		log.Println(err)
 	}
