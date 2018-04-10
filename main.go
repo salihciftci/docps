@@ -207,17 +207,36 @@ func ps(cmdArgs []string) []PS {
 
 //IndexHandler Execute the docker ps -a command and reading the stdout
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-
-	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	cmdArgs := []string{
+		"ps",
+		"-a",
+		"--format",
+		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}",
+	}
 	container := ps(cmdArgs)
 
-	cmdArgs = []string{"image", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
+	cmdArgs = []string{
+		"image",
+		"ls",
+		"--format",
+		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
+	}
 	images := getImages(cmdArgs)
 
-	cmdArgs = []string{"volume", "ls", "--format", "{{.Driver}}\t{{.Name}}"}
+	cmdArgs = []string{
+		"volume",
+		"ls",
+		"--format",
+		"{{.Driver}}\t{{.Name}}",
+	}
 	volumes := getVolumes(cmdArgs)
 
-	cmdArgs = []string{"stats", "--no-stream", "--format", "{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}"}
+	cmdArgs = []string{
+		"stats",
+		"--no-stream",
+		"--format",
+		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
+	}
 	stats := getStats(cmdArgs)
 
 	var out []interface{}

@@ -8,40 +8,63 @@ import (
 )
 
 func TestGetStats(t *testing.T) {
-	cmdArgs := []string{"stats", "--no-stream", "--format", "{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}"}
-	value := getStats(cmdArgs)
-
-	if value == nil {
-		log.Println("stats returned nil")
+	cmdArgs := []string{
+		"stats",
+		"--no-stream",
+		"--format",
+		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
 
+	stats := getStats(cmdArgs)
+
+	if stats == nil {
+		log.Println("stats returned nil")
+	}
 }
 
 func TestPS(t *testing.T) {
-	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
-	value := ps(cmdArgs)
+	cmdArgs := []string{
+		"ps",
+		"-a",
+		"--format",
+		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}",
+	}
 
-	if value == nil {
+	ps := ps(cmdArgs)
+
+	if ps == nil {
 		log.Println("process state returned nil")
 	}
 
 }
 
 func TestGetImages(t *testing.T) {
-	cmdArgs := []string{"image", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
-	value := getImages(cmdArgs)
+	cmdArgs := []string{
+		"image",
+		"ls",
+		"--format",
+		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
+	}
 
-	if value == nil {
+	images := getImages(cmdArgs)
+
+	if images == nil {
 		log.Println("images returned nil")
 	}
 
 }
 
 func TestGetVolumes(t *testing.T) {
-	cmdArgs := []string{"volume", "ls", "--format", "{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}"}
-	value := getVolumes(cmdArgs)
+	cmdArgs := []string{
+		"volume",
+		"ls",
+		"--format",
+		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
+	}
 
-	if value == nil {
+	volume := getVolumes(cmdArgs)
+
+	if volume == nil {
 		log.Println("volumes returned nil")
 	}
 
