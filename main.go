@@ -26,7 +26,7 @@ type Images struct {
 	Size       string `json:"size"`
 }
 
-//Volume docker volume ls
+//Volumes docker volume ls
 type Volumes struct {
 	Driver string `json:"driver"`
 	Name   string `json:"name"`
@@ -209,6 +209,7 @@ func ps(cmdArgs []string) []PS {
 
 }
 
+//IndexHandler writing all outPuts to http template
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	cmdArgs := []string{
 		"ps",
