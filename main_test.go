@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetStats(t *testing.T) {
-	cmdArgs := []string{"ps", "-a", "--format", "{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}"}
+	cmdArgs := []string{"stats", "--no-stream", "--format", "{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}"}
 	value := getStats(cmdArgs)
 
 	if value == nil {
