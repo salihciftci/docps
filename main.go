@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-type Docker struct {
+type PS struct {
 	Name       string `json:"name"`
 	Image      string `json:"image"`
 	Size       string `json:"size"`
@@ -162,8 +162,8 @@ func getImages(cmdArgs []string) []Images {
 
 }
 
-func ps(cmdArgs []string) []Docker {
-	var container []Docker
+func ps(cmdArgs []string) []PS {
+	var container []PS
 
 	cmd := exec.Command("docker", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
@@ -180,7 +180,7 @@ func ps(cmdArgs []string) []Docker {
 			s := strings.Split(outPut, "\t")
 
 			container = append(container,
-				Docker{Name: s[0],
+				PS{Name: s[0],
 					Image:      s[1],
 					Size:       s[2],
 					RunningFor: s[3],
