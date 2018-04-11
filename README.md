@@ -1,5 +1,5 @@
 # docps
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Build Status](https://travis-ci.org/salihciftci/docps.svg?branch=master)](https://travis-ci.org/salihciftci/docps) [![Go Report Card](https://goreportcard.com/badge/github.com/salihciftci/docps)](https://goreportcard.com/report/github.com/salihciftci/docps)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com) [![Build Status](https://travis-ci.org/salihciftci/docps.svg?branch=master)](https://travis-ci.org/salihciftci/docps) [![Go Report Card](https://goreportcard.com/badge/github.com/salihciftci/docps)](https://goreportcard.com/report/github.com/salihciftci/docps) [![Coverage Status](https://coveralls.io/repos/github/salihciftci/docps/badge.svg)](https://coveralls.io/github/salihciftci/docps)
 
 docps is basic docker monitoring web application. Written with Go.
 
