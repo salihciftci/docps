@@ -42,8 +42,8 @@ type Stats struct {
 	BlockIO  string `json:"blockIO"`
 }
 
-func getStats(cmdArgs []string) []Stats {
-	var stats []Stats
+func read(cmdArgs []string) []string {
+	var stdOut []string
 
 	cmd := exec.Command("docker", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
@@ -57,16 +57,7 @@ func getStats(cmdArgs []string) []Stats {
 		for scanner.Scan() {
 			outPut := scanner.Text()
 
-			s := strings.Split(outPut, "\t")
-
-			stats = append(stats,
-				Stats{Name: s[0],
-					CPU:      s[1],
-					MemUsage: s[2],
-					MemPerc:  s[3],
-					NetIO:    s[4],
-					BlockIO:  s[5],
-				})
+			stdOut = append(stdOut, outPut)
 		}
 	}()
 
@@ -82,142 +73,34 @@ func getStats(cmdArgs []string) []Stats {
 		return nil
 	}
 
-	return stats
-}
-
-func getVolumes(cmdArgs []string) []Volumes {
-	var volumes []Volumes
-
-	cmd := exec.Command("docker", cmdArgs...)
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			outPut := scanner.Text()
-
-			s := strings.Split(outPut, "\t")
-
-			volumes = append(volumes,
-				Volumes{Driver: s[0],
-					Name: s[1],
-				})
-		}
-	}()
-
-	err = cmd.Start()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	err = cmd.Wait()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	return volumes
-}
-
-func getImages(cmdArgs []string) []Images {
-	var images []Images
-
-	cmd := exec.Command("docker", cmdArgs...)
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			outPut := scanner.Text()
-
-			s := strings.Split(outPut, "\t")
-
-			images = append(images,
-				Images{Repository: s[0],
-					Tag:     s[1],
-					Created: s[2],
-					Size:    s[3],
-				})
-		}
-	}()
-
-	err = cmd.Start()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	err = cmd.Wait()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	return images
-
-}
-
-func ps(cmdArgs []string) []PS {
-	var container []PS
-
-	cmd := exec.Command("docker", cmdArgs...)
-	cmdReader, err := cmd.StdoutPipe()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			outPut := scanner.Text()
-
-			s := strings.Split(outPut, "\t")
-
-			container = append(container,
-				PS{Name: s[0],
-					Image:      s[1],
-					Size:       s[2],
-					RunningFor: s[3],
-					Status:     s[4][:1],
-				})
-		}
-	}()
-
-	err = cmd.Start()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	err = cmd.Wait()
-	if err != nil {
-		log.Println(err.Error())
-		return nil
-	}
-
-	return container
-
+	return stdOut
 }
 
 //IndexHandler writing all outPuts to http template
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	var container []PS
+	var images []Images
+	var volumes []Volumes
+	var stats []Stats
+
 	cmdArgs := []string{
 		"ps",
 		"-a",
 		"--format",
 		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}",
 	}
-	container := ps(cmdArgs)
+	stdOut := read(cmdArgs)
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		container = append(container,
+			PS{Name: s[0],
+				Image:      s[1],
+				Size:       s[2],
+				RunningFor: s[3],
+				Status:     s[4][:1],
+			})
+	}
 
 	cmdArgs = []string{
 		"image",
@@ -225,7 +108,17 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		"--format",
 		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
-	images := getImages(cmdArgs)
+	stdOut = read(cmdArgs)
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		images = append(images,
+			Images{Repository: s[0],
+				Tag:     s[1],
+				Created: s[2],
+				Size:    s[3],
+			})
+	}
 
 	cmdArgs = []string{
 		"volume",
@@ -233,7 +126,15 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		"--format",
 		"{{.Driver}}\t{{.Name}}",
 	}
-	volumes := getVolumes(cmdArgs)
+	stdOut = read(cmdArgs)
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		volumes = append(volumes,
+			Volumes{Driver: s[0],
+				Name: s[1],
+			})
+	}
 
 	cmdArgs = []string{
 		"stats",
@@ -241,7 +142,19 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		"--format",
 		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
-	stats := getStats(cmdArgs)
+	stdOut = read(cmdArgs)
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		stats = append(stats,
+			Stats{Name: s[0],
+				CPU:      s[1],
+				MemUsage: s[2],
+				MemPerc:  s[3],
+				NetIO:    s[4],
+				BlockIO:  s[5],
+			})
+	}
 
 	var out []interface{}
 	out = append(out, container)
