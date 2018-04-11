@@ -1,4 +1,5 @@
 FROM golang:1.10
+LABEL MAINTAINER="Salih Çiftçi"
 
 WORKDIR /go/src/docps
 COPY . .
