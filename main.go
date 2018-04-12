@@ -162,7 +162,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	out = append(out, volumes)
 	out = append(out, stats)
 
-	t, err := template.ParseFiles("static/index.tmpl")
+	t, err := template.ParseFiles("templates/index.tmpl")
 	if err != nil {
 		log.Println(err)
 	}
@@ -177,7 +177,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 func handler() http.Handler {
 	r := http.NewServeMux()
 	r.HandleFunc("/", IndexHandler)
-	r.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	r.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	return r
 }
 
