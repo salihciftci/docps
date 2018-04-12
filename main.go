@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+var tpl *template.Template
+
 //PS docker ps -a
 type PS struct {
 	Name       string `json:"name"`
@@ -162,12 +164,13 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	out = append(out, volumes)
 	out = append(out, stats)
 
-	t, err := template.ParseFiles("templates/index.tmpl")
+	/*t, err := template.ParseFiles("templates/index.tmpl")
 	if err != nil {
 		log.Println(err)
-	}
+	}*/
 
-	err = t.Execute(w, out)
+	//err = t.Execute(w, out)
+	err := tpl.ExecuteTemplate(w, "index.tmpl", out)
 	if err != nil {
 		log.Println(err)
 	}
@@ -179,6 +182,10 @@ func handler() http.Handler {
 	r.HandleFunc("/", IndexHandler)
 	r.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 	return r
+}
+
+func init() {
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 }
 
 func main() {
