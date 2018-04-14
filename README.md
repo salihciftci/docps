@@ -28,6 +28,7 @@ Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in L
 
 ## Screenshots
 
-![](https://img.salih.co/docps/stats.png)
-![](https://img.salih.co/docps/containers.png)
-![](https://img.salih.co/docps/images.png)
+![](https://img.salih.co/docps/1.png)
+![](https://img.salih.co/docps/2.png)
+![](https://img.salih.co/docps/3.png)
+![](https://img.salih.co/docps/4.png)
