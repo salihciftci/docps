@@ -12,14 +12,11 @@ body {
   font-family: 'Lato', sans-serif;
 }
 
-.head {
-    background-color:#81C14B; 
-    height:5px;
-}
-
 .nav-pills>li>a.active {
-  background-color: #FFFFFF !important;
+  background-color: #F8F9FA !important;
   color: #3E3E3E !important;
+  border-bottom: 1px solid #81C14B;
+  border-radius: 0;
 }
 
 .nav-pills>li>a:hover,
@@ -36,9 +33,10 @@ a {
   padding-bottom: 15px;
 }
 
-.bg-ee {
-    background-color:#FFFFFF;
+.logout, a:hover {
+  text-decoration: none;
 }
+
 
 .login-body {
   display: -ms-flexbox;

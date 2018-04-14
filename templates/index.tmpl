@@ -1,29 +1,45 @@
+ {{ template "header" }}
 
-{{ template "header" }}
 <body>
-  <div class="head"></div>
-  <ul class="nav nav-pills nav-fill bg-ee" id="pills-tab" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats"
-        aria-selected="true">Stats</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-container-tab" data-toggle="pill" href="#pills-container" role="tab" aria-controls="pills-container"
-        aria-selected="false">Containers</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#pills-images" role="tab" aria-controls="pills-images"
-        aria-selected="false">Images</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes"
-        aria-selected="false">Volumes</a>
-    </li>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img src="/public/img/favicon.png" width="30" height="30" alt=""> &nbsp;&nbsp;
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto nav nav-pills" id="pills-tab" role="tablist">
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="pills-stats-tab" data-toggle="pill" href="#pills-stats" role="tab" aria-controls="pills-stats"
+            aria-selected="true">Stats
+            <span class="sr-only">(current)</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-container-tab" data-toggle="pill" href="#pills-container" role="tab" aria-controls="pills-container"
+            aria-selected="false">Containers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#pills-images" role="tab" aria-controls="pills-images"
+            aria-selected="false">Images</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#pills-volumes" role="tab" aria-controls="pills-volumes"
+            aria-selected="false">Volumes</a>
+        </li>
+      </ul>
+      <span class="navbar-text logout">
+        <a href="/logout">
+          Log Out
+        </a>
+      </span>
+    </div>
+  </nav>
 
-  </ul>
-
-  <div class="head mb-3"></div>
-
+  <br>
   <div class="container-fluid">
     <div class="tab-content" id="pills-tabContent">
       <!-- Containers -->
