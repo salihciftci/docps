@@ -67,14 +67,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func handler() http.Handler {
-	r := http.NewServeMux()
-	r.HandleFunc("/", indexHandler)
-	r.HandleFunc("/login", loginHandler)
-	r.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
-	return r
-}
-
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 }
@@ -87,10 +79,13 @@ func main() {
 	}
 
 	secret = string(b)
-	log.Println(secret)
+
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/login", loginHandler)
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	log.Println("Listening :8080..")
-	err := http.ListenAndServe(":8080", handler())
+	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
