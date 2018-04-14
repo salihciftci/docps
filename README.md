@@ -22,7 +22,7 @@ $ ./docps
 
 ``` bash
 $ docker build -t docps .
-$ docker run -dit --name docps --restart always -e pass=MYLOGINPASS -e secret=MYLOGINSECRET -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock docps
+$ docker run -dit --name docps --restart always -e pass=MYLOGINPASS -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock docps
 ```
 Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
 
