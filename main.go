@@ -3,43 +3,67 @@ package main
 import (
 	"html/template"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
+
+	"github.com/gorilla/securecookie"
 )
 
 var (
-	tpl    *template.Template
-	secret = os.Getenv("secret")
-	pass   = os.Getenv("pass")
+	tpl  *template.Template
+	pass = os.Getenv("pass")
+	s    = securecookie.New([]byte(securecookie.GenerateRandomKey(64)), []byte(securecookie.GenerateRandomKey(32)))
 )
+
+func encode(value bool) string {
+	valuemap := map[string]bool{
+		"docps": value,
+	}
+
+	encode, _ := s.Encode("session", valuemap)
+	return encode
+}
+
+func decode(cookie *http.Cookie) bool {
+	value := map[string]bool{
+		"docps": false,
+	}
+
+	s.Decode("session", cookie.Value, &value)
+	return value["docps"]
+}
 
 //IndexHandler writing all outPuts to http template
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("login")
+	cookie, err := r.Cookie("session")
 
+	login := encode(false)
 	if err == http.ErrNoCookie {
 		cookie = &http.Cookie{
-			Name:  "login",
-			Value: "0",
+			Name:  "session",
+			Value: login,
 			Path:  "/",
 		}
+		http.SetCookie(w, cookie)
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
 
+	login = encode(true)
 	if r.Method == "POST" {
-		value := r.FormValue("inputPassword")
-		if value == pass {
+		input := r.FormValue("inputPassword")
+		if input == pass {
 			cookie = &http.Cookie{
-				Name:  "login",
-				Value: secret,
+				Name:  "session",
+				Value: login,
 				Path:  "/",
 			}
+			http.SetCookie(w, cookie)
 		}
 	}
 
-	http.SetCookie(w, cookie)
-
-	if cookie.Value != secret {
+	value := decode(cookie)
+	if value != true {
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
@@ -49,22 +73,35 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
-
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	cookie, err := r.Cookie("login")
+	cookie, _ := r.Cookie("session")
+	value := decode(cookie)
 
-	if cookie.Value == secret {
+	if value == true {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
-	err = tpl.ExecuteTemplate(w, "login.tmpl", nil)
+	err := tpl.ExecuteTemplate(w, "login.tmpl", nil)
 	if err != nil {
 		log.Println(err.Error())
 	}
+}
 
+func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	login := encode(false)
+
+	cookie, _ := r.Cookie("session")
+	cookie = &http.Cookie{
+		Name:  "session",
+		Value: login,
+		Path:  "/",
+	}
+
+	http.SetCookie(w, cookie)
+	http.Redirect(w, r, "/", http.StatusFound)
 }
 
 func init() {
@@ -72,16 +109,10 @@ func init() {
 }
 
 func main() {
-	letters := []rune(os.Getenv("secret"))
-	b := make([]rune, 16)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-
-	secret = string(b)
-
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/logout", logoutHandler)
+
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	log.Println("Listening :8080..")
@@ -89,5 +120,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 }
