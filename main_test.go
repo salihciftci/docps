@@ -14,7 +14,7 @@ func TestIndexHandler(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	IndexHandler(rec, req)
+	indexHandler(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
