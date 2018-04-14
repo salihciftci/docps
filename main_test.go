@@ -18,22 +18,7 @@ func TestIndexHandler(t *testing.T) {
 
 	res := rec.Result()
 	defer res.Body.Close()
-	if res.StatusCode != http.StatusOK {
+	if res.StatusCode != http.StatusFound {
 		t.Errorf("expected status OK; got %v", res.Status)
 	}
-}
-
-func TestRouting(t *testing.T) {
-	srv := httptest.NewServer(handler())
-	defer srv.Close()
-
-	res, err := http.Get(srv.URL)
-	if err != nil {
-		t.Fatalf("could not send GET request: %v", err)
-	}
-
-	if res.StatusCode != http.StatusOK {
-		t.Errorf("exğected status OK; got %v", res.Status)
-	}
-
 }
