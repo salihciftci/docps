@@ -22,3 +22,16 @@ func TestIndexHandler(t *testing.T) {
 		t.Errorf("expected status found; got %v", res.Status)
 	}
 }
+
+func TestSetCookie(t *testing.T) {
+	rec := httptest.NewRecorder()
+
+	http.SetCookie(rec, &http.Cookie{Name: "session", Value: "test"})
+
+	req := &http.Request{Header: http.Header{"Cookie": rec.HeaderMap["Set-Cookie"]}}
+
+	_, err := req.Cookie("session")
+	if err != nil {
+		t.Errorf("couldn't read Cookie")
+	}
+}
