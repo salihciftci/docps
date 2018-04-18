@@ -23,6 +23,24 @@ func TestIndexHandler(t *testing.T) {
 	}
 }
 
+func TestLogoutHandler(t *testing.T) {
+	req, err := http.NewRequest("GET", "http://localhost:8080/logout", nil)
+	if err != nil {
+		t.Fatalf("Could not created request: %v", err)
+	}
+
+	rec := httptest.NewRecorder()
+	logoutHandler(rec, req)
+
+	res := rec.Result()
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusFound {
+		t.Errorf("expected status found; got %v", res.Status)
+	}
+
+}
+
 func TestSetCookie(t *testing.T) {
 	rec := httptest.NewRecorder()
 
