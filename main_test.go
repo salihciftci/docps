@@ -19,6 +19,6 @@ func TestIndexHandler(t *testing.T) {
 	res := rec.Result()
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusFound {
-		t.Errorf("expected status OK; got %v", res.Status)
+		t.Errorf("expected status found; got %v", res.Status)
 	}
 }
