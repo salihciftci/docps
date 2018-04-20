@@ -76,7 +76,11 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	cookie, _ := r.Cookie("session")
+	cookie, err := r.Cookie("session")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
 	value := decode(cookie)
 
 	if value == true {
@@ -84,7 +88,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := tpl.ExecuteTemplate(w, "login.tmpl", nil)
+	err = tpl.ExecuteTemplate(w, "login.tmpl", nil)
 	if err != nil {
 		log.Println(err.Error())
 	}
