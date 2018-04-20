@@ -13,15 +13,14 @@
       <ul class="navbar-nav mr-auto nav nav-pills" id="pills-tab" role="tablist">
         </li>
         <li class="nav-item">
-          <a class="nav-link active" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats"
-            aria-selected="true">Stats
+          <a class="nav-link active" id="pills-container-tab" data-toggle="pill" href="#containers" role="tab" aria-controls="pills-container"
+            aria-selected="true">Containers
             <span class="sr-only">(current)</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="pills-container-tab" data-toggle="pill" href="#containers" role="tab" aria-controls="pills-container"
-            aria-selected="false">Containers</a>
-        </li>
+          <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats"
+            aria-selected="false">Stats</a>
         <li class="nav-item">
           <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#images" role="tab" aria-controls="pills-images"
             aria-selected="false">Images</a>
@@ -43,7 +42,7 @@
   <div class="container-fluid">
     <div class="tab-content" id="pills-tabContent">
       <!-- Containers -->
-      <div class="tab-pane fade" id="containers" role="tabpanel" aria-labelledby="pills-container-tab">
+      <div class="tab-pane fade show active" id="containers" role="tabpanel" aria-labelledby="pills-container-tab">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Containers</h5>
@@ -137,7 +136,7 @@
         </div>
       </div>
       <!-- Stats -->
-      <div class="tab-pane fade show active" id="stats" role="tabpanel" aria-labelledby="pills-stats-tab">
+      <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="pills-stats-tab">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Stats</h5>
