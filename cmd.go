@@ -40,6 +40,12 @@ type Stats struct {
 	BlockIO  string `json:"blockIO"`
 }
 
+//Logs docker logs <name>
+type Logs struct {
+	Name string   `json:"name,omitempty"`
+	Logs []string `json:"logs,omitempty"`
+}
+
 func read(cmdArgs []string) []string {
 	var stdOut []string
 
@@ -153,11 +159,40 @@ func getDocker() []interface{} {
 			})
 	}
 
+	logs := []Logs{}
+
+	for i := 0; i < len(container); i++ {
+		cmdArgs = []string{
+			"logs",
+			container[i].Name,
+		}
+
+		log := read(cmdArgs)
+		if len(log) > 0 {
+			x := []string{}
+			for k := 0; k < len(log); k++ {
+				x = append(x, log[k])
+			}
+			logs = append(logs, Logs{
+				Name: container[i].Name,
+				Logs: x,
+			})
+
+		} else {
+			logs = append(logs, Logs{
+				Name: container[i].Name,
+				Logs: []string{},
+			})
+		}
+
+	}
+
 	var out []interface{}
 	out = append(out, container)
 	out = append(out, images)
 	out = append(out, volumes)
 	out = append(out, stats)
+	out = append(out, logs)
 
 	return out
 }

@@ -19,16 +19,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats"
-            aria-selected="false">Stats</a>
-        <li class="nav-item">
-          <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#images" role="tab" aria-controls="pills-images"
-            aria-selected="false">Images</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#volumes" role="tab" aria-controls="pills-volumes"
-            aria-selected="false">Volumes</a>
-        </li>
+          <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats" aria-selected="false">Stats</a>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#images" role="tab" aria-controls="pills-images" aria-selected="false">Images</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#volumes" role="tab" aria-controls="pills-volumes" aria-selected="false">Volumes</a>
+          </li>
       </ul>
       <span class="navbar-text logout">
         <a href="/logout">
@@ -54,7 +51,8 @@
                     <th scope="col">Image</th>
                     <th scope="col">Size</th>
                     <th scope="col">Created</th>
-                    <th scope="col">Status</th>
+                    <th scope="col" style="width: 1%;">Logs</th>
+                    <th scope="col" style="width: 1%;" class="center">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -65,12 +63,16 @@
                       <td>{{ .Size }}</td>
                       <td>{{ .RunningFor }}</td>
                       <td>
-                        {{ if eq .Status "U" }}
-                        <i class="fa fa-check text-success" aria-hidden="true"></i>
-                        {{ else }}
-                        <i class="fa fa-times text-danger" aria-hidden="true"></i>
-                        {{ end }}
-                      </td>
+                        <a data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
+                          <span style="text-align: center; display: block;" class="fa fa-binoculars" aria-hidden="true"></span>
+                        </a>
+                        <td>
+                          {{ if eq .Status "U" }}
+                          <span style="text-align: center; display: block;" class="fa fa-check text-success" aria-hidden="true"></span>
+                          {{ else }}
+                          <span style="text-align: center; display: block;" class="fa fa-times text-danger" aria-hidden="true"></span>
+                          {{ end }}
+                        </td>
                   </tr>
                   {{ end }}
                 </tbody>
@@ -171,6 +173,35 @@
       </div>
     </div>
   </div>
+
+  <!-- Logs Modal-->
+  {{ range index . 4 }}
+  <div class="modal fade bd-{{ .Name }}-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{ .Name }}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table>
+                {{ range index .Logs }}
+                <tr>
+                  <td>{{ . }}</td>
+                </tr>
+                {{ end }}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ end }}
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
