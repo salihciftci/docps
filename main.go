@@ -35,6 +35,11 @@ func decode(cookie *http.Cookie) bool {
 
 //IndexHandler writing all outPuts to http template
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
 	cookie, err := r.Cookie("session")
 
 	login := encode(false)
@@ -76,6 +81,11 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/login" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
 	cookie, err := r.Cookie("session")
 	if err != nil {
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -95,6 +105,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Redirect(w, r, "/logout", http.StatusFound)
+		return
+	}
+
 	login := encode(false)
 
 	cookie, _ := r.Cookie("session")
