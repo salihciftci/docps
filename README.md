@@ -26,11 +26,23 @@
 
 ## Features
 
-* Containers - See containers statuses
-* Stats - Monitor container's stats
-* Logs - See container logs
-* Images - See images
-* Volumes - See volumes
+* Containers
+* Stats
+* Logs
+* Images
+* Volumes
+
+## Prerequisites
+
+To keep our data safe Liman has login page. We need to export environment variable to set login password.
+
+```
+#In Docker use -e option
+-e pass=MYLOGINPASS
+
+#In host you need to export pass variable
+$ export pass=MYLOGINPASS
+```
 
 ## Installation
 
@@ -47,7 +59,7 @@ Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in L
 
 ## Host
 
-You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases. Or you can build with Go.
+You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases or you can build with Go.
 
 ```
 go get github.com/salihciftci/liman
