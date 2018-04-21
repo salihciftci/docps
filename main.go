@@ -105,8 +105,8 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		http.Redirect(w, r, "/logout", http.StatusFound)
+	if r.URL.Path != "/logout" {
+		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
