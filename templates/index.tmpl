@@ -63,9 +63,9 @@
                       <td>{{ .Size }}</td>
                       <td>{{ .RunningFor }}</td>
                       <td>
-                        <a data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
+                        <button type="button" class="btn btn-link text-dark" style="text-decoration: none;" data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
                           <span style="text-align: center; display: block;" class="fa fa-binoculars" aria-hidden="true"></span>
-                        </a>
+                        </button>
                         <td>
                           {{ if eq .Status "U" }}
                           <span style="text-align: center; display: block;" class="fa fa-check text-success" aria-hidden="true"></span>
