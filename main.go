@@ -17,7 +17,7 @@ var (
 
 func encode(value bool) string {
 	valuemap := map[string]bool{
-		"docps": value,
+		"liman": value,
 	}
 
 	encode, _ := s.Encode("session", valuemap)
@@ -26,11 +26,11 @@ func encode(value bool) string {
 
 func decode(cookie *http.Cookie) bool {
 	value := map[string]bool{
-		"docps": false,
+		"liman": false,
 	}
 
 	s.Decode("session", cookie.Value, &value)
-	return value["docps"]
+	return value["liman"]
 }
 
 //IndexHandler writing all outPuts to http template
