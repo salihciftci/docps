@@ -1,4 +1,4 @@
-BINARY_NAME = docps
+BINARY_NAME = liman
 
 build:
 	go build -o $(BINARY_NAME) -v
