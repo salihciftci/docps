@@ -43,9 +43,11 @@ docker pull salihciftci/liman
 docker run -dit --name liman -e pass=PASS -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
 ```
 
+Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
+
 ## Host
 
-You can download the lastest version of liman from releases. Or you can build with Go.
+You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases. Or you can build with Go.
 
 ```
 go get github.com/salihciftci/liman
@@ -54,7 +56,7 @@ make build
 
 ### Screenshots
 
- <table border="1">
+ <table>
   <tr>
     <td><img src="https://img.salih.co/liman/containers.png"></td>
     <td><img src="https://img.salih.co/liman/stats.png"></td>
