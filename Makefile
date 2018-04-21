@@ -17,7 +17,8 @@ darwin-build:
 	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-darwin -v
 
 windows-build:
-	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-darwin -v
+	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-windows -v
+	
 docker:
 	docker build -t $(BINARY_NAME) .
 	
