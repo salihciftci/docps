@@ -46,6 +46,13 @@ type Logs struct {
 	Logs []string `json:"logs,omitempty"`
 }
 
+//Networks docker network ls
+type Networks struct {
+	Name   string `json:"name,omitempty"`
+	Driver string `json:"driver,omitempty"`
+	Scope  string `json:"scope,omitempty"`
+}
+
 func read(cmdArgs []string) []string {
 	var stdOut []string
 
@@ -85,6 +92,7 @@ func getDocker() []interface{} {
 	var images []Images
 	var volumes []Volumes
 	var stats []Stats
+	var networks []Networks
 
 	cmdArgs := []string{
 		"ps",
@@ -187,12 +195,30 @@ func getDocker() []interface{} {
 
 	}
 
+	cmdArgs = []string{"network",
+		"ls",
+		"--format",
+		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
+	}
+	stdOut = read(cmdArgs)
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		networks = append(networks,
+			Networks{
+				Name:   s[0],
+				Driver: s[1],
+				Scope:  s[2],
+			})
+	}
+
 	var out []interface{}
 	out = append(out, container)
 	out = append(out, images)
 	out = append(out, volumes)
 	out = append(out, stats)
 	out = append(out, logs)
+	out = append(out, networks)
 
 	return out
 }
