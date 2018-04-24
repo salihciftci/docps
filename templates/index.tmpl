@@ -20,12 +20,17 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats" aria-selected="false">Stats</a>
-          <li class="nav-item">
-            <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#images" role="tab" aria-controls="pills-images" aria-selected="false">Images</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#volumes" role="tab" aria-controls="pills-volumes" aria-selected="false">Volumes</a>
-          </li>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-networks-tab" data-toggle="pill" href="#networks" role="tab" aria-controls="pills-networks"
+            aria-selected="false">Networks</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-images-tab" data-toggle="pill" href="#images" role="tab" aria-controls="pills-images" aria-selected="false">Images</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#volumes" role="tab" aria-controls="pills-volumes" aria-selected="false">Volumes</a>
+        </li>
       </ul>
       <span class="navbar-text logout">
         <a href="/logout">
@@ -99,10 +104,10 @@
                 <tbody>
                   {{ range index . 1 }}
                   <tr>
-                    <td>{{ .Repository }}</th>
-                      <td>{{ .Tag }}</td>
-                      <td>{{ .Created }}</td>
-                      <td>{{ .Size }}</td>
+                    <td>{{ .Repository }}</td>
+                    <td>{{ .Tag }}</td>
+                    <td>{{ .Created }}</td>
+                    <td>{{ .Size }}</td>
                   </tr>
                   {{ end }}
                 </tbody>
@@ -127,8 +132,8 @@
                 <tbody>
                   {{ range index . 2 }}
                   <tr>
-                    <td>{{ .Driver }}</th>
-                      <td>{{ .Name }}</td>
+                    <td>{{ .Driver }}</td>
+                    <td>{{ .Name }}</td>
                   </tr>
                   {{ end }}
                 </tbody>
@@ -163,6 +168,34 @@
                     <td>{{ .MemPerc }}</td>
                     <td>{{ .NetIO }}</td>
                     <td>{{ .BlockIO }}</td>
+                  </tr>
+                  {{ end }}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Networks -->
+      <div class="tab-pane fade" id="networks" role="tabpanel" aria-labelledby="pills-networks-tab">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Networks</h5>
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead class="thead bg-ee">
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Driver</th>
+                    <th scope="col">Scope</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{ range index . 5 }}
+                  <tr>
+                    <td>{{ .Name }}</td>
+                    <td>{{ .Driver }}</td>
+                    <td>{{ .Scope }}</td>
                   </tr>
                   {{ end }}
                 </tbody>
