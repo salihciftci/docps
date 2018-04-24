@@ -29,6 +29,7 @@
 * Containers
 * Stats
 * Logs
+* Networks
 * Images
 * Volumes
 
@@ -57,7 +58,7 @@ docker run -dit --name liman -e pass=PASS -v /var/run/docker.sock:/var/run/docke
 
 Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
 
-## Host
+### Host
 
 You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases or you can build with Go.
 
@@ -66,7 +67,7 @@ go get github.com/salihciftci/liman
 make build
 ```
 
-### Screenshots
+## Screenshots
 
  <table>
   <tr>
