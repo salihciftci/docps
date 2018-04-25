@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os/exec"
+	"strconv"
 	"strings"
 )
 
@@ -199,7 +200,8 @@ func getDocker() []interface{} {
 	data = append(data, logs)
 
 	var networks []Networks
-	cmdArgs = []string{"network",
+	cmdArgs = []string{
+		"network",
 		"ls",
 		"--format",
 		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
@@ -216,6 +218,36 @@ func getDocker() []interface{} {
 			})
 	}
 	data = append(data, networks)
+
+	cmdArgs = []string{
+		"info",
+		"--format",
+		"{{.ContainersRunning}}\t{{.ContainersPaused}}\t{{.ContainersStopped}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
+	}
+
+	stdOut = dockerCmd(cmdArgs)
+
+	dashboard := []string{}
+
+	s := strings.Split(stdOut[0], "\t")
+	for i := 0; i < len(s); i++ {
+		dashboard = append(dashboard, s[i])
+	}
+
+	dashboard = append(dashboard, strconv.Itoa(len(images)))
+	dashboard = append(dashboard, strconv.Itoa(len(volumes)))
+	dashboard = append(dashboard, strconv.Itoa(len(networks)))
+
+	intMemory, err := strconv.Atoi(dashboard[6])
+	if err != nil {
+		log.Println(err)
+	}
+
+	floatMemory := float64(intMemory)
+	GibMemory := ((floatMemory / 1024) / 1024) / 1024
+	dashboard[6] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
+
+	data = append(data, dashboard)
 
 	return data
 }

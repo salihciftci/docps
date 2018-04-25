@@ -69,3 +69,13 @@ a {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+
+.flex {
+  display: flex;
+  text-align: center;
+}
+
+.right-block {
+  overflow: auto;
+  width: 100%;
+}

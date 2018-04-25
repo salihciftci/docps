@@ -1,22 +1,23 @@
- {{ template "header" }}
+{{ template "header" }}
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/">
-      <img src="/public/img/favicon.png" width="30" height="30" alt=""> &nbsp;&nbsp;
-    </a>
+      <img src="/public/img/favicon.png" width="30" height="30" alt=""> &nbsp;&nbsp;</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
       aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto nav nav-pills" id="pills-tab" role="tablist">
-        </li>
         <li class="nav-item">
-          <a class="nav-link active" id="pills-container-tab" data-toggle="pill" href="#containers" role="tab" aria-controls="pills-container"
-            aria-selected="true">Containers
+          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#home" role="tab" aria-controls="pills-home" aria-selected="true">Dashboard
             <span class="sr-only">(current)</span>
           </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="pills-containers-tab" data-toggle="pill" href="#containers" role="tab" aria-controls="pills-containers"
+            aria-selected="false">Containers</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" id="pills-stats-tab" data-toggle="pill" href="#stats" role="tab" aria-controls="pills-stats" aria-selected="false">Stats</a>
@@ -39,12 +40,104 @@
       </span>
     </div>
   </nav>
-
   <br>
   <div class="container-fluid">
     <div class="tab-content" id="pills-tabContent">
+      <!-- Dashboard -->
+      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="pills-home-tab">
+        {{ with index . 6 }}
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body flex">
+                <div class="left-block">
+                  <span class="fa-stack fa-3x">
+                    <i class="fa fa-server fa-stack-1x" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div class="right-block" style="line-height: 35px;">
+                  <h5>Containers</h5>
+                  <i class="fa fa-play" aria-hidden="true"></i> {{ index . 0 }} &nbsp;&nbsp;
+                  <i class="fa fa-pause" aria-hidden="true"></i> {{ index . 1 }} &nbsp;&nbsp;
+                  <i class="fa fa-stop" aria-hidden="true"></i> {{ index . 2 }}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body flex">
+                <div class="left-block">
+                  <span class="fa-stack fa-3x">
+                    <i class="fa fa-clone fa-stack-1x" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div class="right-block">
+                  <h5>Images</h5>
+                  <h2>{{ index . 7 }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body flex">
+                <div class="left-block">
+                  <span class="fa-stack fa-3x">
+                    <i class="fa fa-hdd-o  fa-stack-1x" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div class="right-block">
+                  <h5>Volumes</h5>
+                  <h2>{{ index . 8 }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body flex">
+                <div class="left-block">
+                  <span class="fa-stack fa-3x">
+                    <i class="fa fa-wifi fa-stack-1x" aria-hidden="true"></i>
+                  </span>
+                </div>
+                <div class="right-block">
+                  <h5>Networks</h5>
+                  <h2>{{ index . 9 }}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="card">
+          <div class="card-body">
+            <table class="table table-bordered">
+              <tbody>
+                <tr>
+                  <th>Name</th>
+                  <td>{{ index . 3 }}</td>
+                </tr>
+                <tr>
+                  <th>Docker version</th>
+                  <td>{{ index . 4 }}</td>
+                </tr>
+                <tr>
+                  <th>CPU</th>
+                  <td>{{ index . 5 }}</td>
+                </tr>
+                <tr>
+                  <th>Memory</th>
+                  <td>{{ index . 6 }} GiB</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        {{ end }}
+      </div>
       <!-- Containers -->
-      <div class="tab-pane fade show active" id="containers" role="tabpanel" aria-labelledby="pills-container-tab">
+      <div class="tab-pane fade" id="containers" role="tabpanel" aria-labelledby="pills-container-tab">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Containers</h5>
@@ -60,27 +153,20 @@
                     <th scope="col" style="width: 1%;" class="center">Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{ range index . 0 }}
+                <tbody>{{ range index . 0 }}
                   <tr>
-                    <td>{{ .Name }}</th>
-                      <td>{{ .Image }}</td>
-                      <td>{{ .Size }}</td>
-                      <td>{{ .RunningFor }}</td>
-                      <td>
-                        <button type="button" class="btn btn-link text-dark" style="text-decoration: none;" data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
-                          <span style="text-align: center; display: block;" class="fa fa-binoculars" aria-hidden="true"></span>
-                        </button>
-                        <td>
-                          {{ if eq .Status "U" }}
-                          <span style="text-align: center; display: block;" class="fa fa-check text-success" aria-hidden="true"></span>
-                          {{ else }}
-                          <span style="text-align: center; display: block;" class="fa fa-times text-danger" aria-hidden="true"></span>
-                          {{ end }}
-                        </td>
-                  </tr>
-                  {{ end }}
-                </tbody>
+                    <td>{{ .Name }}</td>
+                    <td>{{ .Image }}</td>
+                    <td>{{ .Size }}</td>
+                    <td>{{ .RunningFor }}</td>
+                    <td>
+                      <button type="button" class="btn btn-link text-dark" style="text-decoration: none;" data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
+                        <span style="text-align: center; display: block;" class="fa fa-binoculars" aria-hidden="true"></span>
+                      </button>
+                      <td>{{ if eq .Status "U" }}
+                        <span style="text-align: center; display: block;" class="fa fa-check text-success" aria-hidden="true"></span>{{ else }}
+                        <span style="text-align: center; display: block;" class="fa fa-times text-danger" aria-hidden="true"></span>{{ end }}</td>
+                  </tr>{{ end }}</tbody>
               </table>
             </div>
           </div>
@@ -101,16 +187,13 @@
                     <th scope="col">Size</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{ range index . 1 }}
+                <tbody>{{ range index . 1 }}
                   <tr>
                     <td>{{ .Repository }}</td>
                     <td>{{ .Tag }}</td>
                     <td>{{ .Created }}</td>
                     <td>{{ .Size }}</td>
-                  </tr>
-                  {{ end }}
-                </tbody>
+                  </tr>{{ end }}</tbody>
               </table>
             </div>
           </div>
@@ -129,14 +212,11 @@
                     <th scope="col">Name</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{ range index . 2 }}
+                <tbody>{{ range index . 2 }}
                   <tr>
                     <td>{{ .Driver }}</td>
                     <td>{{ .Name }}</td>
-                  </tr>
-                  {{ end }}
-                </tbody>
+                  </tr>{{ end }}</tbody>
               </table>
             </div>
           </div>
@@ -159,8 +239,7 @@
                     <th scope="col">BLOCK IO</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{ range index . 3 }}
+                <tbody>{{ range index . 3 }}
                   <tr>
                     <td>{{ .Name }}</td>
                     <td>{{ .CPU }}</td>
@@ -168,9 +247,7 @@
                     <td>{{ .MemPerc }}</td>
                     <td>{{ .NetIO }}</td>
                     <td>{{ .BlockIO }}</td>
-                  </tr>
-                  {{ end }}
-                </tbody>
+                  </tr>{{ end }}</tbody>
               </table>
             </div>
           </div>
@@ -190,15 +267,12 @@
                     <th scope="col">Scope</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{ range index . 5 }}
+                <tbody>{{ range index . 5 }}
                   <tr>
                     <td>{{ .Name }}</td>
                     <td>{{ .Driver }}</td>
                     <td>{{ .Scope }}</td>
-                  </tr>
-                  {{ end }}
-                </tbody>
+                  </tr>{{ end }}</tbody>
               </table>
             </div>
           </div>
@@ -206,9 +280,7 @@
       </div>
     </div>
   </div>
-
-  <!-- Logs Modal-->
-  {{ range index . 4 }}
+  <!-- Logs Modal-->{{ range index . 4 }}
   <div class="modal fade bd-{{ .Name }}-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -221,20 +293,16 @@
           </div>
           <div class="modal-body">
             <div class="table-responsive">
-              <table>
-                {{ range index .Logs }}
+              <table>{{ range index .Logs }}
                 <tr>
                   <td>{{ . }}</td>
-                </tr>
-                {{ end }}
-              </table>
+                </tr>{{ end }}</table>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  {{ end }}
+  </div>{{ end }}
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
