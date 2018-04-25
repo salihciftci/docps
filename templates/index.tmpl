@@ -153,7 +153,8 @@
                     <th scope="col" style="width: 1%;" class="center">Status</th>
                   </tr>
                 </thead>
-                <tbody>{{ range index . 0 }}
+                <tbody>
+                  {{ range index . 0 }}
                   <tr>
                     <td>{{ .Name }}</td>
                     <td>{{ .Image }}</td>
@@ -166,7 +167,9 @@
                       <td>{{ if eq .Status "U" }}
                         <span style="text-align: center; display: block;" class="fa fa-check text-success" aria-hidden="true"></span>{{ else }}
                         <span style="text-align: center; display: block;" class="fa fa-times text-danger" aria-hidden="true"></span>{{ end }}</td>
-                  </tr>{{ end }}</tbody>
+                  </tr>
+                  {{ end }}
+                </tbody>
               </table>
             </div>
           </div>
@@ -187,13 +190,16 @@
                     <th scope="col">Size</th>
                   </tr>
                 </thead>
-                <tbody>{{ range index . 1 }}
+                <tbody>
+                  {{ range index . 1 }}
                   <tr>
                     <td>{{ .Repository }}</td>
                     <td>{{ .Tag }}</td>
                     <td>{{ .Created }}</td>
                     <td>{{ .Size }}</td>
-                  </tr>{{ end }}</tbody>
+                  </tr>
+                  {{ end }}
+                </tbody>
               </table>
             </div>
           </div>
@@ -212,7 +218,8 @@
                     <th scope="col">Name</th>
                   </tr>
                 </thead>
-                <tbody>{{ range index . 2 }}
+                <tbody>
+                  {{ range index . 2 }}
                   <tr>
                     <td>{{ .Driver }}</td>
                     <td>{{ .Name }}</td>
@@ -247,7 +254,9 @@
                     <td>{{ .MemPerc }}</td>
                     <td>{{ .NetIO }}</td>
                     <td>{{ .BlockIO }}</td>
-                  </tr>{{ end }}</tbody>
+                  </tr>
+                  {{ end }}
+                </tbody>
               </table>
             </div>
           </div>
@@ -267,12 +276,15 @@
                     <th scope="col">Scope</th>
                   </tr>
                 </thead>
-                <tbody>{{ range index . 5 }}
+                <tbody>
+                  {{ range index . 5 }}
                   <tr>
                     <td>{{ .Name }}</td>
                     <td>{{ .Driver }}</td>
                     <td>{{ .Scope }}</td>
-                  </tr>{{ end }}</tbody>
+                  </tr>
+                  {{ end }}
+                </tbody>
               </table>
             </div>
           </div>
@@ -280,7 +292,8 @@
       </div>
     </div>
   </div>
-  <!-- Logs Modal-->{{ range index . 4 }}
+  <!-- Logs Modal-->
+  {{ range index . 4 }}
   <div class="modal fade bd-{{ .Name }}-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -293,16 +306,20 @@
           </div>
           <div class="modal-body">
             <div class="table-responsive">
-              <table>{{ range index .Logs }}
+              <table>
+                {{ range index .Logs }}
                 <tr>
                   <td>{{ . }}</td>
-                </tr>{{ end }}</table>
+                </tr>
+                {{ end }}
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>{{ end }}
+  </div>
+  {{ end }}
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
