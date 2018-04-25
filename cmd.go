@@ -9,35 +9,35 @@ import (
 
 //PS docker ps -a
 type PS struct {
-	Name       string `json:"name"`
-	Image      string `json:"image"`
-	Size       string `json:"size"`
-	RunningFor string `json:"runningFor"`
-	Status     string `json:"status"`
+	Name       string `json:"name,omitempty"`
+	Image      string `json:"image,omitempty"`
+	Size       string `json:"size,omitempty"`
+	RunningFor string `json:"runningFor,omitempty"`
+	Status     string `json:"status,omitempty"`
 }
 
 //Images docker image ls
 type Images struct {
-	Repository string `json:"repository"`
-	Tag        string `json:"tag"`
-	Created    string `json:"created"`
-	Size       string `json:"size"`
+	Repository string `json:"repository,omitempty"`
+	Tag        string `json:"tag,omitempty"`
+	Created    string `json:"created,omitempty"`
+	Size       string `json:"size,omitempty"`
 }
 
 //Volumes docker volume ls
 type Volumes struct {
-	Driver string `json:"driver"`
-	Name   string `json:"name"`
+	Driver string `json:"driver,omitempty"`
+	Name   string `json:"name,omitempty"`
 }
 
 //Stats docker stats --no-stream
 type Stats struct {
-	Name     string `json:"name"`
-	CPU      string `json:"cpu"`
-	MemUsage string `json:"memUsage"`
-	MemPerc  string `json:"memPerc"`
-	NetIO    string `json:"netIO"`
-	BlockIO  string `json:"blockIO"`
+	Name     string `json:"name,omitempty"`
+	CPU      string `json:"cpu,omitempty"`
+	MemUsage string `json:"memUsage,omitempty"`
+	MemPerc  string `json:"memPerc,omitempty"`
+	NetIO    string `json:"netIO,omitempty"`
+	BlockIO  string `json:"blockIO,omitempty"`
 }
 
 //Logs docker logs <name>
