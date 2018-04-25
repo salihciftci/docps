@@ -78,4 +78,5 @@ a {
 .right-block {
   overflow: auto;
   width: 100%;
+  margin-top: 10px;
 }
