@@ -73,8 +73,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	out := getDocker()
-	err = tpl.ExecuteTemplate(w, "index.tmpl", out)
+	data := getDocker()
+	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
 		log.Println(err.Error())
 	}

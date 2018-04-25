@@ -53,13 +53,13 @@ type Networks struct {
 	Scope  string `json:"scope,omitempty"`
 }
 
-func read(cmdArgs []string) []string {
+func dockerCmd(cmdArgs []string) []string {
 	var stdOut []string
 
 	cmd := exec.Command("docker", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Println(err.Error())
+		log.Println(err)
 		return nil
 	}
 
@@ -74,13 +74,13 @@ func read(cmdArgs []string) []string {
 
 	err = cmd.Start()
 	if err != nil {
-		log.Println(err.Error())
+		log.Println(err)
 		return nil
 	}
 
 	err = cmd.Wait()
 	if err != nil {
-		log.Println(err.Error())
+		log.Println(err)
 		return nil
 	}
 
@@ -88,19 +88,16 @@ func read(cmdArgs []string) []string {
 }
 
 func getDocker() []interface{} {
-	var container []PS
-	var images []Images
-	var volumes []Volumes
-	var stats []Stats
-	var networks []Networks
+	var data []interface{}
 
+	var container []PS
 	cmdArgs := []string{
 		"ps",
 		"-a",
 		"--format",
 		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}",
 	}
-	stdOut := read(cmdArgs)
+	stdOut := dockerCmd(cmdArgs)
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -112,14 +109,16 @@ func getDocker() []interface{} {
 				Status:     s[4][:1],
 			})
 	}
+	data = append(data, container)
 
+	var images []Images
 	cmdArgs = []string{
 		"image",
 		"ls",
 		"--format",
 		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
-	stdOut = read(cmdArgs)
+	stdOut = dockerCmd(cmdArgs)
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -130,14 +129,16 @@ func getDocker() []interface{} {
 				Size:    s[3],
 			})
 	}
+	data = append(data, images)
 
+	var volumes []Volumes
 	cmdArgs = []string{
 		"volume",
 		"ls",
 		"--format",
 		"{{.Driver}}\t{{.Name}}",
 	}
-	stdOut = read(cmdArgs)
+	stdOut = dockerCmd(cmdArgs)
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -146,14 +147,16 @@ func getDocker() []interface{} {
 				Name: s[1],
 			})
 	}
+	data = append(data, volumes)
 
+	var stats []Stats
 	cmdArgs = []string{
 		"stats",
 		"--no-stream",
 		"--format",
 		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
-	stdOut = read(cmdArgs)
+	stdOut = dockerCmd(cmdArgs)
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -166,16 +169,16 @@ func getDocker() []interface{} {
 				BlockIO:  s[5],
 			})
 	}
+	data = append(data, stats)
 
 	logs := []Logs{}
-
 	for i := 0; i < len(container); i++ {
 		cmdArgs = []string{
 			"logs",
 			container[i].Name,
 		}
 
-		log := read(cmdArgs)
+		log := dockerCmd(cmdArgs)
 		if len(log) > 0 {
 			x := []string{}
 			for k := 0; k < len(log); k++ {
@@ -192,15 +195,16 @@ func getDocker() []interface{} {
 				Logs: []string{},
 			})
 		}
-
 	}
+	data = append(data, logs)
 
+	var networks []Networks
 	cmdArgs = []string{"network",
 		"ls",
 		"--format",
 		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
 	}
-	stdOut = read(cmdArgs)
+	stdOut = dockerCmd(cmdArgs)
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -211,14 +215,7 @@ func getDocker() []interface{} {
 				Scope:  s[2],
 			})
 	}
+	data = append(data, networks)
 
-	var out []interface{}
-	out = append(out, container)
-	out = append(out, images)
-	out = append(out, volumes)
-	out = append(out, stats)
-	out = append(out, logs)
-	out = append(out, networks)
-
-	return out
+	return data
 }
