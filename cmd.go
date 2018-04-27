@@ -15,6 +15,7 @@ type PS struct {
 	Size       string `json:"size,omitempty"`
 	RunningFor string `json:"runningFor,omitempty"`
 	Status     string `json:"status,omitempty"`
+	Ports      string `json:"ports,omitempty"`
 }
 
 //Images docker image ls
@@ -96,7 +97,7 @@ func getDocker() []interface{} {
 		"ps",
 		"-a",
 		"--format",
-		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}",
+		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}",
 	}
 	stdOut := dockerCmd(cmdArgs)
 
@@ -108,6 +109,7 @@ func getDocker() []interface{} {
 				Size:       s[2],
 				RunningFor: s[3],
 				Status:     s[4][:1],
+				Ports:      s[5],
 			})
 	}
 	data = append(data, container)

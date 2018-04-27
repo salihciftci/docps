@@ -152,6 +152,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Image</th>
                     <th scope="col">Size</th>
+                    <th scope="col">Ports</th>
                     <th scope="col">Created</th>
                     <th scope="col" style="width: 1%;">Logs</th>
                     <th scope="col" style="width: 1%;" class="center">Status</th>
@@ -163,6 +164,7 @@
                     <td>{{ .Name }}</td>
                     <td>{{ .Image }}</td>
                     <td>{{ .Size }}</td>
+                    <td>{{ .Ports }}</td>
                     <td>{{ .RunningFor }}</td>
                     <td>
                       <button type="button" class="btn btn-link text-dark" style="text-decoration: none;" data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
