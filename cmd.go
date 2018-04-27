@@ -92,6 +92,7 @@ func dockerCmd(cmdArgs []string) []string {
 func getDocker() []interface{} {
 	var data []interface{}
 
+	//Containers
 	var container []PS
 	cmdArgs := []string{
 		"ps",
@@ -104,7 +105,8 @@ func getDocker() []interface{} {
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		container = append(container,
-			PS{Name: s[0],
+			PS{
+				Name:       s[0],
 				Image:      s[1],
 				Size:       s[2],
 				RunningFor: s[3],
@@ -114,6 +116,7 @@ func getDocker() []interface{} {
 	}
 	data = append(data, container)
 
+	//Images
 	var images []Images
 	cmdArgs = []string{
 		"image",
@@ -126,14 +129,16 @@ func getDocker() []interface{} {
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		images = append(images,
-			Images{Repository: s[0],
-				Tag:     s[1],
-				Created: s[2],
-				Size:    s[3],
+			Images{
+				Repository: s[0],
+				Tag:        s[1],
+				Created:    s[2],
+				Size:       s[3],
 			})
 	}
 	data = append(data, images)
 
+	//Volumes
 	var volumes []Volumes
 	cmdArgs = []string{
 		"volume",
@@ -146,12 +151,14 @@ func getDocker() []interface{} {
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		volumes = append(volumes,
-			Volumes{Driver: s[0],
-				Name: s[1],
+			Volumes{
+				Driver: s[0],
+				Name:   s[1],
 			})
 	}
 	data = append(data, volumes)
 
+	//Stats
 	var stats []Stats
 	cmdArgs = []string{
 		"stats",
@@ -164,7 +171,8 @@ func getDocker() []interface{} {
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		stats = append(stats,
-			Stats{Name: s[0],
+			Stats{
+				Name:     s[0],
 				CPU:      s[1],
 				MemUsage: s[2],
 				MemPerc:  s[3],
@@ -174,6 +182,7 @@ func getDocker() []interface{} {
 	}
 	data = append(data, stats)
 
+	//Logs
 	logs := []Logs{}
 	for i := 0; i < len(container); i++ {
 		cmdArgs = []string{
@@ -201,6 +210,7 @@ func getDocker() []interface{} {
 	}
 	data = append(data, logs)
 
+	//Networks
 	var networks []Networks
 	cmdArgs = []string{
 		"network",
@@ -221,6 +231,7 @@ func getDocker() []interface{} {
 	}
 	data = append(data, networks)
 
+	//Dashboard
 	cmdArgs = []string{
 		"info",
 		"--format",
