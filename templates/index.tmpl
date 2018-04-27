@@ -48,19 +48,22 @@
         {{ with index . 6 }}
         <div class="row">
           <div class="col-sm-3">
-            <div class="card">
+            <div class="card" style="height: 100%">
               <div class="card-body flex">
                 <div class="left-block">
-                  <span class="fa-stack fa-3x" >
+                  <span class="fa-stack fa-1x info-box">
                     <i class="fa fa-square-o fa-stack-2x fa-inverse"></i>
                     <i class="fa fa-server fa-stack-1x fa-inverse bg-dark" aria-hidden="true" style="border-radius: 10px; font-size: 110%;"></i>
                   </span>
                 </div>
                 <div class="right-block" style="line-height: 35px;">
                   <h5>Containers</h5>
-                  <i class="fa fa-play" aria-hidden="true"></i> {{ index . 0 }} &nbsp;&nbsp;
-                  <i class="fa fa-pause" aria-hidden="true"></i> {{ index . 1 }} &nbsp;&nbsp;
-                  <i class="fa fa-stop" aria-hidden="true"></i> {{ index . 2 }}</div>
+                  <h5>
+                    <i class="fa fa-play" aria-hidden="true"></i> {{ index . 0 }} &nbsp;&nbsp;
+                    <i class="fa fa-pause" aria-hidden="true"></i> {{ index . 1 }} &nbsp;&nbsp;
+                    <i class="fa fa-stop" aria-hidden="true"></i> {{ index . 2 }}
+                  </h5>
+                </div>
               </div>
             </div>
           </div>
@@ -68,7 +71,7 @@
             <div class="card">
               <div class="card-body flex">
                 <div class="left-block">
-                  <span class="fa-stack fa-3x">
+                  <span class="fa-stack fa-1x info-box">
                     <i class="fa fa-clone fa-stack-1x fa-inverse bg-danger" aria-hidden="true" style="border-radius: 10px; font-size: 110%;"></i>
                   </span>
                 </div>
@@ -83,7 +86,7 @@
             <div class="card">
               <div class="card-body flex">
                 <div class="left-block">
-                  <span class="fa-stack fa-3x">
+                  <span class="fa-stack fa-1x info-box">
                     <i class="fa fa-hdd-o  fa-stack-1x fa-inverse bg-success" aria-hidden="true" style="border-radius: 10px; font-size: 140%;"></i>
                   </span>
                 </div>
@@ -98,7 +101,7 @@
             <div class="card">
               <div class="card-body flex">
                 <div class="left-block">
-                  <span class="fa-stack fa-3x">
+                  <span class="fa-stack fa-1x info-box">
                     <i class="fa fa-wifi fa-stack-1x fa-inverse" aria-hidden="true" style="background-color: #3f51b5; border-radius: 10px; font-size: 120%;"></i>
                   </span>
                 </div>
