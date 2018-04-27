@@ -85,3 +85,9 @@ a {
   font-size: 220%;
   margin-top: 7px;
 }
+
+@media screen and (max-width: 960px) {
+  .flex {
+    display: block;
+  }
+}
