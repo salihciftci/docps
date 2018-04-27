@@ -17,8 +17,8 @@
   <a href="https://goreportcard.com/report/github.com/salihciftci/liman">
       <img src="https://goreportcard.com/badge/github.com/salihciftci/liman">
   </a>
-  <a href="http://makeapullrequest.com">
-    <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg">
+  <a href="https://hub.docker.com/r/salihciftci/liman/">
+    <img src="https://img.shields.io/docker/pulls/salihciftci/liman.svg">
   </a>
 </p>
 
