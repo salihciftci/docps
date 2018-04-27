@@ -71,15 +71,19 @@ make build
 
  <table>
   <tr>
+    <td><img src="https://img.salih.co/liman/dashboard.png"></td>
     <td><img src="https://img.salih.co/liman/containers.png"></td>
-    <td><img src="https://img.salih.co/liman/stats.png"></td>
   </tr>
   <tr>
     <td><img src="https://img.salih.co/liman/logs.png"></td>
-    <td><img src="https://img.salih.co/liman/images.png"></td>
+    <td><img src="https://img.salih.co/liman/stats.png"></td>
   </tr>
   <tr>
+    <td><img src="https://img.salih.co/liman/images.png"></td>
     <td><img src="https://img.salih.co/liman/volumes.png"></td>
+  </tr>
+  <tr>
+    <td><img src="https://img.salih.co/liman/networks.png"></td>
     <td><img src="https://img.salih.co/liman/login.png"></td>
   </tr>
 </table> 
