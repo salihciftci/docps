@@ -36,6 +36,7 @@ func decode(cookie *http.Cookie) bool {
 //IndexHandler writing all outPuts to http template
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/" {
+		log.Println(r.Method, http.StatusNotFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
@@ -50,6 +51,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 			Path:  "/",
 		}
 		http.SetCookie(w, cookie)
+		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
@@ -69,6 +71,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	value := decode(cookie)
 	if value != true {
+		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
@@ -78,22 +81,27 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
+
+	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
+		log.Println(r.Method, http.StatusNotFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
 	cookie, err := r.Cookie("session")
 	if err != nil {
+		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	value := decode(cookie)
 
 	if value == true {
+		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
@@ -102,10 +110,13 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err.Error())
 	}
+
+	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
+		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
@@ -120,6 +131,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, cookie)
+	log.Println(r.Method, http.StatusOK, r.URL.Path)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
