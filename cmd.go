@@ -55,14 +55,13 @@ type Networks struct {
 	Scope  string `json:"scope,omitempty"`
 }
 
-func dockerCmd(cmdArgs []string) []string {
+func dockerCmd(cmdArgs []string) ([]string, error) {
 	var stdOut []string
 
 	cmd := exec.Command("docker", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
-		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	scanner := bufio.NewScanner(cmdReader)
@@ -77,16 +76,16 @@ func dockerCmd(cmdArgs []string) []string {
 	err = cmd.Start()
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	err = cmd.Wait()
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
-	return stdOut
+	return stdOut, err
 }
 
 func getDocker() []interface{} {
@@ -100,7 +99,12 @@ func getDocker() []interface{} {
 		"--format",
 		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}",
 	}
-	stdOut := dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -124,7 +128,12 @@ func getDocker() []interface{} {
 		"--format",
 		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
-	stdOut = dockerCmd(cmdArgs)
+	stdOut, err = dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -146,7 +155,12 @@ func getDocker() []interface{} {
 		"--format",
 		"{{.Driver}}\t{{.Name}}",
 	}
-	stdOut = dockerCmd(cmdArgs)
+	stdOut, err = dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -166,7 +180,12 @@ func getDocker() []interface{} {
 		"--format",
 		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
-	stdOut = dockerCmd(cmdArgs)
+	stdOut, err = dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -190,11 +209,16 @@ func getDocker() []interface{} {
 			container[i].Name,
 		}
 
-		log := dockerCmd(cmdArgs)
-		if len(log) > 0 {
+		cLog, err := dockerCmd(cmdArgs)
+		if err != nil {
+			log.Println(err)
+			return nil
+		}
+
+		if len(cLog) > 0 {
 			x := []string{}
-			for k := 0; k < len(log); k++ {
-				x = append(x, log[k])
+			for k := 0; k < len(cLog); k++ {
+				x = append(x, cLog[k])
 			}
 			logs = append(logs, Logs{
 				Name: container[i].Name,
@@ -218,7 +242,12 @@ func getDocker() []interface{} {
 		"--format",
 		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
 	}
-	stdOut = dockerCmd(cmdArgs)
+	stdOut, err = dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
@@ -238,7 +267,12 @@ func getDocker() []interface{} {
 		"{{.ContainersRunning}}\t{{.ContainersPaused}}\t{{.ContainersStopped}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
 	}
 
-	stdOut = dockerCmd(cmdArgs)
+	stdOut, err = dockerCmd(cmdArgs)
+
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
 
 	dashboard := []string{}
 
@@ -254,6 +288,7 @@ func getDocker() []interface{} {
 	intMemory, err := strconv.Atoi(dashboard[6])
 	if err != nil {
 		log.Println(err)
+		return nil
 	}
 
 	floatMemory := float64(intMemory)
