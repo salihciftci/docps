@@ -82,7 +82,7 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 		return nil, err
 	}
 
-	return stdOut, err
+	return stdOut, nil
 }
 
 func getDocker() []interface{} {
