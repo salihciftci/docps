@@ -68,20 +68,17 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 	go func() {
 		for scanner.Scan() {
 			outPut := scanner.Text()
-
 			stdOut = append(stdOut, outPut)
 		}
 	}()
 
 	err = cmd.Start()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
 	err = cmd.Wait()
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
