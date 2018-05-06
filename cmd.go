@@ -214,7 +214,7 @@ func getDocker() []interface{} {
 
 		if len(cLog) > 0 {
 			x := []string{}
-			for k := 0; k < len(cLog); k++ {
+			for k := len(cLog) - 1; k != -1; k-- {
 				x = append(x, cLog[k])
 			}
 			logs = append(logs, Logs{
