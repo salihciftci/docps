@@ -5,11 +5,11 @@ html{
 body {
     background-color: #EDF1F5;
     height: 100%;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .container-fluid {
   line-height: 1.5;
-  font-family: 'Lato', sans-serif;
 }
 
 .nav-pills>li>a.active {
