@@ -76,10 +76,53 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data := getDocker()
+	var data []interface{}
+
+	container, err := container()
+	if err != nil {
+		return
+	}
+	data = append(data, container)
+
+	images, err := images()
+	if err != nil {
+		return
+	}
+	data = append(data, images)
+
+	volumes, err := volumes()
+	if err != nil {
+		return
+	}
+	data = append(data, volumes)
+
+	stats, err := stats()
+	if err != nil {
+		return
+	}
+	data = append(data, stats)
+
+	logs, err := logs(container)
+	if err != nil {
+		return
+	}
+	data = append(data, logs)
+
+	networks, err := networks()
+	if err != nil {
+		return
+	}
+	data = append(data, networks)
+
+	dashboard, err := dashboard(images, volumes, networks)
+	if err != nil {
+		return
+	}
+	data = append(data, dashboard)
+
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println(err)
 	}
 
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
