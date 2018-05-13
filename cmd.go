@@ -55,6 +55,7 @@ type Networks struct {
 	Scope  string `json:"scope,omitempty"`
 }
 
+//dockerCmd
 func dockerCmd(cmdArgs []string) ([]string, error) {
 	var stdOut []string
 
@@ -85,11 +86,8 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 	return stdOut, nil
 }
 
-func getDocker() []interface{} {
-	var data []interface{}
-
-	//Containers
-	var container []PS
+//containers
+func container() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
 		"-a",
@@ -100,9 +98,10 @@ func getDocker() []interface{} {
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
+	var container []PS
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		container = append(container,
@@ -115,23 +114,26 @@ func getDocker() []interface{} {
 				Ports:      s[5],
 			})
 	}
-	data = append(data, container)
 
-	//Images
-	var images []Images
-	cmdArgs = []string{
+	return container, nil
+}
+
+//images
+func images() ([]Images, error) {
+	cmdArgs := []string{
 		"image",
 		"ls",
 		"--format",
 		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
-	stdOut, err = dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
+	var images []Images
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		images = append(images,
@@ -142,23 +144,25 @@ func getDocker() []interface{} {
 				Size:       s[3],
 			})
 	}
-	data = append(data, images)
+	return images, nil
+}
 
-	//Volumes
-	var volumes []Volumes
-	cmdArgs = []string{
+//volumes
+func volumes() ([]Volumes, error) {
+	cmdArgs := []string{
 		"volume",
 		"ls",
 		"--format",
 		"{{.Driver}}\t{{.Name}}",
 	}
-	stdOut, err = dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
+	var volumes []Volumes
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		volumes = append(volumes,
@@ -167,23 +171,25 @@ func getDocker() []interface{} {
 				Name:   s[1],
 			})
 	}
-	data = append(data, volumes)
 
-	//Stats
-	var stats []Stats
-	cmdArgs = []string{
+	return volumes, nil
+}
+
+//stats
+func stats() ([]Stats, error) {
+	cmdArgs := []string{
 		"stats",
 		"--no-stream",
 		"--format",
 		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
-	stdOut, err = dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
-
+	var stats []Stats
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		stats = append(stats,
@@ -196,12 +202,15 @@ func getDocker() []interface{} {
 				BlockIO:  s[5],
 			})
 	}
-	data = append(data, stats)
 
-	//Logs
+	return stats, nil
+}
+
+//logs
+func logs(container []PS) ([]Logs, error) {
 	logs := []Logs{}
 	for i := 0; i < len(container); i++ {
-		cmdArgs = []string{
+		cmdArgs := []string{
 			"logs",
 			container[i].Name,
 		}
@@ -209,7 +218,7 @@ func getDocker() []interface{} {
 		cLog, err := dockerCmd(cmdArgs)
 		if err != nil {
 			log.Println(err)
-			return nil
+			return nil, err
 		}
 
 		if len(cLog) > 0 {
@@ -229,23 +238,25 @@ func getDocker() []interface{} {
 			})
 		}
 	}
-	data = append(data, logs)
 
-	//Networks
-	var networks []Networks
-	cmdArgs = []string{
+	return logs, nil
+}
+
+//networks
+func networks() ([]Networks, error) {
+	cmdArgs := []string{
 		"network",
 		"ls",
 		"--format",
 		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
 	}
-	stdOut, err = dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
-
+	var networks []Networks
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		networks = append(networks,
@@ -255,20 +266,23 @@ func getDocker() []interface{} {
 				Scope:  s[2],
 			})
 	}
-	data = append(data, networks)
 
-	//Dashboard
-	cmdArgs = []string{
+	return networks, nil
+}
+
+//dashboard
+func dashboard(images []Images, volumes []Volumes, networks []Networks) ([]string, error) {
+	cmdArgs := []string{
 		"info",
 		"--format",
 		"{{.ContainersRunning}}\t{{.ContainersPaused}}\t{{.ContainersStopped}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
 	}
 
-	stdOut, err = dockerCmd(cmdArgs)
+	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	dashboard := []string{}
@@ -285,14 +299,12 @@ func getDocker() []interface{} {
 	intMemory, err := strconv.Atoi(dashboard[6])
 	if err != nil {
 		log.Println(err)
-		return nil
+		return nil, err
 	}
 
 	floatMemory := float64(intMemory)
 	GibMemory := ((floatMemory / 1024) / 1024) / 1024
 	dashboard[6] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
 
-	data = append(data, dashboard)
-
-	return data
+	return dashboard, nil
 }
