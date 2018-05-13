@@ -62,6 +62,8 @@ Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in L
 
 You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases or you can build with Go.
 
+Note: Master branch may not stable!
+
 ```
 go get github.com/salihciftci/liman
 make build
