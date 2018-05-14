@@ -33,11 +33,20 @@
           <a class="nav-link" id="pills-volumes-tab" data-toggle="pill" href="#volumes" role="tab" aria-controls="pills-volumes" aria-selected="false">Volumes</a>
         </li>
       </ul>
-      <span class="navbar-text logout">
-        <a href="/logout">
-          <i class="fa fa fa-power-off" aria-hidden="true"></i>
-        </a>
-      </span>
+      <div class="btn-group">
+        <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-cog" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" type="button" data-toggle="modal" data-target="#APIModal">
+            <i class="fa fa-key" aria-hidden="true"></i> &nbsp; API Key
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" type="button" href="/logout">
+            <i class="fa fa-power-off" aria-hidden="true"></i> &nbsp; Logout
+          </a>
+        </div>
+      </div>
     </div>
   </nav>
   <br>
@@ -294,6 +303,23 @@
               </table>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- API Key Modal -->
+  <div class="modal fade" id="APIModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            <i class="fa fa-key" aria-hidden="true"></i> &nbsp; API Key</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ with index . 7 }} {{ index . }} {{ end }}
         </div>
       </div>
     </div>
