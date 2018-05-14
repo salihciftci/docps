@@ -44,6 +44,6 @@ func TestAPIFunc(t *testing.T) {
 	res := rec.Result()
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		t.Errorf("expected status found; got %v", res.Status)
+		t.Errorf("expected status ok; got %v", res.Status)
 	}
 }
