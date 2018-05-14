@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
+	"time"
 )
 
 func apiGET(w http.ResponseWriter, r *http.Request) {
@@ -20,7 +22,7 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if string(key[0]) != pass {
+	if string(key[0]) != apiKey {
 		json.NewEncoder(w).Encode(map[string]string{"ERROR": "API_KEY_INVALID"})
 		log.Println(r.Method, http.StatusOK, r.URL.Path, "API_KEY_INVALID")
 		return
@@ -82,4 +84,17 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(logs)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
 	}
+}
+
+//generateAPIPassword generates a random 32 length password for API
+func generateAPIPassword() string {
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+	b := make([]rune, 32)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+
+	return string(b)
 }
