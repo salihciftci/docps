@@ -187,9 +187,17 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 
+	http.HandleFunc("/api/containers", apiGET)
+	http.HandleFunc("/api/images", apiGET)
+	http.HandleFunc("/api/volumes", apiGET)
+	http.HandleFunc("/api/stats", apiGET)
+	http.HandleFunc("/api/logs", apiGET)
+	http.HandleFunc("/api/networks", apiGET)
+
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	log.Println("Listening http://0.0.0.0:8080")
+
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
