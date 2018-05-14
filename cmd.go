@@ -55,7 +55,7 @@ type Networks struct {
 	Scope  string `json:"scope,omitempty"`
 }
 
-//dockerCmd
+//dockerCmd runs docker commands and reads standart output line by line
 func dockerCmd(cmdArgs []string) ([]string, error) {
 	var stdOut []string
 
@@ -86,7 +86,7 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 	return stdOut, nil
 }
 
-//containers
+//containers runs docker ps -a
 func container() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
@@ -118,7 +118,7 @@ func container() ([]PS, error) {
 	return container, nil
 }
 
-//images
+//images runs docker image ls
 func images() ([]Images, error) {
 	cmdArgs := []string{
 		"image",
@@ -147,7 +147,7 @@ func images() ([]Images, error) {
 	return images, nil
 }
 
-//volumes
+//volumes runs docker volume ls
 func volumes() ([]Volumes, error) {
 	cmdArgs := []string{
 		"volume",
@@ -175,7 +175,7 @@ func volumes() ([]Volumes, error) {
 	return volumes, nil
 }
 
-//stats
+//stats runs docker stats --no-stream
 func stats() ([]Stats, error) {
 	cmdArgs := []string{
 		"stats",
@@ -206,7 +206,7 @@ func stats() ([]Stats, error) {
 	return stats, nil
 }
 
-//logs
+//logs runs docker logs <containerName>
 func logs(container []PS) ([]Logs, error) {
 	logs := []Logs{}
 	for i := 0; i < len(container); i++ {
@@ -242,7 +242,7 @@ func logs(container []PS) ([]Logs, error) {
 	return logs, nil
 }
 
-//networks
+//networks runs docker network ls
 func networks() ([]Networks, error) {
 	cmdArgs := []string{
 		"network",
@@ -270,7 +270,7 @@ func networks() ([]Networks, error) {
 	return networks, nil
 }
 
-//dashboard
+//dashboard runs docker info and fetch docker infos for dashboard.
 func dashboard(images []Images, volumes []Volumes, networks []Networks) ([]string, error) {
 	cmdArgs := []string{
 		"info",
