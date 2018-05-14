@@ -33,10 +33,19 @@ a {
   padding-bottom: 15px;
 }
 
-.logout, a:hover {
-  text-decoration: none;
+.dropdown-menu { 
+  right: 0; 
+  left: auto; 
 }
 
+.dropdown-item:active {
+  background-color: transparent;
+}
+
+.settings {
+  background-color: transparent;
+  color: #3E3E3E;
+}
 
 .login-body {
   display: -ms-flexbox;
