@@ -10,9 +10,10 @@ import (
 )
 
 var (
-	tpl  *template.Template
-	pass = os.Getenv("pass")
-	s    = securecookie.New([]byte(securecookie.GenerateRandomKey(64)), []byte(securecookie.GenerateRandomKey(32)))
+	tpl    *template.Template
+	pass   = os.Getenv("pass")
+	apiKey = ""
+	s      = securecookie.New([]byte(securecookie.GenerateRandomKey(64)), []byte(securecookie.GenerateRandomKey(32)))
 )
 
 func encode(value bool) string {
@@ -120,6 +121,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	data = append(data, dashboard)
 
+	data = append(data, apiKey)
+
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
 		log.Println(err)
@@ -183,6 +186,8 @@ func init() {
 }
 
 func main() {
+	apiKey = generateAPIPassword()
+
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
