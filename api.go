@@ -26,7 +26,8 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if r.URL.Path == "/api/containers" {
+	switch r.URL.Path {
+	case "/api/containers":
 		container, err := container()
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, err)
@@ -34,9 +35,7 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewEncoder(w).Encode(container)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
-	}
-
-	if r.URL.Path == "/api/images" {
+	case "/api/images":
 		images, err := images()
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, err)
@@ -44,9 +43,7 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewEncoder(w).Encode(images)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
-	}
-
-	if r.URL.Path == "/api/volumes" {
+	case "/api/volumes":
 		volumes, err := volumes()
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, err)
@@ -54,9 +51,7 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewEncoder(w).Encode(volumes)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
-	}
-
-	if r.URL.Path == "/api/stats" {
+	case "/api/stats":
 		stats, err := stats()
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, err)
@@ -64,9 +59,15 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewEncoder(w).Encode(stats)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
-	}
-
-	if r.URL.Path == "/api/logs" {
+	case "/api/networks":
+		networks, err := networks()
+		if err != nil {
+			log.Println(r.Method, r.URL.Path, err)
+			return
+		}
+		json.NewEncoder(w).Encode(networks)
+		log.Println(r.Method, http.StatusOK, r.URL.Path)
+	case "/api/logs":
 		container, err := container()
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, err)
@@ -81,15 +82,4 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(logs)
 		log.Println(r.Method, http.StatusOK, r.URL.Path)
 	}
-
-	if r.URL.Path == "/api/networks" {
-		networks, err := networks()
-		if err != nil {
-			log.Println(r.Method, r.URL.Path, err)
-			return
-		}
-		json.NewEncoder(w).Encode(networks)
-		log.Println(r.Method, http.StatusOK, r.URL.Path)
-	}
-
 }
