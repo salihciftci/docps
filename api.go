@@ -89,7 +89,7 @@ func apiGET(w http.ResponseWriter, r *http.Request) {
 //generateAPIPassword generates a random 32 length password for API
 func generateAPIPassword() string {
 	rand.Seed(time.Now().UnixNano())
-	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
 	b := make([]rune, 32)
 	for i := range b {
