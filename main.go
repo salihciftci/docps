@@ -192,12 +192,12 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 
-	http.HandleFunc("/api/containers", apiGET)
-	http.HandleFunc("/api/images", apiGET)
-	http.HandleFunc("/api/volumes", apiGET)
-	http.HandleFunc("/api/stats", apiGET)
-	http.HandleFunc("/api/logs", apiGET)
-	http.HandleFunc("/api/networks", apiGET)
+	http.HandleFunc("/api/containers", APIContainer)
+	http.HandleFunc("/api/images", APIImages)
+	http.HandleFunc("/api/volumes", APIVolumes)
+	http.HandleFunc("/api/networks", APINetworks)
+	http.HandleFunc("/api/stats", APIStats)
+	http.HandleFunc("/api/logs", APILogs)
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
