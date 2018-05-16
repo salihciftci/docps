@@ -21,11 +21,13 @@ func APIAuth(w http.ResponseWriter, r *http.Request) error {
 	key, ok := params["key"]
 
 	if !ok || len(key) < 1 {
+		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"ERROR": "API_KEY_NOT_FOUND"})
 		return fmt.Errorf("API_KEY_NOT_FOUND")
 	}
 
 	if string(key[0]) != apiKey {
+		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"ERROR": "API_KEY_NOT_INVALID"})
 		return fmt.Errorf("API_KEY_NOT_INVALID")
 	}
