@@ -12,7 +12,9 @@ import (
 //APIAuth checks api authentication
 func APIAuth(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != "GET" {
-		return fmt.Errorf("Invalid Request Method")
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(map[string]string{"ERROR": "METHOD_NOT_ALLOWED"})
+		return fmt.Errorf("METHOD_NOT_ALLOWED")
 	}
 
 	params := r.URL.Query()
