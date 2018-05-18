@@ -9,11 +9,16 @@ import (
 	"time"
 )
 
-//APIAuth checks api authentication
+// APIAuth checks api authentication
 func APIAuth(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != "GET" {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		json.NewEncoder(w).Encode(map[string]string{"ERROR": "METHOD_NOT_ALLOWED"})
+		json.NewEncoder(w).Encode(
+			map[string]interface{}{
+				"ok":     "false",
+				"result": "METHOD_NOT_ALLOWED",
+			})
 		return fmt.Errorf("METHOD_NOT_ALLOWED")
 	}
 
@@ -21,21 +26,31 @@ func APIAuth(w http.ResponseWriter, r *http.Request) error {
 	key, ok := params["key"]
 
 	if !ok || len(key) < 1 {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"ERROR": "API_KEY_NOT_FOUND"})
+		json.NewEncoder(w).Encode(
+			map[string]interface{}{
+				"ok":     "false",
+				"result": "API_KEY_NOT_FOUND",
+			})
 		return fmt.Errorf("API_KEY_NOT_FOUND")
 	}
 
 	if string(key[0]) != apiKey {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"ERROR": "API_KEY_NOT_INVALID"})
+		json.NewEncoder(w).Encode(
+			map[string]interface{}{
+				"ok":     "false",
+				"result": "API_KEY_NOT_INVALID",
+			})
 		return fmt.Errorf("API_KEY_NOT_INVALID")
 	}
 
 	return nil
 }
 
-//APIContainer response /api/containers requests
+// APIContainer response /api/containers requests
 func APIContainer(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
@@ -48,11 +63,18 @@ func APIContainer(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(container)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": container,
+		})
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//APIImages response /api/images requests
+// APIImages response /api/images requests
 func APIImages(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
@@ -65,11 +87,19 @@ func APIImages(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(images)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": images,
+		})
+
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//APIVolumes response /api/volumes requests
+// APIVolumes response /api/volumes requests
 func APIVolumes(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
@@ -82,7 +112,15 @@ func APIVolumes(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(volumes)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": volumes,
+		})
+
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
@@ -99,11 +137,19 @@ func APINetworks(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(networks)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": networks,
+		})
+
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//APIStats response /api/stats requests
+// APIStats response /api/stats requests
 func APIStats(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
@@ -116,11 +162,19 @@ func APIStats(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(stats)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": stats,
+		})
+
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//APILogs response /api/logs requests
+// APILogs response /api/logs requests
 func APILogs(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
@@ -139,11 +193,19 @@ func APILogs(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
-	json.NewEncoder(w).Encode(logs)
+
+	w.Header().Set("Content-Type", "application/json")
+
+	json.NewEncoder(w).Encode(
+		map[string]interface{}{
+			"ok":     "true",
+			"result": logs,
+		})
+
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//generateAPIPassword generates a random 32 length password for API
+// generateAPIPassword generates a random 32 length password for API
 func generateAPIPassword() string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
