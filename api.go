@@ -205,8 +205,8 @@ func APILogs(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-// generateAPIPassword generates a random 32 length password for API
-func generateAPIPassword() string {
+// GenerateAPIPassword generates a random 32 length password for API
+func GenerateAPIPassword() string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 

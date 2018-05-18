@@ -186,7 +186,7 @@ func init() {
 }
 
 func main() {
-	apiKey = generateAPIPassword()
+	apiKey = GenerateAPIPassword()
 
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
