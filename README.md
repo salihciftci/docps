@@ -69,6 +69,19 @@ go get github.com/salihciftci/liman
 make build
 ```
 
+### API Usage
+
+API only allow **GET** requests, other requests will rejected by Liman.
+
+We need a key to use Liman API. We can have that from settings in home page.
+
+Basic usage:
+```
+curl -i http://localhost:8080/api/status?key=xxx
+```
+
+More examples and all end points can be found in [wiki](https://github.com/salihciftci/liman/wiki/API-Usage).
+
 ## Screenshots
 
  <table>
