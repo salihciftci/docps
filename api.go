@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// APIStatus asd
+// APIStatus response /api/status requests
 func APIStatus(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	if r.Method != "GET" {
@@ -147,7 +147,7 @@ func APIVolumes(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
-//APINetworks response /api/networks requests
+// APINetworks response /api/networks requests
 func APINetworks(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
