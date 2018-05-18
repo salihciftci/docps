@@ -9,6 +9,29 @@ import (
 	"time"
 )
 
+// APIStatus asd
+func APIStatus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		json.NewEncoder(w).Encode(
+			map[string]interface{}{
+				"ok":     "false",
+				"result": "METHOD_NOT_ALLOWED",
+			})
+		log.Println(r.Method, http.StatusOK, r.URL.Path)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"ok":     "true",
+		"result": nil,
+	})
+
+	log.Println(r.Method, http.StatusOK, r.URL.Path)
+}
+
 // APIAuth checks api authentication
 func APIAuth(w http.ResponseWriter, r *http.Request) error {
 	if r.Method != "GET" {

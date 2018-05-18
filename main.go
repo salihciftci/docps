@@ -198,6 +198,7 @@ func main() {
 	http.HandleFunc("/api/networks", APINetworks)
 	http.HandleFunc("/api/stats", APIStats)
 	http.HandleFunc("/api/logs", APILogs)
+	http.HandleFunc("/api/status", APIStatus)
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
