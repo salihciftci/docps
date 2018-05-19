@@ -4,9 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
-	"time"
 )
 
 // APIStatus response /api/status requests
@@ -226,17 +224,4 @@ func APILogs(w http.ResponseWriter, r *http.Request) {
 		})
 
 	log.Println(r.Method, http.StatusOK, r.URL.Path)
-}
-
-// GenerateAPIPassword generates a random 32 length password for API
-func GenerateAPIPassword() string {
-	rand.Seed(time.Now().UnixNano())
-	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
-
-	b := make([]rune, 32)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-
-	return string(b)
 }
