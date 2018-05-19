@@ -3,9 +3,11 @@ package main
 import (
 	"bufio"
 	"log"
+	"math/rand"
 	"os/exec"
 	"strconv"
 	"strings"
+	"time"
 )
 
 //PS docker ps -a
@@ -53,6 +55,19 @@ type Networks struct {
 	Name   string `json:"name,omitempty"`
 	Driver string `json:"driver,omitempty"`
 	Scope  string `json:"scope,omitempty"`
+}
+
+// GenerateAPIPassword generates a random 32 length password for API
+func GenerateAPIPassword(l int) string {
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+
+	b := make([]rune, l)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+
+	return string(b)
 }
 
 //dockerCmd runs docker commands and reads standart output line by line
