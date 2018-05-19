@@ -5,33 +5,52 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gorilla/securecookie"
 )
 
 var (
-	tpl    *template.Template
-	pass   = os.Getenv("pass")
-	apiKey = ""
-	s      = securecookie.New([]byte(securecookie.GenerateRandomKey(64)), []byte(securecookie.GenerateRandomKey(32)))
+	tpl       *template.Template
+	pass      = os.Getenv("pass")
+	apiKey    = ""
+	cookieVal = "123"
 )
 
-func encode(value bool) string {
-	valuemap := map[string]bool{
-		"liman": value,
+func cookieCheck(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("session")
+
+	if err == http.ErrNoCookie {
+		cookie = &http.Cookie{
+			Name:  "session",
+			Value: "0",
+			Path:  "/",
+		}
+		http.SetCookie(w, cookie)
+		log.Println("No Cookie")
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
 	}
 
-	encode, _ := s.Encode("session", valuemap)
-	return encode
-}
-
-func decode(cookie *http.Cookie) bool {
-	value := map[string]bool{
-		"liman": false,
+	if r.Method == "POST" {
+		input := r.FormValue("inputPassword")
+		if input == pass {
+			cookie = &http.Cookie{
+				Name:  "session",
+				Value: cookieVal,
+				Path:  "/",
+			}
+			http.SetCookie(w, cookie)
+		}
 	}
 
-	s.Decode("session", cookie.Value, &value)
-	return value["liman"]
+	if cookie.Value != cookieVal {
+		cookie = &http.Cookie{
+			Name:  "session",
+			Value: "0",
+			Path:  "/",
+		}
+		http.SetCookie(w, cookie)
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
 }
 
 //IndexHandler writing all outPuts to http template
@@ -41,41 +60,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-
-	cookie, err := r.Cookie("session")
-
-	login := encode(false)
-	if err == http.ErrNoCookie {
-		cookie = &http.Cookie{
-			Name:  "session",
-			Value: login,
-			Path:  "/",
-		}
-		http.SetCookie(w, cookie)
-		log.Println(r.Method, http.StatusFound, r.URL.Path)
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
-
-	login = encode(true)
-	if r.Method == "POST" {
-		input := r.FormValue("inputPassword")
-		if input == pass {
-			cookie = &http.Cookie{
-				Name:  "session",
-				Value: login,
-				Path:  "/",
-			}
-			http.SetCookie(w, cookie)
-		}
-	}
-
-	value := decode(cookie)
-	if value != true {
-		log.Println(r.Method, http.StatusFound, r.URL.Path)
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
+	cookieCheck(w, r)
 
 	var data []interface{}
 
@@ -144,9 +129,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
-	value := decode(cookie)
+	value := cookie.Value
 
-	if value == true {
+	if value == cookieVal {
 		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
@@ -167,12 +152,10 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	login := encode(false)
-
 	cookie, _ := r.Cookie("session")
 	cookie = &http.Cookie{
 		Name:  "session",
-		Value: login,
+		Value: "0",
 		Path:  "/",
 	}
 
@@ -186,7 +169,8 @@ func init() {
 }
 
 func main() {
-	apiKey = GenerateAPIPassword()
+	apiKey = GenerateAPIPassword(32)
+	cookieVal = GenerateAPIPassword(140)
 
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/login", loginHandler)
