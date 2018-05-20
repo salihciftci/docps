@@ -335,5 +335,7 @@ func dashboard() ([]string, error) {
 	GibMemory := ((floatMemory / 1024) / 1024) / 1024
 	dashboard[4] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
 
+	dashboard[1] = strings.Title(dashboard[1])
+
 	return dashboard, nil
 }
