@@ -286,17 +286,16 @@ func networks() ([]Networks, error) {
 }
 
 //dashboard runs docker info and fetch docker infos for dashboard.
-func dashboard(images []Images, volumes []Volumes, networks []Networks) ([]string, error) {
+func dashboard() ([]string, error) {
 	cmdArgs := []string{
 		"info",
 		"--format",
-		"{{.ContainersRunning}}\t{{.ContainersPaused}}\t{{.ContainersStopped}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
+		"{{.Containers}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
 	}
 
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -307,11 +306,26 @@ func dashboard(images []Images, volumes []Volumes, networks []Networks) ([]strin
 		dashboard = append(dashboard, s[i])
 	}
 
+	images, err := images()
+	if err != nil {
+		return nil, err
+	}
+
+	volumes, err := volumes()
+	if err != nil {
+		return nil, err
+	}
+
+	networks, err := networks()
+	if err != nil {
+		return nil, err
+	}
+
 	dashboard = append(dashboard, strconv.Itoa(len(images)))
 	dashboard = append(dashboard, strconv.Itoa(len(volumes)))
 	dashboard = append(dashboard, strconv.Itoa(len(networks)))
 
-	intMemory, err := strconv.Atoi(dashboard[6])
+	intMemory, err := strconv.Atoi(dashboard[4])
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -319,7 +333,7 @@ func dashboard(images []Images, volumes []Volumes, networks []Networks) ([]strin
 
 	floatMemory := float64(intMemory)
 	GibMemory := ((floatMemory / 1024) / 1024) / 1024
-	dashboard[6] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
+	dashboard[4] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
 
 	return dashboard, nil
 }
