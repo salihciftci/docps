@@ -59,7 +59,7 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 
 // IndexHandler Dashboard "/" end point
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	//cookieCheck(w, r)
 
 	dashboard, err := dashboard()
 	if err != nil {
@@ -78,7 +78,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 //ContainersHandler Containers "/containers" end point
 func ContainersHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	//cookieCheck(w, r)
 
 	containers, err := container()
 
@@ -91,6 +91,27 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 	data = append(data, containers)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+// StatsHandler Stats "/stats" end point
+func StatsHandler(w http.ResponseWriter, r *http.Request) {
+	//cookieCheck(w, r)
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+
+	stats, err := stats()
+
+	if err != nil {
+		return
+	}
+
+	var data []interface{}
+	data = append(data, apiKey)
+	data = append(data, stats)
+
+	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
 	if err != nil {
 		log.Println(err)
 	}
@@ -150,6 +171,7 @@ func main() {
 
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/containers", ContainersHandler)
+	http.HandleFunc("/stats", StatsHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
