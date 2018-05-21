@@ -14,6 +14,10 @@ var (
 	cookieVal = "123"
 )
 
+func init() {
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+}
+
 func cookieCheck(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
 
@@ -53,67 +57,24 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//IndexHandler writing all outPuts to http template
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" {
-		log.Println(r.Method, http.StatusNotFound, r.URL.Path)
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
+// IndexHandler Dashboard "/" end point
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	cookieCheck(w, r)
 
+	dashboard, err := dashboard()
+	if err != nil {
+		return
+	}
+
 	var data []interface{}
-
-	container, err := container()
-	if err != nil {
-		return
-	}
-	data = append(data, container)
-
-	images, err := images()
-	if err != nil {
-		return
-	}
-	data = append(data, images)
-
-	volumes, err := volumes()
-	if err != nil {
-		return
-	}
-	data = append(data, volumes)
-
-	stats, err := stats()
-	if err != nil {
-		return
-	}
-	data = append(data, stats)
-
-	logs, err := logs(container)
-	if err != nil {
-		return
-	}
-	data = append(data, logs)
-
-	networks, err := networks()
-	if err != nil {
-		return
-	}
-	data = append(data, networks)
-
-	dashboard, err := dashboard(images, volumes, networks)
-	if err != nil {
-		return
-	}
-	data = append(data, dashboard)
-
 	data = append(data, apiKey)
+	data = append(data, dashboard)
 
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
 		log.Println(err)
 	}
-
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -164,15 +125,11 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
-func init() {
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
-}
-
 func main() {
 	apiKey = GenerateAPIPassword(32)
 	cookieVal = GenerateAPIPassword(140)
 
-	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 
