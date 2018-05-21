@@ -144,7 +144,7 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// VolumesHandler Images "/images" end point
+// VolumesHandler Volumes "/volumes" end point
 func VolumesHandler(w http.ResponseWriter, r *http.Request) {
 	//cookieCheck(w, r)
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
@@ -159,7 +159,28 @@ func VolumesHandler(w http.ResponseWriter, r *http.Request) {
 	data = append(data, apiKey)
 	data = append(data, volumes)
 
-	err = tpl.ExecuteTemplate(w, "volume.tmpl", data)
+	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+// NetworksHandler Networks "/networks" end point
+func NetworksHandler(w http.ResponseWriter, r *http.Request) {
+	//cookieCheck(w, r)
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+
+	networks, err := networks()
+
+	if err != nil {
+		return
+	}
+
+	var data []interface{}
+	data = append(data, apiKey)
+	data = append(data, networks)
+
+	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
 	if err != nil {
 		log.Println(err)
 	}
@@ -222,6 +243,7 @@ func main() {
 	http.HandleFunc("/stats", StatsHandler)
 	http.HandleFunc("/images", ImagesHandler)
 	http.HandleFunc("/volumes", VolumesHandler)
+	http.HandleFunc("/networks", NetworksHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
