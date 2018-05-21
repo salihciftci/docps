@@ -59,7 +59,6 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 
 // IndexHandler Dashboard "/" end point
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	cookieCheck(w, r)
 
 	dashboard, err := dashboard()
@@ -72,6 +71,26 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	data = append(data, dashboard)
 
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+//ContainersHandler Containers "/containers" end point
+func ContainersHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
+
+	containers, err := container()
+
+	if err != nil {
+		return
+	}
+
+	var data []interface{}
+	data = append(data, apiKey)
+	data = append(data, containers)
+
+	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
 		log.Println(err)
 	}
@@ -130,6 +149,8 @@ func main() {
 	cookieVal = GenerateAPIPassword(140)
 
 	http.HandleFunc("/", IndexHandler)
+	http.HandleFunc("/containers", ContainersHandler)
+
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 
