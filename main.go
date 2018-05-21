@@ -86,9 +86,15 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	logs, err := logs(containers)
+	if err != nil {
+		return
+	}
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, containers)
+	data = append(data, logs)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
