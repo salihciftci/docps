@@ -144,6 +144,27 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// VolumesHandler Images "/images" end point
+func VolumesHandler(w http.ResponseWriter, r *http.Request) {
+	//cookieCheck(w, r)
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+
+	volumes, err := volumes()
+
+	if err != nil {
+		return
+	}
+
+	var data []interface{}
+	data = append(data, apiKey)
+	data = append(data, volumes)
+
+	err = tpl.ExecuteTemplate(w, "volume.tmpl", data)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		log.Println(r.Method, http.StatusNotFound, r.URL.Path)
@@ -200,6 +221,7 @@ func main() {
 	http.HandleFunc("/containers", ContainersHandler)
 	http.HandleFunc("/stats", StatsHandler)
 	http.HandleFunc("/images", ImagesHandler)
+	http.HandleFunc("/volumes", VolumesHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
