@@ -11,7 +11,7 @@
             </button>
             <div class="collapse navbar-collapse text-center alt" id="nav-alt">
                 <ul class="navbar-nav bg-light">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/">Dashboard</a>
                     </li>
                     <li class="nav-item">
@@ -23,7 +23,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/images">Images</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/volumes">Volumes</a>
                     </li>
                     <li class="nav-item">
@@ -47,106 +47,31 @@
             </div>&nbsp;&nbsp;&nbsp;
         </div>
     </nav>
-    <br> {{ with index . 1 }}
+    <br>
     <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="card fcard">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="fas fa-server icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Containers
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ index . 0 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="far fa-clone icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Images
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;{{ index . 5 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="far fa-hdd icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Volumes
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;{{ index . 6 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="fas fa-wifi icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Networks
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ index . 7 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <!-- TABLE -->
         <div class="row">
             <div class="col-sm-12" style="padding: 0;">
                 <div class="card fcard">
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table class="table table-hover">
+                            <thead class="thead bg-ee">
+                                <tr>
+                                    <th scope="col">Driver</th>
+                                    <th scope="col">Name</th>
+                                </tr>
+                            </thead>
                             <tbody>
+                                {{ range index . 1 }}
                                 <tr>
-                                    <th style="width: 24%;">Name</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 1 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Docker version</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 2 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>CPU</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 3 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Memory</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 4 }} GiB</td>
-                                </tr>
-                            </tbody>
+                                    <td>{{ .Driver }}</td>
+                                    <td>{{ .Name }}</td>
+                                </tr>{{ end }}</tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    {{ end }}
     <!-- API MODAL -->
     <div class="modal fade" id="APIModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
