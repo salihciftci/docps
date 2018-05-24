@@ -29,9 +29,10 @@
 * Containers
 * Stats
 * Logs
-* Networks
 * Images
+* Networks
 * Volumes
+* API
 
 ## Prerequisites
 
@@ -52,7 +53,6 @@ Liman works with host and docker container.
 ### Docker
 
 ```
-docker pull salihciftci/liman
 docker run -dit --name liman -e pass=PASS -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
 ```
 
@@ -62,16 +62,16 @@ Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in L
 
 You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases or you can build with Go.
 
-Note: Master branch may not stable!
-
 ```
 go get github.com/salihciftci/liman
 make build
 ```
 
-### API Usage
+Note: Master branch may not stable!
 
-API only allow **GET** requests, other requests will rejected by Liman.
+## API Usage
+
+API only allow **GET** requests, other requests will rejected.
 
 We need a key to use Liman API. We can have that from settings in home page.
 
@@ -92,14 +92,6 @@ More examples and all end points can be found in [wiki](https://github.com/salih
   <tr>
     <td><img src="https://img.salih.co/liman/logs.png"></td>
     <td><img src="https://img.salih.co/liman/stats.png"></td>
-  </tr>
-  <tr>
-    <td><img src="https://img.salih.co/liman/images.png"></td>
-    <td><img src="https://img.salih.co/liman/volumes.png"></td>
-  </tr>
-  <tr>
-    <td><img src="https://img.salih.co/liman/networks.png"></td>
-    <td><img src="https://img.salih.co/liman/login.png"></td>
   </tr>
 </table> 
 
