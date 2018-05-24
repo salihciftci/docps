@@ -62,6 +62,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	dashboard, err := dashboard()
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -71,8 +72,9 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {
@@ -83,11 +85,13 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 	containers, err := container()
 
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
 	logs, err := logs(containers)
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -98,8 +102,9 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
@@ -108,6 +113,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 	stats, err := stats()
 
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -117,8 +123,9 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
@@ -127,6 +134,7 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 	images, err := images()
 
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -136,8 +144,9 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
@@ -146,6 +155,7 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	volumes, err := volumes()
 
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -155,8 +165,9 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func networksHandler(w http.ResponseWriter, r *http.Request) {
@@ -165,6 +176,7 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 	networks, err := networks()
 
 	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -174,42 +186,42 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 
 	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
 	if err != nil {
-		log.Println(err)
+		log.Println(r.Method, r.URL.Path, err)
 	}
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
-		log.Println(r.Method, http.StatusNotFound, r.URL.Path)
+		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
 	cookie, err := r.Cookie("session")
 	if err != nil {
-		log.Println(r.Method, http.StatusFound, r.URL.Path)
+		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 	value := cookie.Value
 
 	if value == cookieValue {
-		log.Println(r.Method, http.StatusFound, r.URL.Path)
+		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
 	err = tpl.ExecuteTemplate(w, "login.tmpl", nil)
 	if err != nil {
-		log.Println(err.Error())
+		log.Println(r.Method, r.URL.Path, err)
 	}
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
-		log.Println(r.Method, http.StatusFound, r.URL.Path)
+		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
@@ -222,7 +234,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w, cookie)
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 

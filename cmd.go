@@ -69,7 +69,7 @@ func generatePassword(l int) string {
 	return string(b)
 }
 
-//dockerCmd runs docker commands and reads standart output line by line
+// dockerCmd runs docker commands and reads standart output line by line
 func dockerCmd(cmdArgs []string) ([]string, error) {
 	var stdOut []string
 
@@ -100,7 +100,7 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 	return stdOut, nil
 }
 
-//containers runs docker ps -a
+// containers runs docker ps -a
 func container() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
@@ -111,7 +111,6 @@ func container() ([]PS, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -132,7 +131,7 @@ func container() ([]PS, error) {
 	return container, nil
 }
 
-//images runs docker image ls
+// images runs docker image ls
 func images() ([]Images, error) {
 	cmdArgs := []string{
 		"image",
@@ -143,7 +142,6 @@ func images() ([]Images, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -161,7 +159,7 @@ func images() ([]Images, error) {
 	return images, nil
 }
 
-//volumes runs docker volume ls
+// volumes runs docker volume ls
 func volumes() ([]Volumes, error) {
 	cmdArgs := []string{
 		"volume",
@@ -172,7 +170,6 @@ func volumes() ([]Volumes, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -189,7 +186,7 @@ func volumes() ([]Volumes, error) {
 	return volumes, nil
 }
 
-//stats runs docker stats --no-stream
+// stats runs docker stats --no-stream
 func stats() ([]Stats, error) {
 	cmdArgs := []string{
 		"stats",
@@ -200,7 +197,6 @@ func stats() ([]Stats, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	var stats []Stats
@@ -220,7 +216,7 @@ func stats() ([]Stats, error) {
 	return stats, nil
 }
 
-//logs runs docker logs <containerName>
+// logs runs docker logs <containerName>
 func logs(container []PS) ([]Logs, error) {
 	logs := []Logs{}
 	for i := 0; i < len(container); i++ {
@@ -231,7 +227,6 @@ func logs(container []PS) ([]Logs, error) {
 
 		cLog, err := dockerCmd(cmdArgs)
 		if err != nil {
-			log.Println(err)
 			return nil, err
 		}
 
@@ -256,7 +251,7 @@ func logs(container []PS) ([]Logs, error) {
 	return logs, nil
 }
 
-//networks runs docker network ls
+// networks runs docker network ls
 func networks() ([]Networks, error) {
 	cmdArgs := []string{
 		"network",
@@ -267,7 +262,6 @@ func networks() ([]Networks, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 	var networks []Networks
@@ -284,7 +278,7 @@ func networks() ([]Networks, error) {
 	return networks, nil
 }
 
-//dashboard runs docker info and fetch docker infos for dashboard.
+// dashboard runs docker info and fetch docker infos for dashboard.
 func dashboard() ([]string, error) {
 	cmdArgs := []string{
 		"info",
