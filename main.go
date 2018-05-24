@@ -8,10 +8,10 @@ import (
 )
 
 var (
-	tpl       *template.Template
-	pass      = os.Getenv("pass")
-	apiKey    = ""
-	cookieVal = "123"
+	tpl         *template.Template
+	pass        = os.Getenv("pass")
+	apiKey      = ""
+	cookieValue = ""
 )
 
 func init() {
@@ -28,7 +28,7 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 			Path:  "/",
 		}
 		http.SetCookie(w, cookie)
-		log.Println("No Cookie")
+		log.Println(r.Method, r.URL.Path, err)
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
@@ -38,14 +38,14 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 		if input == pass {
 			cookie = &http.Cookie{
 				Name:  "session",
-				Value: cookieVal,
+				Value: cookieValue,
 				Path:  "/",
 			}
 			http.SetCookie(w, cookie)
 		}
 	}
 
-	if cookie.Value != cookieVal {
+	if cookie.Value != cookieValue {
 		cookie = &http.Cookie{
 			Name:  "session",
 			Value: "0",
@@ -57,9 +57,8 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// IndexHandler Dashboard "/" end point
-func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
+func indexHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	dashboard, err := dashboard()
 	if err != nil {
@@ -76,9 +75,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-//ContainersHandler Containers "/containers" end point
-func ContainersHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
+func containersHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	containers, err := container()
 
@@ -102,10 +100,8 @@ func ContainersHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// StatsHandler Stats "/stats" end point
-func StatsHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+func statsHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	stats, err := stats()
 
@@ -123,10 +119,8 @@ func StatsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// ImagesHandler Images "/images" end point
-func ImagesHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+func imagesHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	images, err := images()
 
@@ -144,10 +138,8 @@ func ImagesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// VolumesHandler Volumes "/volumes" end point
-func VolumesHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+func volumesHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	volumes, err := volumes()
 
@@ -165,10 +157,8 @@ func VolumesHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// NetworksHandler Networks "/networks" end point
-func NetworksHandler(w http.ResponseWriter, r *http.Request) {
-	//cookieCheck(w, r)
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+func networksHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
 
 	networks, err := networks()
 
@@ -201,7 +191,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	value := cookie.Value
 
-	if value == cookieVal {
+	if value == cookieValue {
 		log.Println(r.Method, http.StatusFound, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
@@ -236,14 +226,14 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	apiKey = GenerateAPIPassword(32)
-	cookieVal = GenerateAPIPassword(140)
+	cookieValue = GenerateAPIPassword(140)
 
-	http.HandleFunc("/", IndexHandler)
-	http.HandleFunc("/containers", ContainersHandler)
-	http.HandleFunc("/stats", StatsHandler)
-	http.HandleFunc("/images", ImagesHandler)
-	http.HandleFunc("/volumes", VolumesHandler)
-	http.HandleFunc("/networks", NetworksHandler)
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/containers", containersHandler)
+	http.HandleFunc("/stats", statsHandler)
+	http.HandleFunc("/images", imagesHandler)
+	http.HandleFunc("/volumes", volumesHandler)
+	http.HandleFunc("/networks", networksHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
