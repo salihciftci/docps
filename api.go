@@ -17,7 +17,7 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 				"ok":     "false",
 				"result": "METHOD_NOT_ALLOWED",
 			})
-		log.Println(r.Method, http.StatusOK, r.URL.Path)
+		log.Println(r.Method, r.URL.Path)
 		return
 	}
 
@@ -27,7 +27,7 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 		"result": nil,
 	})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APIAuth checks api authentication
@@ -75,7 +75,7 @@ func APIAuth(w http.ResponseWriter, r *http.Request) error {
 func APIContainer(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -92,14 +92,14 @@ func APIContainer(w http.ResponseWriter, r *http.Request) {
 			"ok":     "true",
 			"result": container,
 		})
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APIImages response /api/images requests
 func APIImages(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -117,14 +117,14 @@ func APIImages(w http.ResponseWriter, r *http.Request) {
 			"result": images,
 		})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APIVolumes response /api/volumes requests
 func APIVolumes(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -142,14 +142,14 @@ func APIVolumes(w http.ResponseWriter, r *http.Request) {
 			"result": volumes,
 		})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APINetworks response /api/networks requests
 func APINetworks(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -167,14 +167,14 @@ func APINetworks(w http.ResponseWriter, r *http.Request) {
 			"result": networks,
 		})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APIStats response /api/stats requests
 func APIStats(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -192,14 +192,14 @@ func APIStats(w http.ResponseWriter, r *http.Request) {
 			"result": stats,
 		})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
 
 // APILogs response /api/logs requests
 func APILogs(w http.ResponseWriter, r *http.Request) {
 	err := APIAuth(w, r)
 	if err != nil {
-		log.Println(r.Method, http.StatusOK, r.URL.Path, err)
+		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
@@ -223,5 +223,5 @@ func APILogs(w http.ResponseWriter, r *http.Request) {
 			"result": logs,
 		})
 
-	log.Println(r.Method, http.StatusOK, r.URL.Path)
+	log.Println(r.Method, r.URL.Path)
 }
