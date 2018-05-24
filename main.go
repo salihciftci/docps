@@ -78,6 +78,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	cookieCheck(w, r)
 
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+
 	containers, err := container()
 
 	if err != nil {
@@ -225,8 +227,8 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	apiKey = GenerateAPIPassword(32)
-	cookieValue = GenerateAPIPassword(140)
+	apiKey = generatePassword(32)
+	cookieValue = generatePassword(140)
 
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/containers", containersHandler)

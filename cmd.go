@@ -57,8 +57,7 @@ type Networks struct {
 	Scope  string `json:"scope,omitempty"`
 }
 
-// GenerateAPIPassword generates a random 32 length password for API
-func GenerateAPIPassword(l int) string {
+func generatePassword(l int) string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
