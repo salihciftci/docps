@@ -1,6 +1,5 @@
 
 <h1 align="center">
-  <br>
   <img src="https://img.salih.co/liman/logo.png" alt="Liman" width="200">
   <br>
   Liman
