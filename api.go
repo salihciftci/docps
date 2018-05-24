@@ -63,9 +63,9 @@ func APIAuth(w http.ResponseWriter, r *http.Request) error {
 		json.NewEncoder(w).Encode(
 			map[string]interface{}{
 				"ok":     "false",
-				"result": "API_KEY_NOT_INVALID",
+				"result": "API_KEY_INVALID",
 			})
-		return fmt.Errorf("API_KEY_NOT_INVALID")
+		return fmt.Errorf("API_KEY_INVALID")
 	}
 
 	return nil
