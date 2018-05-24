@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"math/rand"
 	"os/exec"
@@ -111,7 +112,7 @@ func container() ([]PS, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	var container []PS
@@ -142,7 +143,7 @@ func images() ([]Images, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	var images []Images
@@ -170,7 +171,7 @@ func volumes() ([]Volumes, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	var volumes []Volumes
@@ -227,7 +228,7 @@ func logs(container []PS) ([]Logs, error) {
 
 		cLog, err := dockerCmd(cmdArgs)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("Docker daemon is not running")
 		}
 
 		if len(cLog) > 0 {
@@ -239,7 +240,6 @@ func logs(container []PS) ([]Logs, error) {
 				Name: container[i].Name,
 				Logs: x,
 			})
-
 		} else {
 			logs = append(logs, Logs{
 				Name: container[i].Name,
@@ -262,7 +262,7 @@ func networks() ([]Networks, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 	var networks []Networks
 	for i := 0; i < len(stdOut); i++ {
@@ -289,7 +289,7 @@ func dashboard() ([]string, error) {
 	stdOut, err := dockerCmd(cmdArgs)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	dashboard := []string{}
@@ -301,17 +301,17 @@ func dashboard() ([]string, error) {
 
 	images, err := images()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	volumes, err := volumes()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	networks, err := networks()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
 	dashboard = append(dashboard, strconv.Itoa(len(images)))
