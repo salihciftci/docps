@@ -80,8 +80,6 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	cookieCheck(w, r)
 
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
-
 	containers, err := container()
 
 	if err != nil {
