@@ -116,12 +116,48 @@
             </div>
         </div>
         <br>
-        <!-- TABLE -->
+        <!-- NOTIFICATION TABLE -->
         <div class="row">
             <div class="col-sm-12" style="padding: 0;">
                 <div class="card fcard">
                     <div class="card-body">
-                        <table class="table table-bordered">
+                        <table class="table table-hover">
+                            <thead class="thead">
+                                <tr>
+                                    <th colspan="2">Notifications</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{ if index . 8 }}
+                                {{ range index . 8 }}
+                                <tr>
+                                    <th>{{ .Desc }}</th>
+                                    <th style="text-align: right;">{{ .Time }}</th>
+                                </tr>
+                                {{ end }} 
+                                {{ else }}
+                                <tr>
+                                    <th colspan="2" style="text-align: center;">0 notifications</th>
+                                </tr>
+                                {{ end }}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <!-- INFO TABLE -->
+        <div class="row">
+            <div class="col-sm-12" style="padding: 0;">
+                <div class="card fcard">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th colspan="2">System Info</th>
+                                </tr>
+                            </thead>
                             <tbody>
                                 <tr>
                                     <th style="width: 24%;">Name</th>
