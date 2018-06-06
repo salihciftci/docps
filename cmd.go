@@ -279,7 +279,7 @@ func networks() ([]Networks, error) {
 }
 
 // dashboard runs docker info and fetch docker infos for dashboard.
-func dashboard() ([]string, error) {
+func dashboard() ([]interface{}, error) {
 	cmdArgs := []string{
 		"info",
 		"--format",
@@ -292,7 +292,7 @@ func dashboard() ([]string, error) {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	dashboard := []string{}
+	var dashboard []interface{}
 
 	s := strings.Split(stdOut[0], "\t")
 	for i := 0; i < len(s); i++ {
@@ -318,7 +318,7 @@ func dashboard() ([]string, error) {
 	dashboard = append(dashboard, strconv.Itoa(len(volumes)))
 	dashboard = append(dashboard, strconv.Itoa(len(networks)))
 
-	intMemory, err := strconv.Atoi(dashboard[4])
+	intMemory, err := strconv.Atoi(dashboard[4].(string))
 	if err != nil {
 		log.Println(err)
 		return nil, err
@@ -328,7 +328,36 @@ func dashboard() ([]string, error) {
 	GibMemory := ((floatMemory / 1024) / 1024) / 1024
 	dashboard[4] = strconv.FormatFloat(GibMemory, 'f', 2, 64)
 
-	dashboard[1] = strings.Title(dashboard[1])
+	dashboard[1] = strings.Title(dashboard[1].(string))
+
+	dashboard = append(dashboard, notifi)
 
 	return dashboard, nil
+}
+
+func checkContainerStatus() ([]PS, error) {
+	cmdArgs := []string{
+		"ps",
+		"-a",
+		"--format",
+		"{{.Names}}\t{{.Status}}",
+	}
+
+	stdOut, err := dockerCmd(cmdArgs)
+	if err != nil {
+		return nil, err
+	}
+
+	var container []PS
+
+	for i := 0; i < len(stdOut); i++ {
+		s := strings.Split(stdOut[i], "\t")
+		container = append(container,
+			PS{
+				Name:   s[0],
+				Status: s[1][:1],
+			})
+	}
+
+	return container, nil
 }

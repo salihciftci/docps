@@ -5,14 +5,22 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 var (
-	tpl         *template.Template
-	pass        = os.Getenv("pass")
-	apiKey      = ""
-	cookieValue = ""
+	tpl             *template.Template
+	pass            = os.Getenv("pass")
+	apiKey          = ""
+	cookieValue     = ""
+	savedContainers []PS
+	notifi          []notification
 )
+
+type notification struct {
+	Desc string
+	Time string
+}
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
@@ -59,6 +67,7 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	cookieCheck(w, r)
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 
 	dashboard, err := dashboard()
 	if err != nil {
@@ -237,9 +246,11 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Generating keys for api and cookie
 	apiKey = generatePassword(32)
 	cookieValue = generatePassword(140)
 
+	// HTTP handlers
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/containers", containersHandler)
 	http.HandleFunc("/stats", statsHandler)
@@ -260,8 +271,46 @@ func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
-	log.Println("Listening http://0.0.0.0:8080")
+	// Checking containers status
+	go func() {
+		savedContainers, err := checkContainerStatus()
+		if err != nil {
+			log.Println("Docker daemon is not running")
+		}
 
+		for {
+			checkContainers, err := checkContainerStatus()
+			if err != nil {
+				log.Println("Docker daemon is not running")
+			}
+
+			for i := 0; i < len(checkContainers); i++ {
+				if savedContainers[i].Status != checkContainers[i].Status {
+					if savedContainers[i].Status == "U" {
+						// up again
+						log.Println(savedContainers[i].Name+" is down now.", time.Now().Format("15:04:05 02 January 2006"))
+						notifi = append(notifi, notification{
+							Desc: savedContainers[i].Name + " is down now.",
+							Time: time.Now().Format("15:04:05 02 January 2006"),
+						})
+					}
+
+					if savedContainers[i].Status == "E" {
+						log.Println(savedContainers[i].Name+" is up again", time.Now().Format("15:04:05 02 January 2006"))
+						notifi = append(notifi, notification{
+							Desc: savedContainers[i].Name + " is up again.",
+							Time: time.Now().Format("15:04:05 02 January 2006"),
+						})
+					}
+				}
+			}
+
+			savedContainers = checkContainers
+			time.Sleep(1 * time.Second)
+		}
+	}()
+
+	log.Println("Listening http://0.0.0.0:8080")
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
