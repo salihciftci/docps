@@ -330,7 +330,20 @@ func dashboard() ([]interface{}, error) {
 
 	dashboard[1] = strings.Title(dashboard[1].(string))
 
-	dashboard = append(dashboard, notifi)
+	var notifiReverse []notification
+	for i := len(notifi) - 1; i >= 0; i-- {
+		notifiReverse = append(notifiReverse, notifi[i])
+	}
+
+	var notifiClear []notification
+	if len(notifiReverse) > 3 {
+		notifiClear = notifiReverse[:3]
+	} else {
+		notifiClear = notifiReverse[:len(notifiReverse)]
+	}
+
+	dashboard = append(dashboard, notifiClear)
+	dashboard = append(dashboard, notifiReverse)
 
 	return dashboard, nil
 }
