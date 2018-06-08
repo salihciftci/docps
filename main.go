@@ -288,7 +288,7 @@ func main() {
 				if savedContainers[i].Status != checkContainers[i].Status {
 					if savedContainers[i].Status == "U" {
 						// up again
-						log.Println(savedContainers[i].Name+" is down now.", time.Now().Format("15:04:05 02 January 2006"))
+						log.Println(savedContainers[i].Name + " is down now.")
 						notifi = append(notifi, notification{
 							Desc: savedContainers[i].Name + " is down now.",
 							Time: time.Now().Format("15:04:05 02 January 2006"),
@@ -296,7 +296,7 @@ func main() {
 					}
 
 					if savedContainers[i].Status == "E" {
-						log.Println(savedContainers[i].Name+" is up again", time.Now().Format("15:04:05 02 January 2006"))
+						log.Println(savedContainers[i].Name + " is up again")
 						notifi = append(notifi, notification{
 							Desc: savedContainers[i].Name + " is up again.",
 							Time: time.Now().Format("15:04:05 02 January 2006"),
