@@ -339,7 +339,7 @@ func dashboard() ([]interface{}, error) {
 	if len(notifiReverse) > 3 {
 		notifiClear = notifiReverse[:3]
 	} else {
-		notifiClear = notifiReverse[:len(notifiReverse)]
+		notifiClear = notifiReverse[:]
 	}
 
 	dashboard = append(dashboard, notifiClear)
