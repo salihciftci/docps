@@ -287,17 +287,17 @@ func main() {
 			for i := 0; i < len(checkContainers); i++ {
 				if savedContainers[i].Status != checkContainers[i].Status {
 					if savedContainers[i].Status == "U" {
-						log.Println(savedContainers[i].Name + " is down now.")
+						log.Println(savedContainers[i].Name + "is stopped.")
 						notifi = append(notifi, notification{
-							Desc: savedContainers[i].Name + " is down now.",
+							Desc: savedContainers[i].Name + "is stopped.",
 							Time: time.Now().Format("02/01/2006 15:04"),
 						})
 					}
 
 					if savedContainers[i].Status == "E" {
-						log.Println(savedContainers[i].Name + " is up again")
+						log.Println(savedContainers[i].Name + " is started.")
 						notifi = append(notifi, notification{
-							Desc: savedContainers[i].Name + " is up again.",
+							Desc: savedContainers[i].Name + " is started.",
 							Time: time.Now().Format("02/01/2006 15:04"),
 						})
 					}
