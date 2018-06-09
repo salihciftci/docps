@@ -122,11 +122,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="table-responsive">
-                            <table>
-                                {{ range index .Logs }}
-                                <tr>
-                                    <td>{{ . }}</td>
-                                </tr>
+                            <table class="table table-hover">
+                                <tbody>
+                                    {{ range index .Logs }}
+                                    <tr>
+                                        <td>{{ . }}</td>
+                                    </tr>
+                                </tbody>
                                 {{ end }}
                             </table>
                         </div>
