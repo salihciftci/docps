@@ -275,23 +275,22 @@ func main() {
 	go func() {
 		savedContainers, err := checkContainerStatus()
 		if err != nil {
-			log.Println("Docker daemon is not running")
+			log.Println(err)
 		}
 
 		for {
 			checkContainers, err := checkContainerStatus()
 			if err != nil {
-				log.Println("Docker daemon is not running")
+				log.Println(err)
 			}
 
 			for i := 0; i < len(checkContainers); i++ {
 				if savedContainers[i].Status != checkContainers[i].Status {
 					if savedContainers[i].Status == "U" {
-						// up again
 						log.Println(savedContainers[i].Name + " is down now.")
 						notifi = append(notifi, notification{
 							Desc: savedContainers[i].Name + " is down now.",
-							Time: time.Now().Format("15:04:05 02 January 2006"),
+							Time: time.Now().Format("02/01/2006 15:04"),
 						})
 					}
 
@@ -299,14 +298,14 @@ func main() {
 						log.Println(savedContainers[i].Name + " is up again")
 						notifi = append(notifi, notification{
 							Desc: savedContainers[i].Name + " is up again.",
-							Time: time.Now().Format("15:04:05 02 January 2006"),
+							Time: time.Now().Format("02/01/2006 15:04"),
 						})
 					}
 				}
 			}
 
 			savedContainers = checkContainers
-			time.Sleep(1 * time.Second)
+			time.Sleep(time.Second)
 		}
 	}()
 
