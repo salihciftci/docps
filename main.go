@@ -289,7 +289,7 @@ func main() {
 					if savedContainers[i].Status == "U" {
 						log.Println(savedContainers[i].Name + "is stopped.")
 						notifi = append(notifi, notification{
-							Desc: savedContainers[i].Name + "is stopped.",
+							Desc: savedContainers[i].Name + " is stopped.",
 							Time: time.Now().Format("02/01/2006 15:04"),
 						})
 					}
