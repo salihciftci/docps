@@ -131,19 +131,19 @@
                                         </a>
                                     </th>
                                     {{ else }}
-                                    <th>Notifications</th>
+                                    <th style="background-color: none;">Notifications</th>
                                     {{ end }}
                                 </tr>
                             </thead>
                             <tbody>
                                 {{ if index . 8 }} {{ range index . 8 }}
                                 <tr>
-                                    <th>{{ .Desc }}</th>
-                                    <th style="text-align: right;">{{ .Time }}</th>
+                                    <td>{{ .Desc }}</td>
+                                    <td style="text-align: right;">{{ .Time }}</td>
                                 </tr>
                                 {{ end }} {{ else }}
                                 <tr>
-                                    <th colspan="2" style="text-align: center;">0 notifications</th>
+                                    <td colspan="2" style="text-align: center;">No notifications.</td>
                                 </tr>
                                 {{ end }}
                             </tbody>
