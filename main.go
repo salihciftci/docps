@@ -18,8 +18,9 @@ var (
 )
 
 type notification struct {
-	Desc string
-	Time string
+	Desc   string
+	Time   string
+	Status string
 }
 
 func init() {
@@ -89,6 +90,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	cookieCheck(w, r)
 
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	containers, err := container()
 
 	if err != nil {
@@ -289,16 +291,18 @@ func main() {
 					if savedContainers[i].Status == "U" {
 						log.Println(savedContainers[i].Name + "is stopped.")
 						notifi = append(notifi, notification{
-							Desc: savedContainers[i].Name + " is stopped.",
-							Time: time.Now().Format("02/01/2006 15:04"),
+							Desc:   savedContainers[i].Name + " is stopped.",
+							Time:   time.Now().Format("02/01/2006 15:04"),
+							Status: "E",
 						})
 					}
 
 					if savedContainers[i].Status == "E" {
 						log.Println(savedContainers[i].Name + " is started.")
 						notifi = append(notifi, notification{
-							Desc: savedContainers[i].Name + " is started.",
-							Time: time.Now().Format("02/01/2006 15:04"),
+							Desc:   savedContainers[i].Name + " is started.",
+							Time:   time.Now().Format("02/01/2006 15:04"),
+							Status: "U",
 						})
 					}
 				}
