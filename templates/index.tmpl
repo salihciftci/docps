@@ -1,4 +1,4 @@
-{{ template "header" }}
+{{ template "header" }} {{ with index . 1 }}
 
 <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
@@ -34,6 +34,24 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-bell"></i>
+            </button>
+            <div class="dropdown-menu notification-drop-down">
+                {{ if index . 8 }} {{ range index . 8 }}
+                <a class="dropdown-item">
+                    {{ if eq .Status "U" }}
+                    <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                    <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+
+                    <div class="dropdown-divider"></div>
+                </a>
+                {{ end }} {{ else }}
+                <a class="dropdown-item">No notifications.</a>
+                {{ end }}
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-user"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -47,7 +65,7 @@
             </div>&nbsp;&nbsp;&nbsp;
         </div>
     </nav>
-    <br> {{ with index . 1 }}
+    <br>
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
@@ -138,7 +156,9 @@
                             <tbody>
                                 {{ if index . 8 }} {{ range index . 8 }}
                                 <tr>
-                                    <td>{{ .Desc }}</td>
+                                    <td>{{ if eq .Status "U" }}
+                                        <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                                        <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
                                     <td style="text-align: right;">{{ .Time }}</td>
                                 </tr>
                                 {{ end }} {{ else }}
