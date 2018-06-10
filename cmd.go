@@ -330,17 +330,7 @@ func dashboard() ([]interface{}, error) {
 
 	dashboard[1] = strings.Title(dashboard[1].(string))
 
-	var notifiReverse []notification
-	for i := len(notifi) - 1; i >= 0; i-- {
-		notifiReverse = append(notifiReverse, notifi[i])
-	}
-
-	var notifiClear []notification
-	if len(notifiReverse) > 3 {
-		notifiClear = notifiReverse[:3]
-	} else {
-		notifiClear = notifiReverse[:]
-	}
+	notifiClear, notifiReverse := getNotification()
 
 	dashboard = append(dashboard, notifiClear)
 	dashboard = append(dashboard, notifiReverse)
@@ -373,4 +363,20 @@ func checkContainerStatus() ([]PS, error) {
 	}
 
 	return container, nil
+}
+
+func getNotification() ([]notification, []notification) {
+	var notifiReverse []notification
+	for i := len(notifi) - 1; i >= 0; i-- {
+		notifiReverse = append(notifiReverse, notifi[i])
+	}
+
+	var notifiClear []notification
+	if len(notifiReverse) > 3 {
+		notifiClear = notifiReverse[:3]
+	} else {
+		notifiClear = notifiReverse[:]
+	}
+
+	return notifiClear, notifiReverse
 }
