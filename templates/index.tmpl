@@ -37,16 +37,17 @@
                 <i class="far fa-bell"></i>
             </button>
             <div class="dropdown-menu notification-drop-down">
-                {{ if index . 8 }} {{ range index . 8 }}
-                <a class="dropdown-item">
+                {{ if index . 8 }}
+                <h6 class="dropdown-header">Notifications</h6>
+                {{ range index . 8 }}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-header">
                     {{ if eq .Status "U" }}
                     <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
                     <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
-
-                    <div class="dropdown-divider"></div>
                 </a>
                 {{ end }} {{ else }}
-                <a class="dropdown-item">No notifications.</a>
+                <a class="dropdown-header">No notifications.</a>
                 {{ end }}
             </div>
         </div>
