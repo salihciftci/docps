@@ -104,10 +104,13 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notifiClear, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, containers)
 	data = append(data, logs)
+	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
@@ -126,9 +129,12 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notifiClear, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, stats)
+	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
 	if err != nil {
@@ -147,9 +153,12 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notifiClear, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, images)
+	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
 	if err != nil {
@@ -168,9 +177,12 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notifiClear, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, volumes)
+	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
 	if err != nil {
@@ -189,9 +201,12 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	notifiClear, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, networks)
+	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
 	if err != nil {
