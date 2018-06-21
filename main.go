@@ -70,7 +70,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 
-	dashboard, err := dashboard()
+	dashboard, err := parseDashboard()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -90,7 +90,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	containers, err := container()
+	containers, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -113,7 +113,7 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 func statsHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	stats, err := stats()
+	stats, err := parseStats()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -137,7 +137,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	images, err := images()
+	images, err := parseImages()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -161,7 +161,7 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	volumes, err := volumes()
+	volumes, err := parseVolumes()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -185,7 +185,7 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 func networksHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	networks, err := networks()
+	networks, err := parseNetworks()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -216,13 +216,13 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	containers, err := container()
+	containers, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	logs, err := logs(containers)
+	logs, err := parseLogs(containers)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return

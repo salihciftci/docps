@@ -79,7 +79,7 @@ func APIContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	container, err := container()
+	container, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -103,7 +103,7 @@ func APIImages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	images, err := images()
+	images, err := parseImages()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -128,7 +128,7 @@ func APIVolumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	volumes, err := volumes()
+	volumes, err := parseVolumes()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -153,7 +153,7 @@ func APINetworks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	networks, err := networks()
+	networks, err := parseNetworks()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -178,7 +178,7 @@ func APIStats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	stats, err := stats()
+	stats, err := parseStats()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -203,13 +203,13 @@ func APILogs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	container, err := container()
+	container, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	logs, err := logs(container)
+	logs, err := parseLogs(container)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return

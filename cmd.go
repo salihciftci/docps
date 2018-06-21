@@ -102,7 +102,7 @@ func dockerCmd(cmdArgs []string) ([]string, error) {
 }
 
 // containers runs docker ps -a
-func container() ([]PS, error) {
+func parseContainers() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
 		"-a",
@@ -132,8 +132,8 @@ func container() ([]PS, error) {
 	return container, nil
 }
 
-// images runs docker image ls
-func images() ([]Images, error) {
+// parseImages runs docker image ls
+func parseImages() ([]Images, error) {
 	cmdArgs := []string{
 		"image",
 		"ls",
@@ -160,8 +160,8 @@ func images() ([]Images, error) {
 	return images, nil
 }
 
-// volumes runs docker volume ls
-func volumes() ([]Volumes, error) {
+// parseVolumes runs docker volume ls
+func parseVolumes() ([]Volumes, error) {
 	cmdArgs := []string{
 		"volume",
 		"ls",
@@ -187,8 +187,8 @@ func volumes() ([]Volumes, error) {
 	return volumes, nil
 }
 
-// stats runs docker stats --no-stream
-func stats() ([]Stats, error) {
+// parseStats runs docker parseStats --no-stream
+func parseStats() ([]Stats, error) {
 	cmdArgs := []string{
 		"stats",
 		"--no-stream",
@@ -217,8 +217,8 @@ func stats() ([]Stats, error) {
 	return stats, nil
 }
 
-// logs runs docker logs <containerName>
-func logs(container []PS) ([]Logs, error) {
+// parseLogs runs docker parseLogs <containerName>
+func parseLogs(container []PS) ([]Logs, error) {
 	logs := []Logs{}
 	for i := 0; i < len(container); i++ {
 		cmdArgs := []string{
@@ -251,8 +251,8 @@ func logs(container []PS) ([]Logs, error) {
 	return logs, nil
 }
 
-// networks runs docker network ls
-func networks() ([]Networks, error) {
+// parseNetworks runs docker network ls
+func parseNetworks() ([]Networks, error) {
 	cmdArgs := []string{
 		"network",
 		"ls",
@@ -278,8 +278,8 @@ func networks() ([]Networks, error) {
 	return networks, nil
 }
 
-// dashboard runs docker info and fetch docker infos for dashboard.
-func dashboard() ([]interface{}, error) {
+// parseDashboard runs docker info and fetch docker infos for parseDashboard.
+func parseDashboard() ([]interface{}, error) {
 	cmdArgs := []string{
 		"info",
 		"--format",
@@ -299,17 +299,17 @@ func dashboard() ([]interface{}, error) {
 		dashboard = append(dashboard, s[i])
 	}
 
-	images, err := images()
+	images, err := parseImages()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	volumes, err := volumes()
+	volumes, err := parseVolumes()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	networks, err := networks()
+	networks, err := parseNetworks()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
