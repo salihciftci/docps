@@ -92,7 +92,6 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	containers, err := container()
-
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -214,6 +213,57 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func logsHandler(w http.ResponseWriter, r *http.Request) {
+	cookieCheck(w, r)
+
+	params := r.URL.Query()
+	key, ok := params["container"]
+
+	if !ok || len(key) < 1 {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	containers, err := container()
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+		return
+	}
+
+	logs, err := logs(containers)
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+		return
+	}
+
+	container := -1
+	for p, v := range logs {
+		if v.Name == key[0] {
+			container = p
+		}
+	}
+
+	if container == -1 {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	notifiClear, _ := getNotification()
+
+	var data []interface{}
+
+	data = append(data, apiKey)
+	data = append(data, notifiClear)
+	data = append(data, logs[container].Name)
+	data = append(data, logs[container].Logs)
+
+	err = tpl.ExecuteTemplate(w, "logs.tmpl", data)
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+	}
+
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/login" {
 		log.Println(r.Method, r.URL.Path)
@@ -274,6 +324,7 @@ func main() {
 	http.HandleFunc("/images", imagesHandler)
 	http.HandleFunc("/volumes", volumesHandler)
 	http.HandleFunc("/networks", networksHandler)
+	http.HandleFunc("/logs", logsHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
