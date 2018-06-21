@@ -37,9 +37,9 @@
                 <i class="far fa-bell"></i>
             </button>
             <div class="dropdown-menu notification-drop-down">
-                {{ if index . 3 }}
+                {{ if index . 2 }}
                 <h6 class="dropdown-header">Notifications</h6>
-                {{ range index . 3 }}
+                {{ range index . 2 }}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-header">
                     {{ if eq .Status "U" }}
@@ -93,9 +93,9 @@
                                     <td>{{ .Ports }}</td>
                                     <td>{{ .RunningFor }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-link text-dark" style="text-decoration: none;" data-toggle="modal" data-target=".bd-{{ .Name }}-modal-lg">
+                                        <a href="/logs?container={{ .Name }}">
                                             <span style="text-align: center; display: block;" class="fas fa-binoculars" aria-hidden="true"></span>
-                                        </button>
+                                        </a>
                                     </td>
                                     <td>{{ if eq .Status "U" }}
                                         <span style="text-align: center; display: block;" class="fas fa-check text-success" aria-hidden="true"></span>{{ else }}
@@ -127,36 +127,6 @@
             </div>
         </div>
     </div>
-    <!-- Logs Modal-->
-    {{ range index . 2 }}
-    <div class="modal fade bd-{{ .Name }}-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{{ .Name }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <tbody>
-                                    {{ range index .Logs }}
-                                    <tr>
-                                        <td>{{ . }}</td>
-                                    </tr>
-                                </tbody>
-                                {{ end }}
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{ end }}
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

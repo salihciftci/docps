@@ -90,14 +90,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	cookieCheck(w, r)
 
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	containers, err := container()
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	logs, err := logs(containers)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -108,7 +101,6 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, containers)
-	data = append(data, logs)
 	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
