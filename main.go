@@ -27,7 +27,7 @@ func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 }
 
-func cookieCheck(w http.ResponseWriter, r *http.Request) {
+func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("session")
 
 	if err == http.ErrNoCookie {
@@ -67,7 +67,7 @@ func cookieCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 
 	dashboard, err := dashboard()
@@ -88,7 +88,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	containers, err := container()
 	if err != nil {
@@ -111,7 +111,7 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	stats, err := stats()
 
@@ -135,7 +135,7 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	images, err := images()
 
@@ -159,7 +159,7 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	volumes, err := volumes()
 
@@ -183,7 +183,7 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func networksHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	networks, err := networks()
 
@@ -206,7 +206,7 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logsHandler(w http.ResponseWriter, r *http.Request) {
-	cookieCheck(w, r)
+	parseSessionCookie(w, r)
 
 	params := r.URL.Query()
 	key, ok := params["container"]
