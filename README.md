@@ -37,7 +37,6 @@
 
 [Download](https://github.com/salihciftci/liman/releases) and run the latest binary or use it inside the Docker.
 
-### Docker
 
 ```
 docker run -it -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
