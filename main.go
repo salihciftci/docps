@@ -11,7 +11,7 @@ import (
 var (
 	tpl             *template.Template
 	username        = "root"
-	userPassword    = os.Getenv("pass")
+	userPassword    = ""
 	apiKey          = ""
 	cookieValue     = ""
 	savedContainers []PS
@@ -29,6 +29,11 @@ func init() {
 }
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
+	if userPassword == "" {
+		http.Redirect(w, r, "/install", http.StatusFound)
+		return
+	}
+
 	cookie, err := r.Cookie("session")
 
 	if err == http.ErrNoCookie {
@@ -259,6 +264,9 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
+	if userPassword == "" {
+		http.Redirect(w, r, "/install", http.StatusFound)
+	}
 	if r.URL.Path != "/login" {
 		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -306,7 +314,32 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusFound)
 }
 
+func installHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		inputPassword := r.FormValue("inputPassword")
+		os.Setenv("LimanPass", inputPassword)
+		userPassword = inputPassword
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	if userPassword != "" {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
+
+	err := tpl.ExecuteTemplate(w, "install.tmpl", "")
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+	}
+}
+
 func main() {
+	// Checking os environment variable for root password
+	envPass := os.Getenv("LimanPass")
+	if envPass != "" {
+		userPassword = envPass
+	}
 	// Generating keys for api and cookie
 	apiKey = generatePassword(32)
 	cookieValue = generatePassword(140)
@@ -322,6 +355,7 @@ func main() {
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
+	http.HandleFunc("/install", installHandler)
 
 	http.HandleFunc("/api/containers", APIContainer)
 	http.HandleFunc("/api/images", APIImages)
