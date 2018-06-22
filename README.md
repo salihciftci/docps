@@ -33,40 +33,17 @@
 * Volumes
 * API
 
-## Prerequisites
-
-To keep our data safe Liman has login page. We need to export environment variable to set login password.
-
-```
-#In Docker use -e option
--e pass=MYLOGINPASS
-
-#In host you need to export pass variable
-$ export pass=MYLOGINPASS
-```
-
 ## Installation
 
-Liman works with host and docker container.
+[Download](https://github.com/salihciftci/liman/releases) and run the latest binary or use it inside the Docker.
 
 ### Docker
 
 ```
-docker run -dit --name liman -e pass=PASS -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
 ```
 
 Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
-
-### Host
-
-You can [download](https://github.com/salihciftci/liman/releases) the lastest version of liman from releases or you can build with Go.
-
-```
-go get github.com/salihciftci/liman
-make build
-```
-
-Note: Master branch may not stable!
 
 ## API Usage
 
