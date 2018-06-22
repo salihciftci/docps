@@ -232,13 +232,14 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
-
+	log.Println(r.Method, r.URL.Path)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if userPassword == "" {
 		http.Redirect(w, r, "/install", http.StatusFound)
 	}
+
 	if r.URL.Path != "/login" {
 		log.Println(r.Method, r.URL.Path)
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -300,10 +301,11 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := tpl.ExecuteTemplate(w, "install.tmpl", "")
+	err := tpl.ExecuteTemplate(w, "install.tmpl", nil)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }
 
 func main() {
