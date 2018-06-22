@@ -10,7 +10,8 @@ import (
 
 var (
 	tpl             *template.Template
-	pass            = os.Getenv("pass")
+	username        = "root"
+	userPassword    = os.Getenv("pass")
 	apiKey          = ""
 	cookieValue     = ""
 	savedContainers []PS
@@ -43,8 +44,9 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method == "POST" {
-		input := r.FormValue("inputPassword")
-		if input == pass {
+		inputPass := r.FormValue("inputPassword")
+		inputUser := r.FormValue("inputUser")
+		if inputUser == username && inputPass == userPassword {
 			cookie = &http.Cookie{
 				Name:  "session",
 				Value: cookieValue,
