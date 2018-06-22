@@ -34,25 +34,6 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="far fa-bell"></i>
-            </button>
-            <div class="dropdown-menu notification-drop-down">
-                {{ if index . 8 }}
-                <h6 class="dropdown-header">Notifications</h6>
-                {{ range index . 8 }}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-header">
-                    {{ if eq .Status "U" }}
-                    <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
-                    <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
-                </a>
-                {{ end }} {{ else }}
-                <a class="dropdown-header">No notifications.</a>
-                {{ end }}
-            </div>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-user"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -130,45 +111,6 @@
                                 <span class="menu-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ index . 7 }}</span>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <!-- NOTIFICATION TABLE -->
-        <div class="row">
-            <div class="col-sm-12" style="padding: 0;">
-                <div class="card fcard">
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead class="thead">
-                                <tr> {{ if index . 9 }}
-                                    <th>Notifications</th>
-                                    <th style="text-align: right;">
-                                        <a data-toggle="modal" data-target="#NOTIModal">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </a>
-                                    </th>
-                                    {{ else }}
-                                    <th style="background-color: none;">Notifications</th>
-                                    {{ end }}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ if index . 8 }} {{ range index . 8 }}
-                                <tr>
-                                    <td>{{ if eq .Status "U" }}
-                                        <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
-                                        <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
-                                    <td style="text-align: right;">{{ .Time }}</td>
-                                </tr>
-                                {{ end }} {{ else }}
-                                <tr>
-                                    <td colspan="2" style="text-align: center;">No notifications.</td>
-                                </tr>
-                                {{ end }}
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>

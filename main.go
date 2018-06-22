@@ -5,24 +5,15 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 )
 
 var (
-	tpl             *template.Template
-	username        = "root"
-	userPassword    = ""
-	apiKey          = ""
-	cookieValue     = ""
-	savedContainers []PS
-	notifi          []notification
+	tpl          *template.Template
+	username     = "root"
+	userPassword = ""
+	apiKey       = ""
+	cookieValue  = ""
 )
-
-type notification struct {
-	Desc   string
-	Time   string
-	Status string
-}
 
 func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
@@ -102,12 +93,9 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, containers)
-	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
@@ -126,12 +114,9 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, stats)
-	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
 	if err != nil {
@@ -150,12 +135,9 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, images)
-	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
 	if err != nil {
@@ -174,12 +156,9 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, volumes)
-	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
 	if err != nil {
@@ -198,12 +177,9 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 	data = append(data, apiKey)
 	data = append(data, networks)
-	data = append(data, notifiClear)
 
 	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
 	if err != nil {
@@ -246,12 +222,9 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	notifiClear, _ := getNotification()
-
 	var data []interface{}
 
 	data = append(data, apiKey)
-	data = append(data, notifiClear)
 	data = append(data, logs[container].Name)
 	data = append(data, logs[container].Logs)
 
@@ -365,47 +338,6 @@ func main() {
 	http.HandleFunc("/api/status", APIStatus)
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
-
-	// Checking containers status
-	go func() {
-		savedContainers, err := checkContainerStatus()
-		if err != nil {
-			log.Println(err)
-		}
-
-		time.Sleep(10 * time.Second)
-		for {
-			checkContainers, err := checkContainerStatus()
-			if err != nil {
-				log.Println(err)
-			}
-
-			for i := 0; i < len(checkContainers); i++ {
-				if savedContainers[i].Status != checkContainers[i].Status {
-					if savedContainers[i].Status == "U" {
-						log.Println(savedContainers[i].Name + "is stopped.")
-						notifi = append(notifi, notification{
-							Desc:   savedContainers[i].Name + " is stopped.",
-							Time:   time.Now().Format("02/01/2006 15:04"),
-							Status: "E",
-						})
-					}
-
-					if savedContainers[i].Status == "E" {
-						log.Println(savedContainers[i].Name + " is started.")
-						notifi = append(notifi, notification{
-							Desc:   savedContainers[i].Name + " is started.",
-							Time:   time.Now().Format("02/01/2006 15:04"),
-							Status: "U",
-						})
-					}
-				}
-			}
-
-			savedContainers = checkContainers
-			time.Sleep(time.Second * 60) // Waiting 60 second to checking container statuses again.
-		}
-	}()
 
 	log.Println("Listening http://0.0.0.0:8080")
 	err := http.ListenAndServe(":8080", nil)
