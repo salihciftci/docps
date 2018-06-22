@@ -403,7 +403,7 @@ func main() {
 			}
 
 			savedContainers = checkContainers
-			time.Sleep(time.Second)
+			time.Sleep(time.Second * 60) // Waiting 60 second to checking container statuses again.
 		}
 	}()
 
