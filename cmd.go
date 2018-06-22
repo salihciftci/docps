@@ -223,6 +223,8 @@ func parseLogs(container []PS) ([]Logs, error) {
 	for i := 0; i < len(container); i++ {
 		cmdArgs := []string{
 			"logs",
+			"--tail",
+			"100",
 			container[i].Name,
 		}
 
