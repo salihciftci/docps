@@ -75,7 +75,6 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 
 	dashboard, err := parseDashboard()
 	if err != nil {
