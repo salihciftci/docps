@@ -115,6 +115,12 @@ body {
     border-top-right-radius: 0;
   }
 
+  .form-signin input[type="user"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
   .notification-drop-down {
     min-width: auto !important;
   }
