@@ -373,6 +373,7 @@ func main() {
 			log.Println(err)
 		}
 
+		time.Sleep(10 * time.Second)
 		for {
 			checkContainers, err := checkContainerStatus()
 			if err != nil {
