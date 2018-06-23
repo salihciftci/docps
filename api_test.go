@@ -15,7 +15,7 @@ func TestAPIAuth(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APIContainer(rec, req)
+	apiContainer(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -31,7 +31,7 @@ func TestAPIContainer(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APIContainer(rec, req)
+	apiContainer(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -49,7 +49,7 @@ func TestAPIImages(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APIImages(rec, req)
+	apiImages(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -67,7 +67,7 @@ func TestAPIVolumes(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APIVolumes(rec, req)
+	apiVolumes(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -85,7 +85,7 @@ func TestAPINetworks(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APINetworks(rec, req)
+	apiNetworks(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -102,7 +102,7 @@ func TestAPIStats(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APIStats(rec, req)
+	apiStats(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
@@ -120,7 +120,7 @@ func TestAPILogs(t *testing.T) {
 
 	rec := httptest.NewRecorder()
 
-	APILogs(rec, req)
+	apiLogs(rec, req)
 
 	res := rec.Result()
 	defer res.Body.Close()
