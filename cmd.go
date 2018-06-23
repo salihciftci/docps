@@ -11,6 +11,17 @@ import (
 	"time"
 )
 
+var (
+	savedContainers []PS
+	notifications   []notification
+)
+
+type notification struct {
+	Desc   string
+	Time   string
+	Status string
+}
+
 //PS docker ps -a
 type PS struct {
 	Name       string `json:"name,omitempty"`
@@ -335,7 +346,7 @@ func parseDashboard() ([]interface{}, error) {
 	return dashboard, nil
 }
 
-func checkContainerStatus() ([]PS, error) {
+func parseContainerStatus() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
 		"-a",
@@ -359,5 +370,11 @@ func checkContainerStatus() ([]PS, error) {
 			})
 	}
 
-	return container, nil
+	var reverse []PS
+
+	for i := len(container) - 1; i != -1; i-- {
+		reverse = append(reverse, container[i])
+	}
+
+	return reverse, nil
 }
