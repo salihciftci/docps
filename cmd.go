@@ -378,3 +378,19 @@ func parseContainerStatus() ([]PS, error) {
 
 	return reverse, nil
 }
+
+func getNotification() ([]notification, []notification) {
+	var reverse []notification
+	for i := len(notifications) - 1; i >= 0; i-- {
+		reverse = append(reverse, notifications[i])
+	}
+
+	var basic []notification
+	if len(reverse) > 3 {
+		basic = reverse[:3]
+	} else {
+		basic = reverse[:]
+	}
+
+	return basic, reverse
+}

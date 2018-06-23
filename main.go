@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 )
 
 var (
@@ -318,6 +319,51 @@ func main() {
 	apiKey = generatePassword(32)
 	cookieValue = generatePassword(140)
 
+	// Checking containers for sending notification
+	savedContainers, err := parseContainerStatus()
+	if err != nil {
+		log.Println(err)
+	}
+
+	go func() {
+		for {
+			parseContainers, err := parseContainerStatus()
+			if err != nil {
+				log.Println(err)
+			}
+
+			if len(parseContainers) != len(savedContainers) {
+				savedContainers = parseContainers
+				continue
+			}
+
+			for i, v := range savedContainers {
+				if v.Status != parseContainers[i].Status {
+					if savedContainers[i].Status == "U" {
+						log.Println(savedContainers[i].Name + " is stopped.")
+						notifications = append(notifications, notification{
+							Desc:   savedContainers[i].Name + " is stopped.",
+							Time:   time.Now().Format("02/01/2006 15:04"),
+							Status: "E",
+						})
+					}
+
+					if savedContainers[i].Status == "E" {
+						log.Println(savedContainers[i].Name + " is started.")
+						notifications = append(notifications, notification{
+							Desc:   savedContainers[i].Name + " is started.",
+							Time:   time.Now().Format("02/01/2006 15:04"),
+							Status: "U",
+						})
+					}
+				}
+			}
+
+			savedContainers = parseContainers
+			time.Sleep(time.Millisecond)
+		}
+	}()
+
 	// HTTP handlers
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/containers", containersHandler)
@@ -342,7 +388,7 @@ func main() {
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
 	log.Println("Listening http://0.0.0.0:8080")
-	err := http.ListenAndServe(":8080", nil)
+	err = http.ListenAndServe(":8080", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
