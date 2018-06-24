@@ -358,9 +358,7 @@ func main() {
 					}
 				}
 			}
-
 			savedContainers = parseContainers
-			time.Sleep(time.Millisecond)
 		}
 	}()
 
