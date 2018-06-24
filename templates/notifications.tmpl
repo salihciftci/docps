@@ -37,9 +37,9 @@
                 <i class="far fa-bell"></i>
             </button>
             <div class="dropdown-menu notification-drop-down">
-                {{ if index . 0 }}
+                {{ if index . 1 }}
                 <h6 class="dropdown-header">Notifications</h6>
-                {{ range index . 0 }}
+                {{ range index . 1 }}
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-header">
                     {{ if eq .Status "U" }}
@@ -80,7 +80,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {{ range index . 1 }}
+                                    {{ range index . 2 }}
                                     <tr>
                                         <td>{{ if eq .Status "U" }}
                                             <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}

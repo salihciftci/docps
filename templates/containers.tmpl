@@ -34,6 +34,25 @@
         </div>
         <div class="btn-group">
             <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="far fa-bell"></i>
+            </button>
+            <div class="dropdown-menu notification-drop-down">
+                {{ if index . 1 }}
+                <h6 class="dropdown-header">Notifications</h6>
+                {{ range index . 1 }}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-header">
+                    {{ if eq .Status "U" }}
+                    <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                    <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+                </a>
+                {{ end }} {{ else }}
+                <a class="dropdown-header">No notifications.</a>
+                {{ end }}
+            </div>
+        </div>
+        <div class="btn-group">
+            <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="far fa-user"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right">
@@ -66,7 +85,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{ range index . 1 }}
+                                {{ range index . 2 }}
                                 <tr>
                                     <td>{{ .Name }}</td>
                                     <td>{{ .Image }}</td>
