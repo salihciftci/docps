@@ -94,8 +94,11 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, containers)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
@@ -115,8 +118,11 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, stats)
 
 	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
@@ -136,8 +142,11 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, images)
 
 	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
@@ -157,8 +166,11 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, volumes)
 
 	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
@@ -178,8 +190,11 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, networks)
 
 	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
@@ -223,9 +238,12 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	basicNotification, _ := getNotification()
+
 	var data []interface{}
 
 	data = append(data, apiKey)
+	data = append(data, basicNotification)
 	data = append(data, logs[container].Name)
 	data = append(data, logs[container].Logs)
 
@@ -246,6 +264,7 @@ func notificationHandler(w http.ResponseWriter, r *http.Request) {
 
 	var data []interface{}
 
+	data = append(data, apiKey)
 	data = append(data, basicNotification)
 	data = append(data, notifications)
 
