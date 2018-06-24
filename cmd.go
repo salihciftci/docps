@@ -343,6 +343,16 @@ func parseDashboard() ([]interface{}, error) {
 
 	dashboard[1] = strings.Title(dashboard[1].(string))
 
+	basicNotification, notifications := getNotification()
+
+	dashboard = append(dashboard, basicNotification)
+
+	if len(notifications) > 3 {
+		dashboard = append(dashboard, "0")
+	} else {
+		dashboard = append(dashboard, "")
+	}
+
 	return dashboard, nil
 }
 
