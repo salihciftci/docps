@@ -340,7 +340,6 @@ func main() {
 			for i, v := range savedContainers {
 				if v.Status != parseContainers[i].Status {
 					if savedContainers[i].Status == "U" {
-						log.Println(savedContainers[i].Name + " is stopped.")
 						notifications = append(notifications, notification{
 							Desc:   savedContainers[i].Name + " is stopped.",
 							Time:   time.Now().Format("02/01/2006 15:04"),
@@ -349,7 +348,6 @@ func main() {
 					}
 
 					if savedContainers[i].Status == "E" {
-						log.Println(savedContainers[i].Name + " is started.")
 						notifications = append(notifications, notification{
 							Desc:   savedContainers[i].Name + " is started.",
 							Time:   time.Now().Format("02/01/2006 15:04"),
