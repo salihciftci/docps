@@ -236,6 +236,27 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.Method, r.URL.Path)
 }
 
+func notificationHandler(w http.ResponseWriter, r *http.Request) {
+	parseSessionCookie(w, r)
+	basicNotification, notifications := getNotification()
+
+	if len(notifications) > 100 {
+		notifications = notifications[:100]
+	}
+
+	var data []interface{}
+
+	data = append(data, basicNotification)
+	data = append(data, notifications)
+
+	err := tpl.ExecuteTemplate(w, "notifications.tmpl", data)
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+	}
+	log.Println(r.Method, r.URL.Path)
+
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if userPassword == "" {
 		http.Redirect(w, r, "/install", http.StatusFound)
@@ -372,6 +393,8 @@ func main() {
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
 	http.HandleFunc("/install", installHandler)
+
+	http.HandleFunc("/notifications", notificationHandler)
 
 	http.HandleFunc("/api/containers", apiContainer)
 	http.HandleFunc("/api/images", apiImages)
