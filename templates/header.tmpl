@@ -5,21 +5,82 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" type="image/png" href="/public/img/liman.png" />
+    <script src="public/javascript/script.js"></script>
+
+
     <meta name="description" content="Liman - Basic docker monitoring web application">
     <meta name="keywords" content="docker, container, self-hosted, liman">
     <meta name="author" content="Salih Çiftçi">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-        crossorigin="anonymous">
-    <!-- Fontawesome 5 CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
-        crossorigin="anonymous">
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-
     <title>Liman</title>
-    <link rel="stylesheet" type="text/css" href="/public/style.css" />
-    <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png" />
 </head>
-{{ end }}
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+            <div class="content">
+                <ul>
+                    <li>
+                        <a href="/">
+                            <img src="public/img/liman-mini.png" alt="liman">
+                        </a>
+                    </li>
+                </ul>
+                <br>
+                <ul>
+                    <li>
+                        <a href="/">
+                            <i class="zmdi zmdi-view-dashboard" style="font-size: 120%"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/containers">
+                            <i class="fas fa-server"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/stats">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/images">
+                            <i class="far fa-clone"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/volumes">
+                            <i class="far fa-hdd"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/networks">
+                            <i class="zmdi zmdi-portable-wifi"></i>
+                        </a>
+                    </li>
+                </ul>
+                <br>
+                <ul>
+                    <li>
+                        <a href="/settings">
+                            <i class="fas fa-cog"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/logout">
+                            <i class="fas fa-power-off"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        {{ end }}

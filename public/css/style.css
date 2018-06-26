@@ -1,0 +1,111 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: #F0F4F3;
+    font-family: 'Muli', sans-serif;
+}
+
+.wrapper {
+    align-items: stretch;
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    background-color:#22252b;
+    min-width: 42px;
+    max-width: 42px;
+    overflow: hidden; 
+    margin-bottom: -5000px;
+    padding-bottom: 5000px; 
+    position:fixed;
+    color: #afafaf;
+}
+
+.content, ul {
+    text-align: center;
+    list-style-type:none; 
+    margin: 0;
+    padding: 0;
+    margin-top: 10px;
+}
+
+ul,li {
+    margin-bottom: 15px;
+}
+
+.content a,
+.content a:hover,
+.content a:visited {
+    text-decoration: none;
+    color: #afafaf;
+}
+
+.page {
+    margin-left: 42px;
+    width: 100%;
+}
+
+nav, .navbar {
+    width: 100%;
+}
+
+.inner-addon { 
+    position: relative; 
+}
+
+.inner-addon .fa-search {
+  position: absolute;
+  padding: 10px;
+  pointer-events: none;
+}
+
+.right-addon .fa-search { right: 0px;}
+.right-addon input { padding-right: 30px; }
+
+.nav-right {
+    display: flex;
+}
+
+.container {
+    margin-top: 30px;
+}
+
+.db {
+    margin: 0 -5px 0 -5px;
+}
+
+.db-icon {
+    font-size: 350%;
+    color: #22252b;
+}
+
+.m-l-10 {
+    margin-left: 10px;
+}
+
+.fcard {
+    margin: 0 10px 0 10px;
+}
+
+.table-hover > thead > tr > th {
+    border-top: none !important;
+    border-bottom: 1px solid #22252b;
+    color: #22252b;
+    font-size: 15px;
+}
+
+.table-hover > tbody > tr > td {
+    font-size: 15px;
+}
+
+.dropdown-menu { 
+    right: 0px; 
+    left: auto; 
+  }
+
+.notification-drop-down {
+    min-width: auto !important;
+  }

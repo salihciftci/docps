@@ -1,243 +1,210 @@
-{{ template "header" }} {{ with index . 1 }}
-
-<body>
-    <nav class="navbar navbar-expand-sm navbar-light bg-light" data-toggle="affix">
-        <a class="navbar-brand header" href="/">
-            <img src="/public/img/favicon.png" width="60" height="60" alt="logo" />
+{{ template "header" }} {{ with index . 0 }}
+<div class="page">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" style="margin-left: 10px;">
+            <div>
+                <h5 id="title">
+                    Dashboard
+                </h5>
+            </div>
+            <div>
+                <h6>
+                    <i class="zmdi zmdi-home" style="color: #f96332"></i>
+                    <small>/ Dashboard</small>
+                </h6>
+            </div>
         </a>
-        <div class="mx-auto d-sm-flex d-block flex-sm-nowrap header">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-alt" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse text-center alt" id="nav-alt">
-                <ul class="navbar-nav bg-light">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/containers">Containers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/stats">Stats</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/images">Images</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/volumes">Volumes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/networks">Networks</a>
-                    </li>
-                </ul>
+        <div class="nav-right">
+            <div class="inner-addon right-addon">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" placeholder="Search" id="search" onkeyup="Search()" />
             </div>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="far fa-bell"></i>
-            </button>
-            <div class="dropdown-menu notification-drop-down">
-                {{ if index . 8 }}
-                <h6 class="dropdown-header">Notifications</h6>
-                {{ range index . 8 }}
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-header">
-                    {{ if eq .Status "U" }}
-                    <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
-                    <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
-                </a>
-                {{ end }} {{ else }}
-                <a class="dropdown-header">No notifications.</a>
-                {{ end }}
+            <div class="btn-group">
+                <button type="button" class="btn settings bg-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-bell"></i>
+                </button>
+                <div class="dropdown-menu notification-drop-down">
+                    {{ if index . 8 }}
+                    <h6 class="dropdown-header">Notifications</h6>
+                    {{ range index . 8 }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header">
+                        {{ if eq .Status "U" }}
+                        <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                        <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+                    </a>
+                    {{ end }} {{ else }}
+                    <a class="dropdown-header">No notifications.</a>
+                    {{ end }}
+                </div>
             </div>
-        </div>
-        <div class="btn-group">
-            <button type="button" class="btn settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="far fa-user"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" type="button" data-toggle="modal" data-target="#APIModal">
-                    API Key
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" type="button" href="/logout">
-                    Logout
-                </a>
-            </div>&nbsp;&nbsp;&nbsp;
         </div>
     </nav>
-    <br>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="card fcard">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="fas fa-server icon"></i>
+    <div class="container-fluid">
+        <div class="container">
+            <!-- Info Cards -->
+            <div class="row">
+                <div class="col-sm-12 col-md-6 col-xl-3">
+                    <div class="card db">
+                        <div class="card-body">
+                            <div class="d-flex row">
+                                <div class="col-3 align-self-center">
+                                    <i class="fas fa-server db-icon"></i>
+                                </div>
+                                <div class="col-8 ml-auto align-self-center text-center">
+                                    <div class="m-l-10 float-right">
+                                        <h5 class="mt-0 round-inner">{{ index . 0 }}</h5>
+                                        <p class="mb-0">Containers</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-6 text-left">
-                                Containers
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ index . 0 }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-xl-3">
+                    <div class="card db">
+                        <div class="card-body">
+                            <div class="d-flex row">
+                                <div class="col-3 align-self-center">
+                                    <i class="far fa-clone db-icon"></i>
+                                </div>
+                                <div class="col-8 ml-auto align-self-center text-center">
+                                    <div class="m-l-10 float-right">
+                                        <h5 class="mt-0 round-inner">{{ index . 5 }}</h5>
+                                        <p class="mb-0">Images</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-xl-3">
+                    <div class="card db">
+                        <div class="card-body">
+                            <div class="d-flex row">
+                                <div class="col-3 align-self-center">
+                                    <i class="far fa-hdd db-icon"></i>
+                                </div>
+                                <div class="col-8 ml-auto align-self-center text-center">
+                                    <div class="m-l-10 float-right">
+                                        <h5 class="mt-0 round-inner">{{ index . 6 }}</h5>
+                                        <p class="mb-0">Volumes</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 col-md-6 col-xl-3">
+                    <div class="card db">
+                        <div class="card-body">
+                            <div class="d-flex row">
+                                <div class="col-3 align-self-center">
+                                    <i class="zmdi zmdi-portable-wifi db-icon"></i>
+                                </div>
+                                <div class="col-8 ml-auto align-self-center text-center">
+                                    <div class="m-l-10 float-right">
+                                        <h5 class="mt-0 round-inner">{{ index . 7 }}</h5>
+                                        <p class="mb-0">Networks</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="far fa-clone icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Images
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;{{ index . 5 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="far fa-hdd icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Volumes
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;{{ index . 6 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-sm-6">
-                                <i class="fas fa-wifi icon"></i>
-                            </div>
-                            <div class="col-sm-6 text-left">
-                                Networks
-                                <br>
-                                <span class="menu-text">&nbsp;&nbsp;&nbsp;&nbsp;{{ index . 7 }}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <br>
-        <!-- NOTIFICATION TABLE -->
-        <div class="row">
-            <div class="col-sm-12" style="padding: 0;">
-                <div class="card fcard">
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead class="thead">
-                                <tr> {{ if index . 9 }}
-                                    <th>Notifications</th>
-                                    <th style="text-align: right;">
-                                        <a href="/notifications" style="text-decoration: none; color:#354168">
-                                            <i class="fas fa-ellipsis-h"></i>
-                                        </a>
-                                    </th>
-                                    {{ else }}
-                                    <th style="background-color: none;" colspan="2">Notifications</th>
+            <!-- Info Cards END -->
+            <br>
+            <!-- Notification Table -->
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <table class="table table-hover" id="table">
+                                <thead class="thead">
+                                    <tr> {{ if index . 9 }}
+                                        <th>Notifications</th>
+                                        <th style="text-align: right;">
+                                            <a href="/notifications" style="text-decoration: none; color:#22252b">
+                                                <i class="fas fa-ellipsis-h"></i>
+                                            </a>
+                                        </th>
+                                        {{ else }}
+                                        <th style="background-color: none;" colspan="2">Notifications</th>
+                                        {{ end }}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{ if index . 8 }} {{ range index . 8 }}
+                                    <tr>
+                                        <td>{{ if eq .Status "U" }}
+                                            <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                                            <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
+                                        <td style="text-align: right;">{{ .Time }}</td>
+                                    </tr>
+                                    {{ end }} {{ else }}
+                                    <tr>
+                                        <td colspan="2" style="text-align: center;">No notifications.</td>
+                                    </tr>
                                     {{ end }}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ if index . 8 }} {{ range index . 8 }}
-                                <tr>
-                                    <td>{{ if eq .Status "U" }}
-                                        <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
-                                        <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
-                                    <td style="text-align: right;">{{ .Time }}</td>
-                                </tr>
-                                {{ end }} {{ else }}
-                                <tr>
-                                    <td colspan="2" style="text-align: center;">No notifications.</td>
-                                </tr>
-                                {{ end }}
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br>
-        <!-- INFO TABLE -->
-        <div class="row">
-            <div class="col-sm-12" style="padding: 0;">
-                <div class="card fcard">
-                    <div class="card-body">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th colspan="2">System Info</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th style="width: 24%;">Name</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 1 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Docker version</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 2 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>CPU</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 3 }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Memory</th>
-                                    <td style="width: 100%; text-align: right;">{{ index . 4 }} GiB</td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <!-- Notification Table END -->
+            <br>
+            <!-- Docker Info Table-->
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">System Info</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th style="width: 24%;">Name</th>
+                                        <td style="width: 100%; text-align: right;">{{ index . 1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Docker version</th>
+                                        <td style="width: 100%; text-align: right;">{{ index . 2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>CPU</th>
+                                        <td style="width: 100%; text-align: right;">{{ index . 3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Memory</th>
+                                        <td style="width: 100%; text-align: right;">{{ index . 4 }} GiB</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- Docker Info Table END-->
         </div>
     </div>
-
-    {{ end }}
-    <!-- API MODAL -->
-    <div class="modal fade" id="APIModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class="fa fa-key" aria-hidden="true"></i> &nbsp; API Key</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ with index . 0 }} {{ index . }} {{ end }}
-                </div>
-            </div>
-        </div>
-    </div>
+</div>
+</div>
 
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
+{{ end }}
