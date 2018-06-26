@@ -45,9 +45,11 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 		inputUser := r.FormValue("inputUser")
 		if inputUser == username && inputPass == userPassword {
 			cookie = &http.Cookie{
-				Name:  "session",
-				Value: cookieValue,
-				Path:  "/",
+				Name:    "session",
+				Value:   cookieValue,
+				Path:    "/",
+				Expires: time.Now().AddDate(2, 0, 0),
+				MaxAge:  0,
 			}
 			http.SetCookie(w, cookie)
 		}
