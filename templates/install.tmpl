@@ -1,21 +1,79 @@
-{{ template "header" }}
+<!doctype html>
+<html lang="en">
 
-<body class="text-center">
-    <div class="login-body">
-        <form class="form-signin" action="/install" method="POST">
-            <img class="mb-4" src="/public/img/favicon.png" alt="" width="200" height="200">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
+    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="shortcut icon" type="image/png" href="/public/img/liman.png" />
+    <script src="public/scripts/script.js"></script>
 
-            <center><normal>Thank you for using Liman. <br> Please set your root password.</normal></center><br>
-            <label for="inputUser" class="sr-only">User</label>
-            <input type="user" id="inputUser" name="inputUser" class="form-control" placeholder="root"  disabled>
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
-            <button class="btn btn-block" style="background-color:#354168; color: white;" type="submit">Install</button>
-            <p class="mt-5 mb-3 text-muted">
-                <a href="https://github.com/salihciftci/liman" style="color:#354168;" target="_blank">
-                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
+
+    <meta name="description" content="Liman - Basic docker monitoring web application">
+    <meta name="keywords" content="docker, container, self-hosted, liman">
+    <meta name="author" content="Salih Çiftçi">
+
+    <title>Liman</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="sidebar">
+        </div>
+        <div class="page">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" style="margin-left: 10px;">
+                    <div>
+                        <h5 id="title">
+                            Install
+                        </h5>
+                    </div>
+                    <div>
+                        <h6>
+                            <small>Thank you for using Liman. Please set your root password.</small>
+                        </h6>
+                    </div>
                 </a>
-            </p>
-        </form>
+            </nav>
+            <div class="container-fluid">
+                <div class="container text-center col-sm-3">
+                    <div class="login-body pt-5 mt-5">
+                        <form class="form-signin" action="/install" method="POST">
+                            <img class="mb-0" src="/public/img/liman.png" alt="" width="200" height="200">
+                            <label for="inputUser" class="sr-only">User</label>
+                            <input type="user" id="inputUser" name="inputUser" style="margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"
+                                class="form-control" placeholder="root" disabled>
+                            <label for="inputPassword" class="sr-only">Password</label>
+                            <input type="password" id="inputPassword" name="inputPassword" style="margin-bottom: 10px; border-top-left-radius: 0; border-top-right-radius: 0;"
+                                class="form-control" placeholder="Password" required>
+                            <button class="btn btn-block" style="background-color:#22252b; color: white;" type="submit">Install</button>
+                            <p class="mt-5 mb-3 text-muted">
+                                <a href="https://github.com/salihciftci/liman" style="color:#22252b;" target="_blank">
+                                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
+                                </a>
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+        crossorigin="anonymous"></script>
 </body>
+
+</html>
