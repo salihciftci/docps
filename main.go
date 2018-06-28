@@ -70,15 +70,14 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	dashboard, err := parseDashboard()
+	d, err := parseDashboard()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, dashboard)
+	data = append(data, d)
 
 	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
 	if err != nil {
@@ -90,18 +89,17 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 func containersHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	containers, err := parseContainers()
+	c, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, containers)
+	data = append(data, bn)
+	data = append(data, c)
 
 	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
 	if err != nil {
@@ -113,19 +111,18 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 func statsHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	stats, err := parseStats()
+	s, err := parseStats()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, stats)
+	data = append(data, bn)
+	data = append(data, s)
 
 	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
 	if err != nil {
@@ -137,19 +134,18 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	images, err := parseImages()
+	i, err := parseImages()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, images)
+	data = append(data, bn)
+	data = append(data, i)
 
 	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
 	if err != nil {
@@ -161,19 +157,18 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	volumes, err := parseVolumes()
+	v, err := parseVolumes()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, volumes)
+	data = append(data, bn)
+	data = append(data, v)
 
 	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
 	if err != nil {
@@ -185,19 +180,18 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 func networksHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
 
-	networks, err := parseNetworks()
+	n, err := parseNetworks()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, networks)
+	data = append(data, bn)
+	data = append(data, n)
 
 	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
 	if err != nil {
@@ -216,38 +210,37 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	containers, err := parseContainers()
+	c, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	logs, err := parseLogs(containers)
+	l, err := parseLogs(c)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	container := -1
-	for p, v := range logs {
+	i := -1
+	for p, v := range l {
 		if v.Name == key[0] {
-			container = p
+			i = p
 		}
 	}
 
-	if container == -1 {
+	if i == -1 {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
 
-	basicNotification, _ := getNotification()
+	bn, _ := getNotification()
 
 	var data []interface{}
 
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, logs[container].Name)
-	data = append(data, logs[container].Logs)
+	data = append(data, bn)
+	data = append(data, l[i].Name)
+	data = append(data, l[i].Logs)
 
 	err = tpl.ExecuteTemplate(w, "logs.tmpl", data)
 	if err != nil {
@@ -258,17 +251,16 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 
 func notificationHandler(w http.ResponseWriter, r *http.Request) {
 	parseSessionCookie(w, r)
-	basicNotification, notifications := getNotification()
+	bn, n := getNotification()
 
-	if len(notifications) > 100 {
-		notifications = notifications[:100]
+	if len(n) > 100 {
+		n = n[:100]
 	}
 
 	var data []interface{}
 
-	data = append(data, apiKey)
-	data = append(data, basicNotification)
-	data = append(data, notifications)
+	data = append(data, bn)
+	data = append(data, n)
 
 	err := tpl.ExecuteTemplate(w, "notifications.tmpl", data)
 	if err != nil {
