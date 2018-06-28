@@ -1,0 +1,128 @@
+{{ template "header" }}
+<div class="page">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" style="margin-left: 10px;">
+            <div>
+                <h5 id="title">
+                    Settings
+                </h5>
+            </div>
+            <div>
+                <h6>
+                    <i class="zmdi zmdi-home" style="color: #f96332"></i>
+                    <small>/ Settings</small>
+                </h6>
+            </div>
+        </a>
+        <div class="nav-right">
+            <div class="btn-group">
+                <button type="button" class="btn settings bg-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-bell"></i>
+                </button>
+                <div class="dropdown-menu notification-drop-down">
+                    {{ if index . 0 }}
+                    <h6 class="dropdown-header">Notifications</h6>
+                    {{ range index . 0 }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header">
+                        {{ if eq .Status "U" }}
+                        <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                        <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+                    </a>
+                    {{ end }} {{ else }}
+                    <a class="dropdown-header">No notifications.</a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="container">
+            <!-- PASSWORD -->
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <table class="table table-hover" id="table">
+                                <thead class="thead bg-ee">
+                                    <tr>
+                                        <th scope="col">Change Password</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th class="bg-white">
+                                            <form class="form-signin" action="/settings" method="POST">
+                                                <div class="form-group">
+                                                    <label for="cpass">Current password</label>
+                                                    <input type="password" class="form-control" id="cpass" name="cpass" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="npass">New password</label>
+                                                    <input type="password" class="form-control" id="npass" name="npass" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cnpass">Confirm new password</label>
+                                                    <input type="password" class="form-control" id="cnpass" name="cnpass" required>
+                                                </div>
+                                                <button type="submit" class="btn" style="background-color:#22252b; color: white;">Change password</button>
+                                            </form>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- INFO -->
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <table class="table table-hover" id="table">
+                                <thead class="thead bg-ee">
+                                    <tr>
+                                        <th scope="col" colspan="2">Information</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white">
+                                        <th>API Key</th>
+                                        <th>
+                                            <input id="key" value="{{ index . 2 }}" style=" border: 0; margin-top: 5px;" readonly/>
+                                            <span>
+                                                <a class="btn" style="float: right;" onclick="Copy()">
+                                                    <i class="far fa-copy"></i> Copy</a>
+                                                </i>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-white">
+                                        <th>Version</th>
+                                        <th>{{ index . 1 }}</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

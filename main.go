@@ -13,6 +13,7 @@ var (
 	userPassword = ""
 	apiKey       = ""
 	cookieValue  = ""
+	version      = "v0.6"
 )
 
 func init() {
@@ -269,6 +270,47 @@ func notificationHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func settingsHandler(w http.ResponseWriter, r *http.Request) {
+	parseSessionCookie(w, r)
+
+	if r.Method == "POST" {
+		pass := r.FormValue("cpass")
+		if pass != userPassword {
+			http.Redirect(w, r, "/settings", http.StatusFound)
+			return
+		}
+
+		nPass := r.FormValue("npass")
+		cNPass := r.FormValue("cnpass")
+
+		if nPass != cNPass {
+			http.Redirect(w, r, "/settings", http.StatusFound)
+			return
+		}
+
+		if nPass == userPassword {
+			http.Redirect(w, r, "/settings", http.StatusFound)
+			return
+		}
+
+		userPassword = nPass
+		http.Redirect(w, r, "/logout", http.StatusFound)
+	}
+
+	bn, _ := getNotification()
+
+	var data []interface{}
+	data = append(data, bn)
+	data = append(data, version)
+	data = append(data, apiKey)
+
+	err := tpl.ExecuteTemplate(w, "settings.tmpl", data)
+	if err != nil {
+		log.Println(r.Method, r.URL.Path, err)
+	}
+	log.Println(r.Method, r.URL.Path)
+}
+
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if userPassword == "" {
 		http.Redirect(w, r, "/install", http.StatusFound)
@@ -327,6 +369,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			inputPassword := r.FormValue("inputPassword")
 			userPassword = inputPassword
 			http.Redirect(w, r, "/", http.StatusFound)
+			log.Println(r.Method, r.URL.Path, "Install complete.")
 			return
 		}
 	}
@@ -397,6 +440,7 @@ func main() {
 	http.HandleFunc("/volumes", volumesHandler)
 	http.HandleFunc("/networks", networksHandler)
 	http.HandleFunc("/logs", logsHandler)
+	http.HandleFunc("/settings", settingsHandler)
 
 	http.HandleFunc("/login", loginHandler)
 	http.HandleFunc("/logout", logoutHandler)
