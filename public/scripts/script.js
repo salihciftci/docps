@@ -15,3 +15,10 @@ function Search() {
         }
     }
 }
+
+function Copy() {
+    var copyText = document.getElementById("key");
+    copyText.select();
+    document.execCommand("copy");
+    document.getSelection().removeAllRanges();
+}
