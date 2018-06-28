@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -326,7 +325,6 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		if userPassword == "" {
 			inputPassword := r.FormValue("inputPassword")
-			os.Setenv("LimanPass", inputPassword)
 			userPassword = inputPassword
 			http.Redirect(w, r, "/", http.StatusFound)
 			return
@@ -346,11 +344,6 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	// Checking os environment variable for root password
-	envPass := os.Getenv("LimanPass")
-	if envPass != "" {
-		userPassword = envPass
-	}
 	// Generating keys for api and cookie
 	apiKey = generatePassword(32)
 	cookieValue = generatePassword(140)
