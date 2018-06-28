@@ -324,11 +324,13 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 func installHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		inputPassword := r.FormValue("inputPassword")
-		os.Setenv("LimanPass", inputPassword)
-		userPassword = inputPassword
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
+		if userPassword == "" {
+			inputPassword := r.FormValue("inputPassword")
+			os.Setenv("LimanPass", inputPassword)
+			userPassword = inputPassword
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
 	}
 
 	if userPassword != "" {
