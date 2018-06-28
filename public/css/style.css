@@ -104,8 +104,16 @@ nav, .navbar {
 .dropdown-menu { 
     right: 0px; 
     left: auto; 
-  }
+}
 
 .notification-drop-down {
     min-width: auto !important;
-  }
+}
+
+a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover {
+    background-color: #f8f9fa !important;
+}
+
+.btn.focus, .btn:focus {
+    box-shadow: none !important;
+}
