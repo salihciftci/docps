@@ -117,3 +117,8 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
 .btn.focus, .btn:focus {
     box-shadow: none !important;
 }
+
+.c-btn {
+    background-color: white;
+     border: none;
+}
