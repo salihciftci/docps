@@ -46,26 +46,28 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead bg-ee">
-                                    <tr>
-                                        <th scope="col">Repository</th>
-                                        <th scope="col">Tag</th>
-                                        <th scope="col">Created</th>
-                                        <th scope="col">Size</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ range index . 1 }}
-                                    <tr>
-                                        <td>{{ .Repository }}</td>
-                                        <td>{{ .Tag }}</td>
-                                        <td>{{ .Created }}</td>
-                                        <td>{{ .Size }}</td>
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">Repository</th>
+                                            <th scope="col">Tag</th>
+                                            <th scope="col">Created</th>
+                                            <th scope="col">Size</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range index . 1 }}
+                                        <tr>
+                                            <td>{{ .Repository }}</td>
+                                            <td>{{ .Tag }}</td>
+                                            <td>{{ .Created }}</td>
+                                            <td>{{ .Size }}</td>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

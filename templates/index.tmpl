@@ -120,35 +120,37 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead">
-                                    <tr> {{ if index . 9 }}
-                                        <th>Notifications</th>
-                                        <th style="text-align: right;">
-                                            <a href="/notifications" style="text-decoration: none; color:#22252b">
-                                                <i class="fas fa-ellipsis-h"></i>
-                                            </a>
-                                        </th>
-                                        {{ else }}
-                                        <th style="background-color: none;" colspan="2">Notifications</th>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead">
+                                        <tr> {{ if index . 9 }}
+                                            <th>Notifications</th>
+                                            <th style="text-align: right;">
+                                                <a href="/notifications" style="text-decoration: none; color:#22252b">
+                                                    <i class="fas fa-ellipsis-h"></i>
+                                                </a>
+                                            </th>
+                                            {{ else }}
+                                            <th style="background-color: none;" colspan="2">Notifications</th>
+                                            {{ end }}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ if index . 8 }} {{ range index . 8 }}
+                                        <tr>
+                                            <td>{{ if eq .Status "U" }}
+                                                <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                                                <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
+                                            <td style="text-align: right;">{{ .Time }}</td>
+                                        </tr>
+                                        {{ end }} {{ else }}
+                                        <tr>
+                                            <td colspan="2" style="text-align: center;">No notifications.</td>
+                                        </tr>
                                         {{ end }}
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ if index . 8 }} {{ range index . 8 }}
-                                    <tr>
-                                        <td>{{ if eq .Status "U" }}
-                                            <i class="fas fa-check text-success" aria-hidden="true"></i> &nbsp;{{ else }}
-                                            <i class="fas fa-times text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }}{{ .Desc }}</td>
-                                        <td style="text-align: right;">{{ .Time }}</td>
-                                    </tr>
-                                    {{ end }} {{ else }}
-                                    <tr>
-                                        <td colspan="2" style="text-align: center;">No notifications.</td>
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -160,31 +162,33 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th colspan="2">System Info</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th style="width: 24%;">Name</th>
-                                        <td style="width: 100%; text-align: right;">{{ index . 1 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Docker version</th>
-                                        <td style="width: 100%; text-align: right;">{{ index . 2 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>CPU</th>
-                                        <td style="width: 100%; text-align: right;">{{ index . 3 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Memory</th>
-                                        <td style="width: 100%; text-align: right;">{{ index . 4 }} GiB</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">System Info</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 24%;">Name</th>
+                                            <td style="width: 100%; text-align: right;">{{ index . 1 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Docker version</th>
+                                            <td style="width: 100%; text-align: right;">{{ index . 2 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>CPU</th>
+                                            <td style="width: 100%; text-align: right;">{{ index . 3 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Memory</th>
+                                            <td style="width: 100%; text-align: right;">{{ index . 4 }} GiB</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

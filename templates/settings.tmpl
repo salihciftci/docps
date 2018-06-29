@@ -43,34 +43,36 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead bg-ee">
-                                    <tr>
-                                        <th scope="col">Change Password</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th class="bg-white">
-                                            <form class="form-signin" action="/settings" method="POST">
-                                                <div class="form-group">
-                                                    <label for="cpass">Current password</label>
-                                                    <input type="password" class="form-control" id="cpass" name="cpass" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="npass">New password</label>
-                                                    <input type="password" class="form-control" id="npass" name="npass" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="cnpass">Confirm new password</label>
-                                                    <input type="password" class="form-control" id="cnpass" name="cnpass" required>
-                                                </div>
-                                                <button type="submit" class="btn" style="background-color:#22252b; color: white;">Change password</button>
-                                            </form>
-                                        </th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">Change Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="bg-white">
+                                                <form class="form-signin" action="/settings" method="POST">
+                                                    <div class="form-group">
+                                                        <label for="cpass">Current password</label>
+                                                        <input type="password" class="form-control" id="cpass" name="cpass" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="npass">New password</label>
+                                                        <input type="password" class="form-control" id="npass" name="npass" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="cnpass">Confirm new password</label>
+                                                        <input type="password" class="form-control" id="cnpass" name="cnpass" required>
+                                                    </div>
+                                                    <button type="submit" class="btn" style="background-color:#22252b; color: white;">Change password</button>
+                                                </form>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,30 +83,32 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead bg-ee">
-                                    <tr>
-                                        <th scope="col" colspan="2">Information</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="bg-white">
-                                        <th>API Key</th>
-                                        <th>
-                                            <input id="key" value="{{ index . 2 }}" style="width: 80%; border: 0; margin-top: 5px;" readonly/>
-                                            <span>
-                                                <a class="btn" style="float: right;" onclick="Copy()">
-                                                    <i class="far fa-copy"></i> Copy</a>
-                                                </i>
-                                            </span>
-                                        </th>
-                                    </tr>
-                                    <tr class="bg-white">
-                                        <th>Version</th>
-                                        <th>{{ index . 1 }}</th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col" colspan="2">Information</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white">
+                                            <th>API Key</th>
+                                            <th>
+                                                <input id="key" value="{{ index . 2 }}" style="width: 80%; border: 0; margin-top: 5px;" readonly/>
+                                                <span>
+                                                    <a class="btn" style="float: right;" onclick="Copy()">
+                                                        <i class="far fa-copy"></i> Copy</a>
+                                                    </i>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-white">
+                                            <th>Version</th>
+                                            <th>{{ index . 1 }}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

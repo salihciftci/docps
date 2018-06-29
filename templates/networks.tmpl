@@ -46,24 +46,26 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead bg-ee">
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Driver</th>
-                                        <th scope="col">Scope</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ range index . 1 }}
-                                    <tr>
-                                        <td>{{ .Name }}</td>
-                                        <td>{{ .Driver }}</td>
-                                        <td>{{ .Scope }}</td>
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Driver</th>
+                                            <th scope="col">Scope</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range index . 1 }}
+                                        <tr>
+                                            <td>{{ .Name }}</td>
+                                            <td>{{ .Driver }}</td>
+                                            <td>{{ .Scope }}</td>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

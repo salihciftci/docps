@@ -46,39 +46,41 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <table class="table table-hover" id="table">
-                                <thead class="thead">
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Size</th>
-                                        <th scope="col">Ports</th>
-                                        <th scope="col">Created</th>
-                                        <th scope="col" style="width: 1%;">Logs</th>
-                                        <th scope="col" style="width: 1%;" class="center">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ range index . 1 }}
-                                    <tr>
-                                        <td>{{ .Name }}</td>
-                                        <td>{{ .Image }}</td>
-                                        <td>{{ .Size }}</td>
-                                        <td>{{ .Ports }}</td>
-                                        <td>{{ .RunningFor }}</td>
-                                        <td>
-                                            <a href="/logs?container={{ .Name }}" style="text-decoration: none; color: #354168">
-                                                <span style="text-align: center; display: block;" class="fas fa-binoculars" aria-hidden="true"></span>
-                                            </a>
-                                        </td>
-                                        <td>{{ if eq .Status "U" }}
-                                            <span style="text-align: center; display: block;" class="fas fa-check text-success" aria-hidden="true"></span>{{ else }}
-                                            <span style="text-align: center; display: block;" class="fas fa-times text-danger" aria-hidden="true"></span>{{ end }}
-                                        </td>
-                                    </tr>
-                                    {{ end }}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Image</th>
+                                            <th scope="col">Size</th>
+                                            <th scope="col">Ports</th>
+                                            <th scope="col">Created</th>
+                                            <th scope="col" style="width: 1%;">Logs</th>
+                                            <th scope="col" style="width: 1%;" class="center">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range index . 1 }}
+                                        <tr>
+                                            <td>{{ .Name }}</td>
+                                            <td>{{ .Image }}</td>
+                                            <td>{{ .Size }}</td>
+                                            <td>{{ .Ports }}</td>
+                                            <td>{{ .RunningFor }}</td>
+                                            <td>
+                                                <a href="/logs?container={{ .Name }}" style="text-decoration: none; color: #354168">
+                                                    <span style="text-align: center; display: block;" class="fas fa-binoculars" aria-hidden="true"></span>
+                                                </a>
+                                            </td>
+                                            <td>{{ if eq .Status "U" }}
+                                                <span style="text-align: center; display: block;" class="fas fa-check text-success" aria-hidden="true"></span>{{ else }}
+                                                <span style="text-align: center; display: block;" class="fas fa-times text-danger" aria-hidden="true"></span>{{ end }}
+                                            </td>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
