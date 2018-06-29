@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -20,31 +21,39 @@ func init() {
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 }
 
-func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
+func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 	if userPassword == "" {
 		http.Redirect(w, r, "/install", http.StatusFound)
-		return
+		log.Println(r.Method, r.URL.Path, "Not Installed")
+		return fmt.Errorf("100")
 	}
 
 	cookie, err := r.Cookie("session")
-
 	if err == http.ErrNoCookie {
 		cookie = &http.Cookie{
 			Name:  "session",
-			Value: "0",
+			Value: "",
 			Path:  "/",
 		}
 		http.SetCookie(w, cookie)
-		log.Println(r.Method, r.URL.Path, err)
 		http.Redirect(w, r, "/login", http.StatusFound)
-		return
+		return fmt.Errorf("101")
 	}
 
+	if cookie.Value != cookieValue {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return fmt.Errorf("102")
+	}
+
+	return nil
+}
+
+func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		inputPass := r.FormValue("inputPassword")
 		inputUser := r.FormValue("inputUser")
 		if inputUser == username && inputPass == userPassword {
-			cookie = &http.Cookie{
+			cookie := &http.Cookie{
 				Name:    "session",
 				Value:   cookieValue,
 				Path:    "/",
@@ -55,20 +64,10 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if cookie.Value != cookieValue {
-		cookie = &http.Cookie{
-			Name:  "session",
-			Value: "0",
-			Path:  "/",
-		}
-		http.SetCookie(w, cookie)
-		http.Redirect(w, r, "/login", http.StatusFound)
+	err := parseSessionCookie(w, r)
+	if err != nil {
 		return
 	}
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
 
 	d, err := parseDashboard()
 	if err != nil {
@@ -83,12 +82,15 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
+
 	log.Println(r.Method, r.URL.Path)
 }
 
 func containersHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
-
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 	c, err := parseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -109,7 +111,10 @@ func containersHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func statsHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	s, err := parseStats()
 
@@ -132,7 +137,10 @@ func statsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func imagesHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	i, err := parseImages()
 
@@ -155,7 +163,10 @@ func imagesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func volumesHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	v, err := parseVolumes()
 
@@ -178,7 +189,10 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func networksHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	n, err := parseNetworks()
 
@@ -200,7 +214,10 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logsHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	params := r.URL.Query()
 	key, ok := params["container"]
@@ -250,7 +267,10 @@ func logsHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func notificationHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 	bn, n := getNotification()
 
 	if len(n) > 100 {
@@ -262,7 +282,7 @@ func notificationHandler(w http.ResponseWriter, r *http.Request) {
 	data = append(data, bn)
 	data = append(data, n)
 
-	err := tpl.ExecuteTemplate(w, "notifications.tmpl", data)
+	err = tpl.ExecuteTemplate(w, "notifications.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
@@ -271,7 +291,10 @@ func notificationHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func settingsHandler(w http.ResponseWriter, r *http.Request) {
-	parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
+	if err != nil {
+		return
+	}
 
 	if r.Method == "POST" {
 		pass := r.FormValue("cpass")
@@ -304,7 +327,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 	data = append(data, version)
 	data = append(data, apiKey)
 
-	err := tpl.ExecuteTemplate(w, "settings.tmpl", data)
+	err = tpl.ExecuteTemplate(w, "settings.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
@@ -354,7 +377,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := r.Cookie("session")
 	cookie = &http.Cookie{
 		Name:  "session",
-		Value: "0",
+		Value: "",
 		Path:  "/",
 	}
 
