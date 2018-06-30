@@ -436,7 +436,7 @@ func main() {
 				if v.Status != parseContainers[i].Status {
 					if savedContainers[i].Status == "U" {
 						notifications = append(notifications, notification{
-							Desc:   savedContainers[i].Name + " is stopped.",
+							Desc:   savedContainers[i].Name + " has stopped.",
 							Time:   time.Now().Format("02/01/2006 15:04"),
 							Status: "E",
 						})
@@ -444,7 +444,7 @@ func main() {
 
 					if savedContainers[i].Status == "E" {
 						notifications = append(notifications, notification{
-							Desc:   savedContainers[i].Name + " is started.",
+							Desc:   savedContainers[i].Name + " has live.",
 							Time:   time.Now().Format("02/01/2006 15:04"),
 							Status: "U",
 						})
@@ -452,6 +452,7 @@ func main() {
 				}
 			}
 			savedContainers = parseContainers
+			time.Sleep(5 * time.Second)
 		}
 	}()
 
