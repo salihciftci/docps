@@ -1,10 +1,14 @@
-package main
+package api
 
 import (
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+)
+
+var (
+	apiKey = ""
 )
 
 // apiStatus response /api/status requests
@@ -79,7 +83,7 @@ func apiContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	container, err := parseContainers()
+	container, err := cmd.ParseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
