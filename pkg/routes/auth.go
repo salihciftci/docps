@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	tpl          = template.Must(template.ParseGlob("../templates/*.tmpl"))
+	tpl          = template.Must(template.ParseGlob("templates/*.tmpl"))
 	userPassword = ""
 	cookieValue  = ""
 )
