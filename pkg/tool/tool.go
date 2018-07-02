@@ -1,0 +1,51 @@
+package tool
+
+import (
+	"bufio"
+	"math/rand"
+	"os/exec"
+	"time"
+)
+
+//GeneratePassword for apiKey and cookieValue
+func GeneratePassword(l int) string {
+	rand.Seed(time.Now().UnixNano())
+	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
+
+	b := make([]rune, l)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+
+	return string(b)
+}
+
+//Version getting git commit id
+func Version() (string, error) {
+	var version string
+
+	cmd := exec.Command("git", "rev-parse", "HEAD")
+	cmdReader, err := cmd.StdoutPipe()
+	if err != nil {
+		return "", err
+	}
+
+	scanner := bufio.NewScanner(cmdReader)
+	go func() {
+		for scanner.Scan() {
+			version = scanner.Text()
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		return "", err
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		return "", err
+	}
+
+	return version, nil
+}
