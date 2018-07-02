@@ -4,11 +4,11 @@ build:
 	go build -o $(BINARY_NAME) -v
 
 run: 
-	go build -o $(BINARY_NAME) -v ./...
+	go build -o $(BINARY_NAME) -v 
 	./$(BINARY_NAME)
 
 test:
-	go test -v ./...
+	go test -v .
 
 linux-build:
 	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME)-linux -v
