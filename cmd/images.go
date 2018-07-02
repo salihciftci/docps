@@ -1,4 +1,4 @@
-package liman
+package cmd
 
 import (
 	"fmt"
@@ -9,17 +9,19 @@ import (
 	"github.com/salihciftci/liman/pkg/tool"
 )
 
-type volume struct {
-	Driver string `json:"driver,omitempty"`
-	Name   string `json:"name,omitempty"`
+type image struct {
+	Repository string `json:"repository,omitempty"`
+	Tag        string `json:"tag,omitempty"`
+	Created    string `json:"created,omitempty"`
+	Size       string `json:"size,omitempty"`
 }
 
-func parseVolumes() ([]volume, error) {
+func parseImages() ([]image, error) {
 	cmdArgs := []string{
-		"volume",
+		"image",
 		"ls",
 		"--format",
-		"{{.Driver}}\t{{.Name}}",
+		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
 	stdOut, err := tool.Cmd(cmdArgs)
 
@@ -27,26 +29,27 @@ func parseVolumes() ([]volume, error) {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	var volumes []volume
+	var images []image
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
-		volumes = append(volumes,
-			volume{
-				Driver: s[0],
-				Name:   s[1],
+		images = append(images,
+			image{
+				Repository: s[0],
+				Tag:        s[1],
+				Created:    s[2],
+				Size:       s[3],
 			})
 	}
-
-	return volumes, nil
+	return images, nil
 }
 
-func volumesHandler(w http.ResponseWriter, r *http.Request) {
+func imagesHandler(w http.ResponseWriter, r *http.Request) {
 	err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}
 
-	v, err := parseVolumes()
+	i, err := parseImages()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -57,9 +60,9 @@ func volumesHandler(w http.ResponseWriter, r *http.Request) {
 
 	var data []interface{}
 	data = append(data, bn)
-	data = append(data, v)
+	data = append(data, i)
 
-	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
+	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}

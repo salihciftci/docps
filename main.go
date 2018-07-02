@@ -3,11 +3,11 @@ package main
 import (
 	"log"
 
-	"github.com/salihciftci/liman/cmd/liman"
+	"github.com/salihciftci/liman/cmd"
 )
 
 func main() {
-	err := liman.Run()
+	err := cmd.Run()
 	if err != nil {
 		log.Println(err)
 	}

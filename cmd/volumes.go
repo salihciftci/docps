@@ -1,4 +1,4 @@
-package liman
+package cmd
 
 import (
 	"fmt"
@@ -9,45 +9,44 @@ import (
 	"github.com/salihciftci/liman/pkg/tool"
 )
 
-type network struct {
-	Name   string `json:"name,omitempty"`
+type volume struct {
 	Driver string `json:"driver,omitempty"`
-	Scope  string `json:"scope,omitempty"`
+	Name   string `json:"name,omitempty"`
 }
 
-func parseNetworks() ([]network, error) {
+func parseVolumes() ([]volume, error) {
 	cmdArgs := []string{
-		"network",
+		"volume",
 		"ls",
 		"--format",
-		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
+		"{{.Driver}}\t{{.Name}}",
 	}
 	stdOut, err := tool.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
-	var networks []network
+
+	var volumes []volume
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
-		networks = append(networks,
-			network{
-				Name:   s[0],
-				Driver: s[1],
-				Scope:  s[2],
+		volumes = append(volumes,
+			volume{
+				Driver: s[0],
+				Name:   s[1],
 			})
 	}
 
-	return networks, nil
+	return volumes, nil
 }
 
-func networksHandler(w http.ResponseWriter, r *http.Request) {
+func volumesHandler(w http.ResponseWriter, r *http.Request) {
 	err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}
 
-	n, err := parseNetworks()
+	v, err := parseVolumes()
 
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
@@ -58,10 +57,11 @@ func networksHandler(w http.ResponseWriter, r *http.Request) {
 
 	var data []interface{}
 	data = append(data, bn)
-	data = append(data, n)
+	data = append(data, v)
 
-	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
+	err = tpl.ExecuteTemplate(w, "volumes.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
+	log.Println(r.Method, r.URL.Path)
 }

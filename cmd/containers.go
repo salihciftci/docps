@@ -1,4 +1,4 @@
-package liman
+package cmd
 
 import (
 	"fmt"
