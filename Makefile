@@ -21,3 +21,5 @@ docker:
 	
 clean:
 	go clean
+	rm liman-darwin
+	rm liman-linux
