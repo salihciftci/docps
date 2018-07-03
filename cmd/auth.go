@@ -82,8 +82,8 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cookie, _ := r.Cookie("session")
-	cookie = &http.Cookie{
+	//	cookie, _ := r.Cookie("session")
+	cookie := &http.Cookie{
 		Name:  "session",
 		Value: "",
 		Path:  "/",
