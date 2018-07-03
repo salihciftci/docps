@@ -15,7 +15,9 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		pass := r.FormValue("cpass")
-		if pass != userPassword {
+
+		match := tool.CheckPass(pass, userPassword)
+		if !match {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
@@ -28,12 +30,20 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if nPass == userPassword {
+		match = tool.CheckPass(nPass, userPassword)
+
+		if match {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
 
-		userPassword = nPass
+		bNPass, err := tool.HashPasswordAndSave(nPass)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		userPassword = string(bNPass)
 		http.Redirect(w, r, "/logout", http.StatusFound)
 	}
 

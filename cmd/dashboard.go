@@ -83,7 +83,8 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		inputPass := r.FormValue("inputPassword")
 		inputUser := r.FormValue("inputUser")
-		if inputUser == username && inputPass == userPassword {
+		match := tool.CheckPass(inputPass, userPassword)
+		if inputUser == username && match {
 			cookie := &http.Cookie{
 				Name:    "session",
 				Value:   cookieValue,

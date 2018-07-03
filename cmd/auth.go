@@ -12,7 +12,7 @@ import (
 var (
 	tpl          = template.Must(template.ParseGlob("templates/*.tmpl"))
 	cookieValue  = tool.GeneratePassword(140)
-	userPassword = ""
+	userPassword = tool.ReadPassword()
 )
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
@@ -98,7 +98,12 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		if userPassword == "" {
 			inputPassword := r.FormValue("inputPassword")
-			userPassword = inputPassword
+			hash, err := tool.HashPasswordAndSave(inputPassword)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			userPassword = hash
 			http.Redirect(w, r, "/", http.StatusFound)
 			log.Println(r.Method, r.URL.Path, "Install complete.")
 			return
