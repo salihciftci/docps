@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	apiKey = tool.GeneratePassword(140)
+	apiKey = tool.GeneratePassword(32)
 )
 
 func apiStatus(w http.ResponseWriter, r *http.Request) {
