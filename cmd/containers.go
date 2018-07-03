@@ -43,6 +43,7 @@ func parseContainers() ([]ps, error) {
 				Status:     s[4][:1],
 				Ports:      s[5],
 			})
+		container[i].Ports = tool.ShortPorts(container[i].Ports)
 	}
 
 	return container, nil

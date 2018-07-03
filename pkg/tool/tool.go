@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"math/rand"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -48,4 +49,20 @@ func Version() (string, error) {
 	}
 
 	return version, nil
+}
+
+//ShortPorts Parsing containers ports and shoring them
+func ShortPorts(p string) string {
+	if len(p) < 8 {
+		return p
+	}
+
+	ports := strings.Split(p, ", ")
+	for i := range ports {
+		ports[i] = ports[i][8:]
+	}
+
+	p = strings.Join(ports, ", ")
+
+	return p
 }
