@@ -11,19 +11,17 @@ test:
 	go test -v .
 
 linux-build:
-	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME)-linux -v
+	GOOS=linux GOARCH=amd64 go build -o $(BINARY_NAME) -v
 
 darwin-build:
-	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-darwin -v
+	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME) -v
 
 windows-build:
-	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-windows.exe -v
+	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME).exe -v
 	
 docker:
 	docker build -t $(BINARY_NAME) .
 	
 clean:
 	go clean
-	rm $(BINARY_NAME)-darwin
-	rm $(BINARY_NAME)-linux
-	rm $(BINARY_NAME)-windows.exe
+	rm liman.exe
