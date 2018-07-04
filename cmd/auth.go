@@ -18,7 +18,7 @@ var (
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 	if userPassword == "" {
 		http.Redirect(w, r, "/install", http.StatusFound)
-		log.Println(r.Method, r.URL.Path, "Not Installed")
+		log.Println("Installation started.")
 		return fmt.Errorf("100")
 	}
 
@@ -82,7 +82,6 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//	cookie, _ := r.Cookie("session")
 	cookie := &http.Cookie{
 		Name:  "session",
 		Value: "",
@@ -105,7 +104,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			}
 			userPassword = hash
 			http.Redirect(w, r, "/", http.StatusFound)
-			log.Println(r.Method, r.URL.Path, "Install complete.")
+			log.Println("Installation complete.")
 			return
 		}
 	}
