@@ -15,11 +15,15 @@ linux-build:
 
 darwin-build:
 	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME)-darwin -v
+
+windows-build:
+	GOOS=windows GOARCH=amd64 go build -o $(BINARY_NAME)-windows.exe -v
 	
 docker:
 	docker build -t $(BINARY_NAME) .
 	
 clean:
 	go clean
-	rm liman-darwin
-	rm liman-linux
+	rm $(BINARY_NAME)-darwin
+	rm $(BINARY_NAME)-linux
+	rm $(BINARY_NAME)-windows.exe
