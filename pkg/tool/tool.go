@@ -58,13 +58,15 @@ func Version() (string, error) {
 
 //ShortPorts Parsing containers ports and shoring them
 func ShortPorts(p string) string {
-	if len(p) < 8 {
+	if len(p) < 9 {
 		return p
 	}
 
 	ports := strings.Split(p, ", ")
 	for i := range ports {
-		ports[i] = ports[i][8:]
+		if len(ports[i]) > 9 {
+			ports[i] = ports[i][8:]
+		}
 	}
 
 	p = strings.Join(ports, ", ")
