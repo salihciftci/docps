@@ -46,12 +46,17 @@
                 <div class="col-sm-12" style="padding: 0;">
                     <div class="card fcard">
                         <div class="card-body">
-                            <div class="btn-group w-100" role="group">
-                                <button type="button" class="btn btn-light w-25 c-btn" onclick="All()">All</button>
-                                <button type="button" class="btn btn-light w-50 c-btn" onclick="Live()">Live</button>
-                                <button type="button" class="btn btn-light w-25 c-btn" onclick="Stopped()">Stopped</button>
-                            </div>
-                            <br>
+                            <ul class="nav nav-tabs nav-justified" id="myTab">
+                                <li class="nav-item">
+                                    <a class="nav-link active" onclick="All()" data-toggle="tab" aria-selected="true">All</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="Live()" data-toggle="tab" aria-selected="false">Live</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="Stopped()" data-toggle="tab" aria-selected="false">Stopped</a>
+                                </li>
+                            </ul>
                             <br>
                             <!-- Table -->
                             <div class="table-responsive">

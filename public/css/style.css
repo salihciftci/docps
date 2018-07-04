@@ -122,3 +122,21 @@ a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover
     background-color: white;
      border: none;
 }
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    border-style: solid;
+    border-width: 0px 0px 0.5px 0px;
+    border-color: #22252b;
+    text-decoration: none;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active:hover {
+    border-style: solid;
+    border-width: 0px 0px 0.5px 0px;
+    border-color: #22252b;
+    text-decoration: none;
+}
+
+ .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+     border-color: transparent;
+ }
