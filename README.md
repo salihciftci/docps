@@ -42,7 +42,7 @@ More examples and all end points can be found in [wiki](https://github.com/salih
 
 ## Screenshots
 
- |  | Screenshots  |   |
+|  | Screenshots  |   |
 |:-------------:|:-------:|:-------:|
 |![Dashboard](https://img.salih.co/liman/v0.6/dashboard.png)|![Containers](https://img.salih.co/liman/v0.6/containers.png)|![Images](https://img.salih.co/liman/v0.6/images.png)|
 |![Stats](https://img.salih.co/liman/v0.6/stats.png)|![Volumes](https://img.salih.co/liman/v0.6/volumes.png)|![Networks](https://img.salih.co/liman/v0.6/networks.png)|
