@@ -3,7 +3,7 @@
 
 ![alt text](https://img.salih.co/liman/v0.6/logo.png "Liman")
 
-Web application for monitoring docker. Monitor docker inside the docker. Written with Go.
+Web application for monitoring docker. Monitor docker inside the docker. Written in Go.
 
 ----
 ![screenshot](https://img.salih.co/liman/v0.6/dashboard.png)
