@@ -1,0 +1,10 @@
+.git
+.git/**
+.github/
+.github/**
+*.md
+.gitignore
+Dockerfile*
+.travis.yml
+.dockerignore
+Makefile
