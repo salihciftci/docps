@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 var (
@@ -22,7 +22,7 @@ func parseDashboard() ([]interface{}, error) {
 		"{{.Containers}}\t{{.Name}}\t{{.ServerVersion}}\t{{.NCPU}}\t{{.MemTotal}}",
 	}
 
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
@@ -83,7 +83,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		inputPass := r.FormValue("inputPassword")
 		inputUser := r.FormValue("inputUser")
-		match := tool.CheckPass(inputPass, userPassword)
+		match := util.CheckPass(inputPass, userPassword)
 		if inputUser == username && match {
 			cookie := &http.Cookie{
 				Name:    "session",

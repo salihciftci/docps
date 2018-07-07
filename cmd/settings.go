@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 func settingsHandler(w http.ResponseWriter, r *http.Request) {
@@ -16,7 +16,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		pass := r.FormValue("cpass")
 
-		match := tool.CheckPass(pass, userPassword)
+		match := util.CheckPass(pass, userPassword)
 		if !match {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
@@ -30,14 +30,14 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		match = tool.CheckPass(nPass, userPassword)
+		match = util.CheckPass(nPass, userPassword)
 
 		if match {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
 
-		bNPass, err := tool.HashPasswordAndSave(nPass)
+		bNPass, err := util.HashPasswordAndSave(nPass)
 		if err != nil {
 			log.Println(err)
 			return
@@ -49,7 +49,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 
 	bn, _ := getNotification()
 
-	version, err := tool.Version()
+	version, err := util.Version()
 	if err != nil {
 		log.Println(err)
 	}

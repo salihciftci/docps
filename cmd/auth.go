@@ -6,13 +6,13 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 var (
 	tpl          = template.Must(template.ParseGlob("templates/*.tmpl"))
-	cookieValue  = tool.GeneratePassword(140)
-	userPassword = tool.ReadPassword()
+	cookieValue  = util.GeneratePassword(140)
+	userPassword = util.ReadPassword()
 )
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
@@ -97,7 +97,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		if userPassword == "" {
 			inputPassword := r.FormValue("inputPassword")
-			hash, err := tool.HashPasswordAndSave(inputPassword)
+			hash, err := util.HashPasswordAndSave(inputPassword)
 			if err != nil {
 				log.Println(err)
 				return

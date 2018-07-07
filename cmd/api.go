@@ -6,11 +6,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 var (
-	apiKey = tool.GeneratePassword(32)
+	apiKey = util.GeneratePassword(32)
 )
 
 func apiStatus(w http.ResponseWriter, r *http.Request) {

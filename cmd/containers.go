@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type ps struct {
@@ -25,7 +25,7 @@ func parseContainers() ([]ps, error) {
 		"--format",
 		"{{.Names}}\t{{.Image}}\t{{.Size}}\t{{.RunningFor}}\t{{.Status}}\t{{.Ports}}",
 	}
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
@@ -43,7 +43,7 @@ func parseContainers() ([]ps, error) {
 				Status:     s[4][:1],
 				Ports:      s[5],
 			})
-		container[i].Ports = tool.ShortPorts(container[i].Ports)
+		container[i].Ports = util.ShortPorts(container[i].Ports)
 	}
 
 	return container, nil

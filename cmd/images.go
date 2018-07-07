@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type image struct {
@@ -23,7 +23,7 @@ func parseImages() ([]image, error) {
 		"--format",
 		"{{.Repository}}\t{{.Tag}}\t{{.CreatedSince}}\t{{.Size}}",
 	}
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")

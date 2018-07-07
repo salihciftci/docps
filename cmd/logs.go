@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type logs struct {
@@ -23,7 +23,7 @@ func parseLogs(container []ps) ([]logs, error) {
 			container[i].Name,
 		}
 
-		cLog, err := tool.Cmd(cmdArgs)
+		cLog, err := util.Cmd(cmdArgs)
 		if err != nil {
 			return nil, fmt.Errorf("Docker daemon is not running")
 		}

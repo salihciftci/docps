@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 var (
@@ -27,7 +27,7 @@ func parseContainerStatus() ([]ps, error) {
 		"{{.Names}}\t{{.Status}}",
 	}
 
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 	if err != nil {
 		return nil, err
 	}

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type volume struct {
@@ -21,7 +21,7 @@ func parseVolumes() ([]volume, error) {
 		"--format",
 		"{{.Driver}}\t{{.Name}}",
 	}
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")

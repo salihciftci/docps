@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type stat struct {
@@ -24,7 +24,7 @@ func parseStats() ([]stat, error) {
 		"--format",
 		"{{.Name}}\t{{.CPUPerc}}\t{{.MemUsage}}\t{{.MemPerc}}\t{{.NetIO}}\t{{.BlockIO}}",
 	}
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, err

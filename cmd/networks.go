@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/salihciftci/liman/pkg/tool"
+	"github.com/salihciftci/liman/util"
 )
 
 type network struct {
@@ -22,7 +22,7 @@ func parseNetworks() ([]network, error) {
 		"--format",
 		"{{.Name}}\t{{.Driver}}\t{{.Scope}}",
 	}
-	stdOut, err := tool.Cmd(cmdArgs)
+	stdOut, err := util.Cmd(cmdArgs)
 
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
