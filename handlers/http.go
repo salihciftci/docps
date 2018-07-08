@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-//HTTPServer asd
+//HTTPServer returns *http.Server
 func HTTPServer() *http.Server {
 	return &http.Server{
 		Addr:         ":8080",
