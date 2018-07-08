@@ -2,19 +2,19 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 
 	"github.com/salihciftci/liman/util"
 )
 
-type logs struct {
+//Logs asd
+type Logs struct {
 	Name string   `json:"name,omitempty"`
 	Logs []string `json:"logs,omitempty"`
 }
 
-func parseLogs(container []ps) ([]logs, error) {
-	l := []logs{}
+//ParseLogs asd
+func ParseLogs(container []PS) ([]Logs, error) {
+	l := []Logs{}
 	for i := 0; i < len(container); i++ {
 		cmdArgs := []string{
 			"logs",
@@ -33,12 +33,12 @@ func parseLogs(container []ps) ([]logs, error) {
 			for k := len(cLog) - 1; k != -1; k-- {
 				x = append(x, cLog[k])
 			}
-			l = append(l, logs{
+			l = append(l, Logs{
 				Name: container[i].Name,
 				Logs: x,
 			})
 		} else {
-			l = append(l, logs{
+			l = append(l, Logs{
 				Name: container[i].Name,
 				Logs: []string{},
 			})
@@ -46,57 +46,4 @@ func parseLogs(container []ps) ([]logs, error) {
 	}
 
 	return l, nil
-}
-
-func logsHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-
-	params := r.URL.Query()
-	key, ok := params["container"]
-
-	if !ok || len(key) < 1 {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
-	c, err := parseContainers()
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	l, err := parseLogs(c)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	i := -1
-	for p, v := range l {
-		if v.Name == key[0] {
-			i = p
-		}
-	}
-
-	if i == -1 {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
-	bn, _ := getNotification()
-
-	var data []interface{}
-
-	data = append(data, bn)
-	data = append(data, l[i].Name)
-	data = append(data, l[i].Logs)
-
-	err = tpl.ExecuteTemplate(w, "logs.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
-	log.Println(r.Method, r.URL.Path)
 }

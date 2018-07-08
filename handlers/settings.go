@@ -1,9 +1,10 @@
-package cmd
+package handlers
 
 import (
 	"log"
 	"net/http"
 
+	"github.com/salihciftci/liman/cmd"
 	"github.com/salihciftci/liman/util"
 )
 
@@ -47,7 +48,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/logout", http.StatusFound)
 	}
 
-	bn, _ := getNotification()
+	bn, _ := cmd.GetNotification()
 
 	version, err := util.Version()
 	if err != nil {

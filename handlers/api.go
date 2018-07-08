@@ -1,4 +1,4 @@
-package cmd
+package handlers
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/salihciftci/liman/cmd"
 	"github.com/salihciftci/liman/util"
 )
 
@@ -82,7 +83,7 @@ func apiContainer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	container, err := parseContainers()
+	container, err := cmd.ParseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -105,7 +106,7 @@ func apiImages(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	images, err := parseImages()
+	images, err := cmd.ParseImages()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -129,7 +130,7 @@ func apiVolumes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	volumes, err := parseVolumes()
+	volumes, err := cmd.ParseVolumes()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -153,7 +154,7 @@ func apiNetworks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	networks, err := parseNetworks()
+	networks, err := cmd.ParseNetworks()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -177,7 +178,7 @@ func apiStats(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	stats, err := parseStats()
+	stats, err := cmd.ParseStats()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -201,13 +202,13 @@ func apiLogs(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	container, err := parseContainers()
+	container, err := cmd.ParseContainers()
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
 	}
 
-	logs, err := parseLogs(container)
+	logs, err := cmd.ParseLogs(container)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 		return
@@ -222,4 +223,35 @@ func apiLogs(w http.ResponseWriter, r *http.Request) {
 		})
 
 	log.Println(r.Method, r.URL.Path)
+}
+
+//Handler asd
+func Handler() http.Handler {
+	r := http.NewServeMux()
+
+	r.HandleFunc("/", indexHandler)
+	r.HandleFunc("/containers", containersHandler)
+	r.HandleFunc("/stats", statsHandler)
+	r.HandleFunc("/images", imagesHandler)
+	r.HandleFunc("/volumes", volumesHandler)
+	r.HandleFunc("/networks", networksHandler)
+	r.HandleFunc("/logs", logsHandler)
+	r.HandleFunc("/settings", settingsHandler)
+
+	r.HandleFunc("/login", loginHandler)
+	r.HandleFunc("/logout", logoutHandler)
+	r.HandleFunc("/install", installHandler)
+
+	r.HandleFunc("/notifications", notificationHandler)
+
+	r.HandleFunc("/api/containers", apiContainer)
+	r.HandleFunc("/api/images", apiImages)
+	r.HandleFunc("/api/volumes", apiVolumes)
+	r.HandleFunc("/api/networks", apiNetworks)
+	r.HandleFunc("/api/stats", apiStats)
+	r.HandleFunc("/api/logs", apiLogs)
+	r.HandleFunc("/api/status", apiStatus)
+
+	r.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	return r
 }

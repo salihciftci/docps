@@ -1,14 +1,13 @@
 package cmd
 
 import (
-	"log"
-	"net/http"
 	"strings"
 
 	"github.com/salihciftci/liman/util"
 )
 
-type stat struct {
+//Stat asd
+type Stat struct {
 	Name     string `json:"name,omitempty"`
 	CPU      string `json:"cpu,omitempty"`
 	MemUsage string `json:"memUsage,omitempty"`
@@ -17,7 +16,8 @@ type stat struct {
 	BlockIO  string `json:"blockIO,omitempty"`
 }
 
-func parseStats() ([]stat, error) {
+//ParseStats asd
+func ParseStats() ([]Stat, error) {
 	cmdArgs := []string{
 		"stats",
 		"--no-stream",
@@ -29,11 +29,11 @@ func parseStats() ([]stat, error) {
 	if err != nil {
 		return nil, err
 	}
-	var stats []stat
+	var stats []Stat
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		stats = append(stats,
-			stat{
+			Stat{
 				Name:     s[0],
 				CPU:      s[1],
 				MemUsage: s[2],
@@ -44,30 +44,4 @@ func parseStats() ([]stat, error) {
 	}
 
 	return stats, nil
-}
-
-func statsHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-
-	s, err := parseStats()
-
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	bn, _ := getNotification()
-
-	var data []interface{}
-	data = append(data, bn)
-	data = append(data, s)
-
-	err = tpl.ExecuteTemplate(w, "stats.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
-	log.Println(r.Method, r.URL.Path)
 }

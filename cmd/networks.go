@@ -2,20 +2,20 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	"strings"
 
 	"github.com/salihciftci/liman/util"
 )
 
-type network struct {
+//Network aasd
+type Network struct {
 	Name   string `json:"name,omitempty"`
 	Driver string `json:"driver,omitempty"`
 	Scope  string `json:"scope,omitempty"`
 }
 
-func parseNetworks() ([]network, error) {
+//ParseNetworks asd
+func ParseNetworks() ([]Network, error) {
 	cmdArgs := []string{
 		"network",
 		"ls",
@@ -27,11 +27,11 @@ func parseNetworks() ([]network, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
-	var networks []network
+	var networks []Network
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		networks = append(networks,
-			network{
+			Network{
 				Name:   s[0],
 				Driver: s[1],
 				Scope:  s[2],
@@ -39,29 +39,4 @@ func parseNetworks() ([]network, error) {
 	}
 
 	return networks, nil
-}
-
-func networksHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-
-	n, err := parseNetworks()
-
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	bn, _ := getNotification()
-
-	var data []interface{}
-	data = append(data, bn)
-	data = append(data, n)
-
-	err = tpl.ExecuteTemplate(w, "networks.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
 }

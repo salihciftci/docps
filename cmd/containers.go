@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	"strings"
 
 	"github.com/salihciftci/liman/util"
 )
 
-type ps struct {
+//PS asd
+type PS struct {
 	Name       string `json:"name,omitempty"`
 	Image      string `json:"image,omitempty"`
 	Size       string `json:"size,omitempty"`
@@ -18,7 +17,8 @@ type ps struct {
 	Ports      string `json:"ports,omitempty"`
 }
 
-func parseContainers() ([]ps, error) {
+//ParseContainers asd
+func ParseContainers() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
 		"-a",
@@ -31,11 +31,11 @@ func parseContainers() ([]ps, error) {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	var container []ps
+	var container []PS
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		container = append(container,
-			ps{
+			PS{
 				Name:       s[0],
 				Image:      s[1],
 				Size:       s[2],
@@ -47,28 +47,4 @@ func parseContainers() ([]ps, error) {
 	}
 
 	return container, nil
-}
-
-func containersHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-	c, err := parseContainers()
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	bn, _ := getNotification()
-
-	var data []interface{}
-	data = append(data, bn)
-	data = append(data, c)
-
-	err = tpl.ExecuteTemplate(w, "containers.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
-	log.Println(r.Method, r.URL.Path)
 }

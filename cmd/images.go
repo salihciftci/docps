@@ -2,21 +2,21 @@ package cmd
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	"strings"
 
 	"github.com/salihciftci/liman/util"
 )
 
-type image struct {
+//Image asd
+type Image struct {
 	Repository string `json:"repository,omitempty"`
 	Tag        string `json:"tag,omitempty"`
 	Created    string `json:"created,omitempty"`
 	Size       string `json:"size,omitempty"`
 }
 
-func parseImages() ([]image, error) {
+//ParseImages asd
+func ParseImages() ([]Image, error) {
 	cmdArgs := []string{
 		"image",
 		"ls",
@@ -29,11 +29,11 @@ func parseImages() ([]image, error) {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	var images []image
+	var images []Image
 	for i := 0; i < len(stdOut); i++ {
 		s := strings.Split(stdOut[i], "\t")
 		images = append(images,
-			image{
+			Image{
 				Repository: s[0],
 				Tag:        s[1],
 				Created:    s[2],
@@ -41,30 +41,4 @@ func parseImages() ([]image, error) {
 			})
 	}
 	return images, nil
-}
-
-func imagesHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-
-	i, err := parseImages()
-
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	bn, _ := getNotification()
-
-	var data []interface{}
-	data = append(data, bn)
-	data = append(data, i)
-
-	err = tpl.ExecuteTemplate(w, "images.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
-	log.Println(r.Method, r.URL.Path)
 }

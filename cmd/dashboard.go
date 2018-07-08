@@ -3,19 +3,14 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/salihciftci/liman/util"
 )
 
-var (
-	username = "root"
-)
-
-func parseDashboard() ([]interface{}, error) {
+//ParseDashboard asd
+func ParseDashboard() ([]interface{}, error) {
 	cmdArgs := []string{
 		"info",
 		"--format",
@@ -35,17 +30,17 @@ func parseDashboard() ([]interface{}, error) {
 		dashboard = append(dashboard, s[i])
 	}
 
-	images, err := parseImages()
+	images, err := ParseImages()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	volumes, err := parseVolumes()
+	volumes, err := ParseVolumes()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
 
-	networks, err := parseNetworks()
+	networks, err := ParseNetworks()
 	if err != nil {
 		return nil, fmt.Errorf("Docker daemon is not running")
 	}
@@ -66,7 +61,7 @@ func parseDashboard() ([]interface{}, error) {
 
 	dashboard[1] = strings.Title(dashboard[1].(string))
 
-	basicNotification, notifications := getNotification()
+	basicNotification, notifications := GetNotification()
 
 	dashboard = append(dashboard, basicNotification)
 
@@ -77,43 +72,4 @@ func parseDashboard() ([]interface{}, error) {
 	}
 
 	return dashboard, nil
-}
-
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == "POST" {
-		inputPass := r.FormValue("inputPassword")
-		inputUser := r.FormValue("inputUser")
-		match := util.CheckPass(inputPass, userPassword)
-		if inputUser == username && match {
-			cookie := &http.Cookie{
-				Name:    "session",
-				Value:   cookieValue,
-				Path:    "/",
-				Expires: time.Now().AddDate(2, 0, 0),
-				MaxAge:  0,
-			}
-			http.SetCookie(w, cookie)
-		}
-	}
-
-	err := parseSessionCookie(w, r)
-	if err != nil {
-		return
-	}
-
-	d, err := parseDashboard()
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-		return
-	}
-
-	var data []interface{}
-	data = append(data, d)
-
-	err = tpl.ExecuteTemplate(w, "index.tmpl", data)
-	if err != nil {
-		log.Println(r.Method, r.URL.Path, err)
-	}
-
-	log.Println(r.Method, r.URL.Path)
 }
