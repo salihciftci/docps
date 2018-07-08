@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -12,14 +16,14 @@ var (
 	notifications []Notification
 )
 
-//Notification asd
+//Notification stores values for notifications
 type Notification struct {
 	Desc   string
 	Time   string
 	Status string
 }
 
-//ParseContainerStatus asd
+//ParseContainerStatus is parses and splits containers process state from output for containers status changes
 func ParseContainerStatus() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",
@@ -53,7 +57,7 @@ func ParseContainerStatus() ([]PS, error) {
 	return reverse, nil
 }
 
-//GetNotification asd
+//GetNotification is revers notifications
 func GetNotification() ([]Notification, []Notification) {
 	var reverse []Notification
 	for i := len(notifications) - 1; i >= 0; i-- {
@@ -70,9 +74,8 @@ func GetNotification() ([]Notification, []Notification) {
 	return basic, reverse
 }
 
-//CheckNotifications asd
+//CheckNotifications is checking containers status for notifications
 func CheckNotifications() {
-	// Checking containers for sending notification
 	sc, err := ParseContainerStatus()
 	if err != nil {
 		log.Println(err)

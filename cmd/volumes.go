@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -7,13 +11,13 @@ import (
 	"github.com/salihciftci/liman/util"
 )
 
-//Volume asd
+//Volume stores values for handlers
 type Volume struct {
 	Driver string `json:"driver,omitempty"`
 	Name   string `json:"name,omitempty"`
 }
 
-//ParseVolumes asd
+//ParseVolumes is parses and splits volume values from output
 func ParseVolumes() ([]Volume, error) {
 	cmdArgs := []string{
 		"volume",

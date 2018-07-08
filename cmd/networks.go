@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -7,14 +11,14 @@ import (
 	"github.com/salihciftci/liman/util"
 )
 
-//Network aasd
+//Network stores values for handlers
 type Network struct {
 	Name   string `json:"name,omitempty"`
 	Driver string `json:"driver,omitempty"`
 	Scope  string `json:"scope,omitempty"`
 }
 
-//ParseNetworks asd
+//ParseNetworks is parses and splits networks from output
 func ParseNetworks() ([]Network, error) {
 	cmdArgs := []string{
 		"network",

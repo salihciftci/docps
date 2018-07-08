@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -7,7 +11,7 @@ import (
 	"github.com/salihciftci/liman/util"
 )
 
-//Image asd
+//Image stores values for handlers
 type Image struct {
 	Repository string `json:"repository,omitempty"`
 	Tag        string `json:"tag,omitempty"`
@@ -15,7 +19,7 @@ type Image struct {
 	Size       string `json:"size,omitempty"`
 }
 
-//ParseImages asd
+//ParseImages is parses and splits image values from output
 func ParseImages() ([]Image, error) {
 	cmdArgs := []string{
 		"image",

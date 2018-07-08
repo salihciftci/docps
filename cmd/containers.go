@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -7,7 +11,7 @@ import (
 	"github.com/salihciftci/liman/util"
 )
 
-//PS asd
+//PS stores values for handlers
 type PS struct {
 	Name       string `json:"name,omitempty"`
 	Image      string `json:"image,omitempty"`
@@ -17,7 +21,7 @@ type PS struct {
 	Ports      string `json:"ports,omitempty"`
 }
 
-//ParseContainers asd
+//ParseContainers is parses and splits containers process state values from output
 func ParseContainers() ([]PS, error) {
 	cmdArgs := []string{
 		"ps",

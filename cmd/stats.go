@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package cmd
 
 import (
@@ -6,7 +10,7 @@ import (
 	"github.com/salihciftci/liman/util"
 )
 
-//Stat asd
+//Stat stores values for handlers
 type Stat struct {
 	Name     string `json:"name,omitempty"`
 	CPU      string `json:"cpu,omitempty"`
@@ -16,7 +20,7 @@ type Stat struct {
 	BlockIO  string `json:"blockIO,omitempty"`
 }
 
-//ParseStats asd
+//ParseStats is parses and splits containers stat values from output
 func ParseStats() ([]Stat, error) {
 	cmdArgs := []string{
 		"stats",
