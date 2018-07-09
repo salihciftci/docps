@@ -31,6 +31,16 @@ docker run -it -v /var/run/docker.sock:/var/run/docker.sock salihciftci/liman
 
 Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
 
+### Persist root password
+Liman stores the root password setup during install in the FileSystem, so if you want to persist the 
+password between containers, you should mount the /data folder to a volume.
+
+The below run command will run Liman with the data folder mounted to a local data folder in the current
+directory.
+```
+docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ./data:/data salihciftci/liman
+```
+
 ## API Usage
 
 Basic usage:
