@@ -8,6 +8,7 @@ import (
 	"database/sql"
 	"log"
 	"os"
+	"time"
 
 	//_ Sqlite3 Driver
 	_ "github.com/mattn/go-sqlite3"
@@ -33,7 +34,7 @@ func Connect() (*sql.DB, error) {
 
 	s, _ := db.Prepare(`
 		CREATE TABLE IF NOT EXISTS users (
-			id INTEGER PRIMARY KEY,
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user TEXT,
 			pass TEXT,
 			sessionKey TEXT,
@@ -46,4 +47,25 @@ func Connect() (*sql.DB, error) {
 	s.Exec()
 
 	return db, nil
+}
+
+//CreateUser creates a user
+func CreateUser(name, pass, sessionKey, permission, desc string) error {
+	db, err := Connect()
+	if err != nil {
+		return err
+	}
+	stmt, err := db.Prepare(`INSERT INTO users
+		(user, pass, sessionKey, permission, desc, created, updated)
+		VALUES (?, ?, ?, ?, ?, ?, ?)`)
+
+	if err != nil {
+		return err
+	}
+	created := time.Now().Format("02/01/2006 15:04")
+	updated := time.Now().Format("02/01/2006 15:04")
+
+	stmt.Exec(name, pass, sessionKey, permission, desc, created, updated)
+
+	return nil
 }
