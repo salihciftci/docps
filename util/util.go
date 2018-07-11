@@ -6,19 +6,14 @@ package util
 
 import (
 	"bufio"
-	"io/ioutil"
-	"log"
 	"math/rand"
-	"os"
 	"os/exec"
 	"strings"
 	"time"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
-//GeneratePassword for apiKey and cookieValue
-func GeneratePassword(l int) string {
+//GenerateKey for apiKey and cookieValue
+func GenerateKey(l int) string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
@@ -76,43 +71,4 @@ func ShortPorts(p string) string {
 	p = strings.Join(ports, ", ")
 
 	return p
-}
-
-//HashPasswordAndSave Hashing root password and storing them.
-func HashPasswordAndSave(p string) (string, error) {
-	b, err := bcrypt.GenerateFromPassword([]byte(p), 14)
-	path, _ := os.Getwd()
-	if err != nil {
-		return "", err
-	}
-
-	err = os.Mkdir(path+"/data", 0777)
-	if err != nil {
-		log.Println("/data folder already exist. Skipping.")
-	}
-
-	err = ioutil.WriteFile(path+"/data/pass", b, 0644)
-	if err != nil {
-		return "", err
-	}
-
-	return string(b), nil
-
-}
-
-//ReadPassword read hashed password from file
-func ReadPassword() string {
-	path, _ := os.Getwd()
-	h, err := ioutil.ReadFile(path + "/data/pass")
-	if err != nil {
-		return ""
-	}
-
-	return string(h)
-}
-
-//CheckPass matchs hash value with pass
-func CheckPass(p, h string) bool {
-	err := bcrypt.CompareHashAndPassword([]byte(h), []byte(p))
-	return err == nil
 }

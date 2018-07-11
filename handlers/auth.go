@@ -9,18 +9,21 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/salihciftci/liman/db/sqlite"
 	"github.com/salihciftci/liman/util"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var (
-	tpl          = template.Must(template.ParseGlob("templates/*.tmpl"))
-	cookieValue  = util.GeneratePassword(140)
-	userPassword = util.ReadPassword()
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
+	//IsInstalled boolen for Liman already Installed or not
+	IsInstalled = false
 )
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
-	if userPassword == "" {
+	if !IsInstalled {
 		http.Redirect(w, r, "/install", http.StatusFound)
 		log.Println("Installation started.")
 		return fmt.Errorf("100")
@@ -38,7 +41,13 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 		return fmt.Errorf("101")
 	}
 
-	if cookie.Value != cookieValue {
+	user, err := sqlite.GetUserFromSessionKey(cookie.Value)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return nil
+	}
+
+	if user == "" {
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return fmt.Errorf("102")
 	}
@@ -47,31 +56,36 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-	if userPassword == "" {
+	if !IsInstalled {
 		http.Redirect(w, r, "/install", http.StatusFound)
 	}
 
-	if r.URL.Path != "/login" {
-		log.Println(r.Method, r.URL.Path)
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
+	if r.Method == "POST" {
+		inputPass := r.FormValue("inputPassword")
+		inputUser := r.FormValue("inputUser")
+		log.Println(inputUser)
+		hash, key, err := sqlite.GetUserPasswordAndSessionKey(inputUser)
+		if err != nil {
+			log.Println(r.Method, r.URL.Path, "User not found.")
+		}
+
+		match := bcrypt.CompareHashAndPassword([]byte(hash), []byte(inputPass))
+
+		if match == nil {
+			cookie := &http.Cookie{
+				Name:    "session",
+				Value:   key,
+				Path:    "/",
+				Expires: time.Now().AddDate(2, 0, 0),
+				MaxAge:  0,
+			}
+			http.SetCookie(w, cookie)
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
 	}
 
-	cookie, err := r.Cookie("session")
-	if err != nil {
-		log.Println(r.Method, r.URL.Path)
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-	value := cookie.Value
-
-	if value == cookieValue {
-		log.Println(r.Method, r.URL.Path)
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
-	}
-
-	err = tpl.ExecuteTemplate(w, "login.tmpl", nil)
+	err := tpl.ExecuteTemplate(w, "login.tmpl", nil)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
@@ -98,24 +112,35 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func installHandler(w http.ResponseWriter, r *http.Request) {
+	if IsInstalled {
+		http.Redirect(w, r, "/", http.StatusFound)
+		return
+	}
 	if r.Method == "POST" {
-		if userPassword == "" {
+		if !IsInstalled {
 			inputPassword := r.FormValue("inputPassword")
-			hash, err := util.HashPasswordAndSave(inputPassword)
+
+			hash, err := bcrypt.GenerateFromPassword([]byte(inputPassword), 14)
 			if err != nil {
 				log.Println(err)
 				return
 			}
-			userPassword = hash
+
+			sessionKey := util.GenerateKey(140)
+			apiKey := util.GenerateKey(40)
+
+			err = sqlite.Install(string(hash), sessionKey, apiKey)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			IsInstalled = true
+			APIKey = apiKey
 			http.Redirect(w, r, "/", http.StatusFound)
 			log.Println("Installation complete.")
 			return
 		}
-	}
-
-	if userPassword != "" {
-		http.Redirect(w, r, "/", http.StatusFound)
-		return
 	}
 
 	err := tpl.ExecuteTemplate(w, "install.tmpl", nil)

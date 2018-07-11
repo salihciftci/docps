@@ -8,10 +8,23 @@ import (
 	"log"
 
 	"github.com/salihciftci/liman/cmd"
+	"github.com/salihciftci/liman/db/sqlite"
 	"github.com/salihciftci/liman/handlers"
 )
 
 func main() {
+	if sqlite.IsInstalled() {
+		handlers.IsInstalled = true
+
+		key, err := sqlite.ParseAPIKey()
+		if err != nil {
+			log.Println(err)
+		}
+
+		handlers.APIKey = key
+		log.Println(handlers.APIKey)
+	}
+
 	cmd.CheckNotifications()
 
 	log.Println("Listening http://0.0.0.0:8080")

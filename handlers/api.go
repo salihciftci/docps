@@ -11,11 +11,11 @@ import (
 	"net/http"
 
 	"github.com/salihciftci/liman/cmd"
-	"github.com/salihciftci/liman/util"
 )
 
 var (
-	apiKey = util.GeneratePassword(32)
+	//APIKey exported for parsing from db
+	APIKey = ""
 )
 
 func apiStatus(w http.ResponseWriter, r *http.Request) {
@@ -66,7 +66,7 @@ func apiAuth(w http.ResponseWriter, r *http.Request) error {
 		return fmt.Errorf("API_KEY_NOT_FOUND")
 	}
 
-	if string(key[0]) != apiKey {
+	if string(key[0]) != APIKey {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(
