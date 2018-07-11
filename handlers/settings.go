@@ -75,7 +75,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 	var data []interface{}
 	data = append(data, bn)
 	data = append(data, version)
-	data = append(data, apiKey)
+	data = append(data, APIKey)
 
 	err = tpl.ExecuteTemplate(w, "settings.tmpl", data)
 	if err != nil {
