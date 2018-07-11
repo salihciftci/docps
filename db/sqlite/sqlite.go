@@ -18,7 +18,7 @@ var (
 	db *sql.DB
 )
 
-//Connect connect to sqlite db
+//Connect Checks database if it exist Connect to db if not create a db folder and db then, connect it.
 func Connect() (*sql.DB, error) {
 	if _, err := os.Stat("data/liman.db"); os.IsNotExist(err) {
 		err := os.Mkdir("data", 0755)
@@ -32,7 +32,33 @@ func Connect() (*sql.DB, error) {
 		return nil, err
 	}
 
-	s, _ := db.Prepare(`
+	return db, nil
+}
+
+// IsInstalled Checks Liman already installed or not.
+func IsInstalled() bool {
+	db, err := Connect()
+	if err != nil {
+		return false
+	}
+
+	var isInstalled bool
+	err = db.QueryRow("SELECT key FROM config WHERE value = ?", "isInstalled").Scan(&isInstalled)
+	if err != nil {
+		return false
+	}
+
+	return isInstalled
+}
+
+//Install creates database, tables and insert configs
+func Install(pass, sessionKey, apiKey string) error {
+	db, err := Connect()
+	if err != nil {
+		return err
+	}
+
+	s, err := db.Prepare(`
 		CREATE TABLE IF NOT EXISTS users (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user TEXT,
@@ -44,17 +70,12 @@ func Connect() (*sql.DB, error) {
 			updated TEXT)
 	`)
 
-	s.Exec()
-
-	return db, nil
-}
-
-//CreateUser creates a user
-func CreateUser(name, pass, sessionKey, permission, desc string) error {
-	db, err := Connect()
 	if err != nil {
 		return err
 	}
+
+	s.Exec()
+
 	stmt, err := db.Prepare(`INSERT INTO users
 		(user, pass, sessionKey, permission, desc, created, updated)
 		VALUES (?, ?, ?, ?, ?, ?, ?)`)
@@ -62,10 +83,69 @@ func CreateUser(name, pass, sessionKey, permission, desc string) error {
 	if err != nil {
 		return err
 	}
+
 	created := time.Now().Format("02/01/2006 15:04")
 	updated := time.Now().Format("02/01/2006 15:04")
 
-	stmt.Exec(name, pass, sessionKey, permission, desc, created, updated)
+	stmt.Exec("root", pass, sessionKey, "root", "root user", created, updated)
+
+	s, err = db.Prepare(`
+		CREATE TABLE IF NOT EXISTS config (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			value TEXT,
+			key TEXT)
+	`)
+
+	if err != nil {
+		return err
+	}
+
+	s.Exec()
+
+	stmt, err = db.Prepare(`INSERT INTO config
+		(value,key) VALUES
+		(?,?),
+		(?,?)
+	`)
+
+	if err != nil {
+		return err
+	}
+
+	stmt.Exec("isInstalled", "true", "apiKey", apiKey)
 
 	return nil
+}
+
+// GetUserPasswordAndSessionKey parses user pass and sessionKey
+func GetUserPasswordAndSessionKey(user string) (string, string, error) {
+	db, err := Connect()
+	if err != nil {
+		return "", "", err
+	}
+
+	var hash string
+	var key string
+	err = db.QueryRow("SELECT pass, sessionKey FROM users WHERE user = ?", user).Scan(&hash, &key)
+	if err != nil {
+		return "", "", err
+	}
+	return hash, key, err
+}
+
+// GetUserFromSessionKey parses users from sessionKey
+func GetUserFromSessionKey(key string) (string, error) {
+	db, err := Connect()
+	if err != nil {
+		return "", err
+	}
+
+	var user string
+	err = db.QueryRow("SELECT user FROM users WHERE sessionKey = ?", key).Scan(&user)
+
+	if err != nil {
+		return "", err
+	}
+
+	return user, nil
 }
