@@ -9,7 +9,9 @@ import (
 	"net/http"
 
 	"github.com/salihciftci/liman/cmd"
+	"github.com/salihciftci/liman/db/sqlite"
 	"github.com/salihciftci/liman/util"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func settingsHandler(w http.ResponseWriter, r *http.Request) {
@@ -21,8 +23,14 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		pass := r.FormValue("cpass")
 
-		match := util.CheckPass(pass, userPassword)
-		if !match {
+		hash, _, err := sqlite.GetUserPasswordAndSessionKey("root")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		match := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass))
+		if match != nil {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
@@ -35,20 +43,25 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		match = util.CheckPass(nPass, userPassword)
+		match = bcrypt.CompareHashAndPassword([]byte(hash), []byte(nPass))
 
-		if match {
+		if match == nil {
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
 
-		bNPass, err := util.HashPasswordAndSave(nPass)
+		nHash, err := bcrypt.GenerateFromPassword([]byte(nPass), 14)
 		if err != nil {
 			log.Println(err)
 			return
 		}
 
-		userPassword = string(bNPass)
+		err = sqlite.ChangeUserPassword("root", string(nHash))
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
 		http.Redirect(w, r, "/logout", http.StatusFound)
 	}
 
