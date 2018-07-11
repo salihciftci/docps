@@ -117,6 +117,22 @@ func Install(pass, sessionKey, apiKey string) error {
 	return nil
 }
 
+func ParseAPIKey() (string, error) {
+	db, err := Connect()
+	if err != nil {
+		return "", err
+	}
+
+	var APIKey string
+	err = db.QueryRow("SELECT key FROM config WHERE value = ?", "apiKey").Scan(&APIKey)
+
+	if err != nil {
+		return "", err
+	}
+
+	return APIKey, nil
+}
+
 // GetUserPasswordAndSessionKey parses user pass and sessionKey
 func GetUserPasswordAndSessionKey(user string) (string, string, error) {
 	db, err := Connect()
