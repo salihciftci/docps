@@ -17,8 +17,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-//GeneratePassword for apiKey and cookieValue
-func GeneratePassword(l int) string {
+//GenerateKey for apiKey and cookieValue
+func GenerateKey(l int) string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
