@@ -4,10 +4,9 @@ LABEL MAINTAINER="Salih Çiftçi"
 WORKDIR /go/src/liman
 COPY . .
 
-RUN apk add -U --no-cache git && \
+RUN apk add -U --no-cache git gcc musl-dev && \
     go get -d -v ./... && \
     go install -v ./...
-
 
 FROM alpine:3.8
 
