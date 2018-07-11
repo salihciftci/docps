@@ -22,7 +22,6 @@ func main() {
 		}
 
 		handlers.APIKey = key
-		log.Println(handlers.APIKey)
 	}
 
 	cmd.CheckNotifications()
