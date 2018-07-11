@@ -149,3 +149,19 @@ func GetUserFromSessionKey(key string) (string, error) {
 
 	return user, nil
 }
+
+func ChangeUserPassword(user, pass string) error {
+	db, err := Connect()
+	if err != nil {
+		return err
+	}
+
+	stmt, err := db.Prepare("UPDATE users SET pass = ? WHERE user = ?")
+	if err != nil {
+		return err
+	}
+
+	stmt.Exec(pass, user)
+
+	return nil
+}
