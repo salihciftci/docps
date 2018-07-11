@@ -15,6 +15,14 @@ import (
 func main() {
 	if sqlite.IsInstalled() {
 		handlers.IsInstalled = true
+
+		key, err := sqlite.ParseAPIKey()
+		if err != nil {
+			log.Println(err)
+		}
+
+		handlers.APIKey = key
+		log.Println(handlers.APIKey)
 	}
 
 	cmd.CheckNotifications()
