@@ -128,8 +128,15 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 
 			sessionKey := util.GenerateKey(140)
 			apiKey := util.GenerateKey(40)
-			sqlite.Install(string(hash), sessionKey, apiKey)
+
+			err = sqlite.Install(string(hash), sessionKey, apiKey)
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
 			IsInstalled = true
+			APIKey = apiKey
 			http.Redirect(w, r, "/", http.StatusFound)
 			log.Println("Installation complete.")
 			return
