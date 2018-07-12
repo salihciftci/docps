@@ -24,10 +24,13 @@ func main() {
 		handlers.APIKey = key
 	}
 
-	cmd.CheckNotifications()
+	err := cmd.CheckNotifications()
+	if err != nil {
+		log.Println(err)
+	}
 
 	log.Println("Listening http://0.0.0.0:8080")
-	err := handlers.HTTPServer().ListenAndServe()
+	err = handlers.HTTPServer().ListenAndServe()
 	if err != nil {
 		log.Println(err)
 	}

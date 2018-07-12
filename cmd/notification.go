@@ -5,7 +5,6 @@
 package cmd
 
 import (
-	"log"
 	"strings"
 	"time"
 
@@ -75,17 +74,17 @@ func GetNotification() ([]Notification, []Notification) {
 }
 
 //CheckNotifications is checking containers status for notifications
-func CheckNotifications() {
+func CheckNotifications() error {
 	sc, err := ParseContainerStatus()
 	if err != nil {
-		log.Println(err)
+		return err
 	}
 
-	go func() {
+	go func() error {
 		for {
 			ps, err := ParseContainerStatus()
 			if err != nil {
-				log.Println(err)
+				return err
 			}
 
 			if len(ps) != len(sc) {
@@ -116,4 +115,6 @@ func CheckNotifications() {
 			time.Sleep(5 * time.Second)
 		}
 	}()
+
+	return nil
 }
