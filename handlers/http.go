@@ -45,6 +45,8 @@ func handlers() http.Handler {
 	r.HandleFunc("/api/logs", apiLogs)
 	r.HandleFunc("/api/status", apiStatus)
 
-	r.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+	r.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("public/css"))))
+	r.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("public/img"))))
+	r.Handle("/scripts/", http.StripPrefix("/scripts/", http.FileServer(http.Dir("public/scripts"))))
 	return r
 }
