@@ -137,6 +137,15 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 
 			IsInstalled = true
 			APIKey = apiKey
+
+			cookie := &http.Cookie{
+				Name:    "session",
+				Value:   sessionKey,
+				Path:    "/",
+				Expires: time.Now().AddDate(2, 0, 0),
+				MaxAge:  0,
+			}
+			http.SetCookie(w, cookie)
 			http.Redirect(w, r, "/", http.StatusFound)
 			log.Println("Installation complete.")
 			return
