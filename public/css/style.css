@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
 }
 
@@ -14,25 +15,27 @@ body {
 }
 
 .sidebar {
-    background-color:#22252b;
+    background-color: #22252b;
     min-width: 42px;
     max-width: 42px;
-    overflow: hidden; 
+    overflow: hidden;
     margin-bottom: -5000px;
-    padding-bottom: 5000px; 
-    position:fixed;
+    padding-bottom: 5000px;
+    position: fixed;
     color: #afafaf;
 }
 
-.content, ul {
+.content,
+ul {
     text-align: center;
-    list-style-type:none; 
+    list-style-type: none;
     margin: 0;
     padding: 0;
     margin-top: 10px;
 }
 
-ul,li {
+ul,
+li {
     margin-bottom: 15px;
 }
 
@@ -48,22 +51,28 @@ ul,li {
     width: 100%;
 }
 
-nav, .navbar {
+nav,
+.navbar {
     width: 100%;
 }
 
-.inner-addon { 
-    position: relative; 
+.inner-addon {
+    position: relative;
 }
 
 .inner-addon .fa-search {
-  position: absolute;
-  padding: 10px;
-  pointer-events: none;
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
 }
 
-.right-addon .fa-search { right: 0px;}
-.right-addon input { padding-right: 30px; }
+.right-addon .fa-search {
+    right: 0px;
+}
+
+.right-addon input {
+    padding-right: 30px;
+}
 
 .nav-right {
     display: flex;
@@ -90,53 +99,71 @@ nav, .navbar {
     margin: 0 10px 0 10px;
 }
 
-.table-hover > thead > tr > th {
+.table-hover>thead>tr>th {
     border-top: none !important;
     border-bottom: 1px solid #22252b;
     color: #22252b;
     font-size: 15px;
 }
 
-.table-hover > tbody > tr > td {
+.table-hover>tbody>tr>td {
     font-size: 15px;
 }
 
-.dropdown-menu { 
-    right: 0px; 
-    left: auto; 
+.dropdown-menu {
+    right: 0px;
+    left: auto;
 }
 
 .notification-drop-down {
     min-width: auto !important;
 }
 
-a.bg-light:focus, a.bg-light:hover, button.bg-light:focus, button.bg-light:hover {
+.dropdown-header,
+a:hover {
+    text-decoration: none;
+    color: #474F57;
+}
+
+.dropdown-header,
+.i {
+    font-size: 85%;
+}
+
+a.bg-light:focus,
+a.bg-light:hover,
+button.bg-light:focus,
+button.bg-light:hover {
     background-color: #f8f9fa !important;
 }
 
-.btn.focus, .btn:focus {
+.btn.focus,
+.btn:focus {
     box-shadow: none !important;
 }
 
 .c-btn {
     background-color: white;
-     border: none;
+    border: none;
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active {
     border-style: solid;
     border-width: 0px 0px 0.5px 0px;
     border-color: #22252b;
     text-decoration: none;
 }
 
-.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active:hover {
+.nav-tabs .nav-item.show .nav-link,
+.nav-tabs .nav-link.active:hover {
     border-style: solid;
     border-width: 0px 0px 0.5px 0px;
     border-color: #22252b;
     text-decoration: none;
 }
 
- .nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
-     border-color: transparent;
- }
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+}
