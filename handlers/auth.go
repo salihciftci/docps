@@ -17,9 +17,13 @@ import (
 )
 
 var (
-	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 	//IsInstalled boolen for Liman already Installed or not
 	IsInstalled = false
+
+	//Version of Liman
+	Version = "0.6-develop"
+
+	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 )
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
@@ -129,7 +133,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			sessionKey := util.GenerateKey(140)
 			apiKey := util.GenerateKey(40)
 
-			err = sqlite.Install(string(hash), sessionKey, apiKey)
+			err = sqlite.Install(string(hash), sessionKey, apiKey, Version)
 			if err != nil {
 				log.Println(err)
 				return

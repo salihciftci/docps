@@ -52,7 +52,7 @@ func IsInstalled() bool {
 }
 
 //Install creates database, tables and insert configs
-func Install(pass, sessionKey, apiKey string) error {
+func Install(pass, sessionKey, apiKey, ver string) error {
 	db, err := Connect()
 	if err != nil {
 		return err
@@ -105,6 +105,7 @@ func Install(pass, sessionKey, apiKey string) error {
 	stmt, err = db.Prepare(`INSERT INTO config
 		(value,key) VALUES
 		(?,?),
+		(?,?),
 		(?,?)
 	`)
 
@@ -112,11 +113,12 @@ func Install(pass, sessionKey, apiKey string) error {
 		return err
 	}
 
-	stmt.Exec("isInstalled", "true", "apiKey", apiKey)
+	stmt.Exec("isInstalled", "true", "apiKey", apiKey, "version", ver)
 
 	return nil
 }
 
+//ParseAPIKey parses api key from db
 func ParseAPIKey() (string, error) {
 	db, err := Connect()
 	if err != nil {
@@ -166,6 +168,7 @@ func GetUserFromSessionKey(key string) (string, error) {
 	return user, nil
 }
 
+//ChangeUserPassword changes user password from db
 func ChangeUserPassword(user, pass string) error {
 	db, err := Connect()
 	if err != nil {
@@ -180,4 +183,22 @@ func ChangeUserPassword(user, pass string) error {
 	stmt.Exec(pass, user)
 
 	return nil
+}
+
+//ParseVersion parses version from db
+func ParseVersion() (string, error) {
+	db, err := Connect()
+	if err != nil {
+		return "", err
+	}
+
+	var version string
+
+	err = db.QueryRow("SELECT key FROM config WHERE value = ?", "version").Scan(&version)
+
+	if err != nil {
+		return "", err
+	}
+
+	return version, nil
 }

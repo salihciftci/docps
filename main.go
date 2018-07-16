@@ -20,8 +20,14 @@ func main() {
 		if err != nil {
 			log.Println(err)
 		}
-
 		handlers.APIKey = key
+
+		ver, err := sqlite.ParseVersion()
+		if err != nil {
+			log.Println(err)
+		}
+
+		handlers.Version = ver
 	}
 
 	err := cmd.CheckNotifications()

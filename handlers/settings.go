@@ -10,7 +10,6 @@ import (
 
 	"github.com/salihciftci/liman/cmd"
 	"github.com/salihciftci/liman/db/sqlite"
-	"github.com/salihciftci/liman/util"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -67,14 +66,9 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 
 	bn, _ := cmd.GetNotification()
 
-	version, err := util.Version()
-	if err != nil {
-		log.Println(err)
-	}
-
 	var data []interface{}
 	data = append(data, bn)
-	data = append(data, version)
+	data = append(data, Version)
 	data = append(data, APIKey)
 
 	err = tpl.ExecuteTemplate(w, "settings.tmpl", data)
