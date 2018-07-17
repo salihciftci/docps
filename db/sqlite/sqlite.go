@@ -52,7 +52,7 @@ func IsInstalled() bool {
 }
 
 //Install creates database, tables and insert configs
-func Install(pass, sessionKey, apiKey, ver string) error {
+func Install(user, pass, sessionKey, apiKey, ver string) error {
 	db, err := Connect()
 	if err != nil {
 		return err
@@ -87,7 +87,7 @@ func Install(pass, sessionKey, apiKey, ver string) error {
 	created := time.Now().Format("02/01/2006 15:04")
 	updated := time.Now().Format("02/01/2006 15:04")
 
-	stmt.Exec("root", pass, sessionKey, "root", "root user", created, updated)
+	stmt.Exec(user, pass, sessionKey, "dcsivnln", "root", created, updated)
 
 	s, err = db.Prepare(`
 		CREATE TABLE IF NOT EXISTS config (

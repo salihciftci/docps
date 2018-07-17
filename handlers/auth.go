@@ -123,6 +123,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		if !IsInstalled {
 			inputPassword := r.FormValue("inputPassword")
+			inputUser := r.FormValue("inputUser")
 
 			hash, err := bcrypt.GenerateFromPassword([]byte(inputPassword), 14)
 			if err != nil {
@@ -133,7 +134,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			sessionKey := util.GenerateKey(140)
 			apiKey := util.GenerateKey(40)
 
-			err = sqlite.Install(string(hash), sessionKey, apiKey, Version)
+			err = sqlite.Install(inputUser, string(hash), sessionKey, apiKey, Version)
 			if err != nil {
 				log.Println(err)
 				return
