@@ -1,3 +1,7 @@
+// Copyright 2018 The Liman Authors. All rights reserved.
+// Use of this source code is governed by a MIT-style
+// license that can be found in the LICENSE file.
+
 package handlers
 
 import (
@@ -14,11 +18,25 @@ import (
 func usersHandler(w http.ResponseWriter, r *http.Request) {
 
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
-	_, err := parseSessionCookie(w, r)
+	perm, err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}
 
+	access := false
+	for _, v := range perm {
+		if string(v) == "R" {
+			access = true
+		}
+	}
+
+	if !access {
+		err = tpl.ExecuteTemplate(w, "permission.tmpl", nil)
+		if err != nil {
+			log.Println(r.Method, r.URL.Path, err)
+		}
+		return
+	}
 	bn, _ := cmd.GetNotification()
 
 	users, err := sqlite.ListUsers()
