@@ -87,7 +87,7 @@ func Install(user, pass, sessionKey, apiKey, ver string) error {
 	created := time.Now().Format("02/01/2006 15:04")
 	updated := time.Now().Format("02/01/2006 15:04")
 
-	stmt.Exec(user, pass, sessionKey, "dcsivnln", "root", created, updated)
+	stmt.Exec(user, pass, sessionKey, "R", "root", created, updated)
 
 	s, err = db.Prepare(`
 		CREATE TABLE IF NOT EXISTS config (
@@ -168,6 +168,22 @@ func GetUserFromSessionKey(key string) (string, error) {
 	return user, nil
 }
 
+//GetPermissionFromSessionKey gets user permissions from db
+func GetPermissionFromSessionKey(key string) (string, error) {
+	db, err := Connect()
+	if err != nil {
+		log.Println(err)
+	}
+
+	var permission string
+	err = db.QueryRow("SELECT permission from users WHERE sessionKey = ?", key).Scan(&permission)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return permission, nil
+}
+
 //ChangeUserPassword changes user password from db
 func ChangeUserPassword(user, pass string) error {
 	db, err := Connect()
@@ -201,4 +217,67 @@ func ParseVersion() (string, error) {
 	}
 
 	return version, nil
+}
+
+type users struct {
+	User string `json:"user"`
+	Desc string `json:"desc"`
+}
+
+//ListUsers parsing users from db
+func ListUsers() ([]interface{}, error) {
+	db, err := Connect()
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Query("SELECT user, desc FROM users")
+	if err != nil {
+		return nil, err
+	}
+
+	var user, decs string
+	var data []interface{}
+	for rows.Next() {
+		rows.Scan(&user, &decs)
+		data = append(data, users{user, decs})
+	}
+
+	return data, nil
+}
+
+//CreateUser creates a user to db
+func CreateUser(user, pass, key, perm, desc string) error {
+	db, err := Connect()
+	if err != nil {
+		return err
+	}
+
+	stmt, err := db.Prepare(`INSERT INTO users
+		(user, pass, sessionKey, permission, desc, created, updated)
+		VALUES (?, ?, ?, ?, ?, ?, ?)`)
+
+	if err != nil {
+		return err
+	}
+
+	stmt.Exec(user, pass, key, perm, desc, "", "")
+
+	return nil
+}
+
+//CheckUserExist is checks user already exist or not
+func CheckUserExist(user string) (bool, error) {
+	db, err := Connect()
+	if err != nil {
+		return true, err
+	}
+	var count int
+	err = db.QueryRow("SELECT count(user) FROM users WHERE user = ?", user).Scan(&count)
+
+	if count != 0 {
+		return true, err
+	}
+
+	return false, nil
 }

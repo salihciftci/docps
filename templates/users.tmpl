@@ -1,0 +1,181 @@
+{{ template "header" }}
+<div class="page">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" style="margin-left: 10px;">
+            <div>
+                <h5 id="title">
+                    User Management
+                </h5>
+            </div>
+            <div>
+                <h6>
+                    <i class="zmdi zmdi-home" style="color: #f96332"></i>
+                    <small>/ Users</small>
+                </h6>
+            </div>
+        </a>
+        <div class="nav-right">
+            <div class="btn-group">
+                <button type="button" class="btn settings bg-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-bell"></i>
+                </button>
+                <div class="dropdown-menu notification-drop-down">
+                    {{ if index . 0 }}
+                    <h6 class="dropdown-header">Notifications</h6>
+                    {{ range index . 0 }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header">
+                        {{ if eq .Status "U" }}
+                        <i class="fas fa-check-circle text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                        <i class="fas fa-times-circle text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+                    </a> {{ end }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header text-center" href="/notifications">Check all notifications</a> {{ else }}
+                    <a class="dropdown-header">
+                        <i class="fas fa-info-circle text-secondary"></i> No notifications.</a> {{ end }}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">Add a new user</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white">
+                                            {{$value := index . 1 }} {{ if eq $value "exist" }}
+                                            <div class="alert alert-danger" role="alert">
+                                                User already exist!
+                                            </div>
+                                            {{ else if eq $value "match" }}
+                                            <div class="alert alert-danger" role="alert">
+                                                Passwords doesn't match!
+                                            </div>
+                                            {{ else if eq $value "success" }}
+                                            <div class="alert alert-success" role="alert">
+                                                User created!
+                                            </div>
+                                            {{ end }}
+                                            <th>
+                                                <form action="/users" method="POST">
+                                                    <div class="form-group">
+                                                        <label>Username</label>
+                                                        <input type="username" class="form-control" placeholder="Username" name="username" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Password</label>
+                                                        <input type="password" class="form-control" placeholder="Password" name="password" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label> Confirm Password</label>
+                                                        <input type="password" class="form-control" placeholder="Confirm Password" name="cpassword" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Desription</label>
+                                                        <input type="username" class="form-control" placeholder="Description" name="desc" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Permissions</label><br>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="admin" name="admin" id="r" onClick="Root()">
+                                                            <label class="form-check-label">Administrator</label>
+                                                        </div>
+                                                        <br><br>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="d" name="dashboard" id="d" onClick="NotRoot()">
+                                                            <label class="form-check-label">Dashboard</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="c" name="containers" id="c" onClick="NotRoot()">
+                                                            <label class="form-check-label">Containers</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="s" name="stats" id="s" onClick="NotRoot()">
+                                                            <label class="form-check-label">Stats</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="i" name="images" id="i" onClick="NotRoot()">
+                                                            <label class="form-check-label">Images</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="v" name="volumes" id="v" onClick="NotRoot()">
+                                                            <label class="form-check-label">Volumes</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="n" name="networks" id="n" onClick="NotRoot()">
+                                                            <label class="form-check-label">Networks</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="l" name="logs" id="l" onClick="NotRoot()">
+                                                            <label class="form-check-label">Logs</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="checkbox" value="N" name="notifications" id="b" onClick="NotRoot()">
+                                                            <label class="form-check-label">Notifications</label>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <button type="submit" class="btn" style="background-color:#22252b; color: white;">&nbsp; Create &nbsp;</button>
+                                                </form>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <!-- INFO -->
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">User</th>
+                                            <th scope="col"> Description</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range index . 2 }}
+                                        <tr>
+                                            <th>{{ .User }}</th>
+                                            <th>{{ .Desc }}</th>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</body>
+
+</html>
