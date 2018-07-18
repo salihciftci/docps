@@ -44,10 +44,12 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) (string, error) 
 		http.Redirect(w, r, "/login", http.StatusFound)
 		return "", fmt.Errorf("101")
 	}
-
-	perm, err := sqlite.GetPermissionFromSessionKey(cookie.Value)
-	if err != nil {
-		log.Println(err)
+	var perm string
+	if cookie.Value != "" {
+		perm, err = sqlite.GetPermissionFromSessionKey(cookie.Value)
+		if err != nil {
+			log.Println(err)
+		}
 	}
 
 	if perm == "" {
