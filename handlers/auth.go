@@ -98,7 +98,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/logout" {
 		log.Println(r.Method, r.URL.Path)
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, "/login", http.StatusFound)
 		return
 	}
 
@@ -110,7 +110,7 @@ func logoutHandler(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 	log.Println(r.Method, r.URL.Path)
-	http.Redirect(w, r, "/", http.StatusFound)
+	http.Redirect(w, r, "/login", http.StatusFound)
 }
 
 func installHandler(w http.ResponseWriter, r *http.Request) {
