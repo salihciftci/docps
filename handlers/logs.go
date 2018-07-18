@@ -12,11 +12,25 @@ import (
 )
 
 func logsHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
+	perm, err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}
 
+	access := false
+	for _, v := range perm {
+		if string(v) == "l" || string(v) == "R" {
+			access = true
+		}
+	}
+
+	if !access {
+		err = tpl.ExecuteTemplate(w, "permission.tmpl", nil)
+		if err != nil {
+			log.Println(r.Method, r.URL.Path, err)
+		}
+		return
+	}
 	params := r.URL.Query()
 	key, ok := params["container"]
 

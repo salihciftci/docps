@@ -14,7 +14,7 @@ import (
 )
 
 func settingsHandler(w http.ResponseWriter, r *http.Request) {
-	err := parseSessionCookie(w, r)
+	_, err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}

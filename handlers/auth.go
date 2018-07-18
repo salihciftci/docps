@@ -66,7 +66,6 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		inputPass := r.FormValue("inputPassword")
 		inputUser := r.FormValue("inputUser")
-		log.Println(inputUser)
 		hash, key, err := sqlite.GetUserPasswordAndSessionKey(inputUser)
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, "User not found.")

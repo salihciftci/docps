@@ -30,6 +30,7 @@ func handlers() http.Handler {
 	r.HandleFunc("/networks", networksHandler)
 	r.HandleFunc("/logs", logsHandler)
 	r.HandleFunc("/settings", settingsHandler)
+	r.HandleFunc("/users", usersHandler)
 
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/logout", logoutHandler)
