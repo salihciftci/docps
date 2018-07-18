@@ -167,3 +167,9 @@ button.bg-light:hover {
 .nav-tabs .nav-link:hover {
     border-color: transparent;
 }
+
+/*input[type="checkbox"]
+{
+    margin-top: -0.5%;
+    vertical-align: middle;
+}*/

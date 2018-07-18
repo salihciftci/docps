@@ -51,7 +51,7 @@ function Stopped() {
 }
 
 function All() {
-    var  table, tr, i;
+    var table, tr, i;
     table = document.getElementById("table");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
@@ -64,4 +64,19 @@ function Copy() {
     copyText.select();
     document.execCommand("copy");
     document.getSelection().removeAllRanges();
+}
+
+function Root() {
+    document.getElementById('d').checked = false;
+    document.getElementById('c').checked = false;
+    document.getElementById('s').checked = false;
+    document.getElementById('i').checked = false;
+    document.getElementById('v').checked = false;
+    document.getElementById('n').checked = false;
+    document.getElementById('l').checked = false;
+    document.getElementById('b').checked = false;
+}
+
+function NotRoot() {
+    document.getElementById('r').checked = false;
 }
