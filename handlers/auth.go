@@ -26,11 +26,11 @@ var (
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 )
 
-func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
+func parseSessionCookie(w http.ResponseWriter, r *http.Request) (string, error) {
 	if !IsInstalled {
 		http.Redirect(w, r, "/install", http.StatusFound)
 		log.Println("Installation started.")
-		return fmt.Errorf("100")
+		return "", fmt.Errorf("100")
 	}
 
 	cookie, err := r.Cookie("session")
@@ -42,21 +42,20 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 		}
 		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/login", http.StatusFound)
-		return fmt.Errorf("101")
+		return "", fmt.Errorf("101")
 	}
 
-	user, err := sqlite.GetUserFromSessionKey(cookie.Value)
+	perm, err := sqlite.GetPermissionFromSessionKey(cookie.Value)
 	if err != nil {
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return nil
+		log.Println(err)
 	}
 
-	if user == "" {
+	if perm == "" {
 		http.Redirect(w, r, "/login", http.StatusFound)
-		return fmt.Errorf("102")
+		return "", fmt.Errorf("102")
 	}
 
-	return nil
+	return perm, nil
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
