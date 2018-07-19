@@ -261,7 +261,10 @@ func CreateUser(user, pass, key, perm, desc string) error {
 		return err
 	}
 
-	stmt.Exec(user, pass, key, perm, desc, "", "")
+	created := time.Now().Format("02/01/2006 15:04")
+	updated := created
+
+	stmt.Exec(user, pass, key, perm, desc, created, updated)
 
 	return nil
 }
