@@ -1,12 +1,11 @@
 # Liman
 [![Build Status](https://travis-ci.org/salihciftci/liman.svg?branch=master)](https://travis-ci.org/salihciftci/liman) [![Go Report Card](https://goreportcard.com/badge/github.com/salihciftci/liman)](https://goreportcard.com/report/github.com/salihciftci/liman)
 
-![alt text](https://img.salih.co/liman/v0.6/logo.png "Liman")
+<img alt="logo" src="https://raw.githubusercontent.com/salihciftci/liman/master/public/img/liman.png" width=200>
 
 Web application for monitoring docker. Monitor docker inside the docker. Written in Go.
 
 ----
-![screenshot](https://img.salih.co/liman/v0.6/dashboard.png)
 
 ## Features
 
@@ -39,13 +38,6 @@ curl -i http://localhost:8080/api/status?key=XXX
 ```
 
 More examples and all end points can be found in [wiki](https://github.com/salihciftci/liman/wiki/API-Usage).
-
-
-| Screenshots | | |
-|:-------------:|:-------:|:-------:|
-|![Dashboard](https://img.salih.co/liman/v0.6/dashboard.png)|![Containers](https://img.salih.co/liman/v0.6/containers.png)|![Images](https://img.salih.co/liman/v0.6/images.png)|
-|![Stats](https://img.salih.co/liman/v0.6/stats.png)|![Volumes](https://img.salih.co/liman/v0.6/volumes.png)|![Networks](https://img.salih.co/liman/v0.6/networks.png)|
-|![Logs](https://img.salih.co/liman/v0.6/logs.png)|![Notifications](https://img.salih.co/liman/v0.6/notifications.png)|![Settings](https://img.salih.co/liman/v0.6/settings.png)|
 
 ## License
 MIT
