@@ -4,8 +4,10 @@ LABEL MAINTAINER="Salih Çiftçi"
 WORKDIR /go/src/liman
 COPY . .
 
+ENV GO111MODULE=on
+
 RUN apk add -U --no-cache git gcc musl-dev && \
-    go get -d -v ./... && \
+    go mod download && \
     go install -v ./...
 
 FROM alpine:3.8
