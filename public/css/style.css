@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 html,
 body {
     height: 100%;
@@ -6,7 +6,7 @@ body {
 
 body {
     background-color: #f0f4f3;
-    font-family: 'Nunito', sans-serif;
+font-family: 'Roboto', sans-serif;
 }
 
 .wrapper {
