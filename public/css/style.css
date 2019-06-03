@@ -6,7 +6,7 @@ body {
 
 body {
     background-color: #f0f4f3;
-font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 .wrapper {
@@ -103,14 +103,14 @@ nav,
 .table-hover > thead > tr > th {
     border-top: none !important;
     border-bottom: 1px solid #22252b;
-    color: #22252b;
+    color: #2B303B;
     font-size: 15px;
-    letter-spacing: 0.5px
+    letter-spacing: 0.5px;
 }
 
 .table-hover > tbody > tr > td {
     font-size: 15px;
-    letter-spacing: 0.5px
+    letter-spacing: 0.5px;
 }
 
 .table-hover > tbody > tr > th {
@@ -158,7 +158,7 @@ button.bg-light:hover {
 .nav-tabs .nav-link.active {
     border-style: solid;
     border-width: 0px 0px 0.5px 0px;
-    border-color: #22252b;
+    color: #2B303B;
     text-decoration: none;
 }
 
@@ -174,9 +174,3 @@ button.bg-light:hover {
 .nav-tabs .nav-link:hover {
     border-color: transparent;
 }
-
-/*input[type="checkbox"]
-{
-    margin-top: -0.5%;
-    vertical-align: middle;
-}*/
