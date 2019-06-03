@@ -1,11 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
 html,
 body {
     height: 100%;
 }
 
 body {
-    background-color: #F0F4F3;
-    font-family: 'Muli', sans-serif;
+    background-color: #f0f4f3;
+    font-family: 'Nunito', sans-serif;
 }
 
 .wrapper {
@@ -99,15 +100,21 @@ nav,
     margin: 0 10px 0 10px;
 }
 
-.table-hover>thead>tr>th {
+.table-hover > thead > tr > th {
     border-top: none !important;
     border-bottom: 1px solid #22252b;
     color: #22252b;
     font-size: 15px;
+    letter-spacing: 0.5px
 }
 
-.table-hover>tbody>tr>td {
+.table-hover > tbody > tr > td {
     font-size: 15px;
+    letter-spacing: 0.5px
+}
+
+.table-hover > tbody > tr > th {
+    font-weight: normal;
 }
 
 .dropdown-menu {
@@ -122,7 +129,7 @@ nav,
 .dropdown-header,
 a:hover {
     text-decoration: none;
-    color: #474F57;
+    color: #474f57;
 }
 
 .dropdown-header,
