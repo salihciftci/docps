@@ -151,23 +151,6 @@ func GetUserPasswordAndSessionKey(user string) (string, string, error) {
 	return hash, key, err
 }
 
-// GetUserFromSessionKey parses users from sessionKey
-func GetUserFromSessionKey(key string) (string, error) {
-	db, err := Connect()
-	if err != nil {
-		return "", err
-	}
-
-	var user string
-	err = db.QueryRow("SELECT user FROM users WHERE sessionKey = ?", key).Scan(&user)
-
-	if err != nil {
-		return "", err
-	}
-
-	return user, nil
-}
-
 //GetPermissionFromSessionKey gets user permissions from db
 func GetPermissionFromSessionKey(key string) (string, error) {
 	db, err := Connect()
@@ -222,65 +205,4 @@ func ParseVersion() (string, error) {
 type users struct {
 	User string `json:"user"`
 	Desc string `json:"desc"`
-}
-
-//ListUsers parsing users from db
-func ListUsers() ([]interface{}, error) {
-	db, err := Connect()
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := db.Query("SELECT user, desc FROM users")
-	if err != nil {
-		return nil, err
-	}
-
-	var user, decs string
-	var data []interface{}
-	for rows.Next() {
-		rows.Scan(&user, &decs)
-		data = append(data, users{user, decs})
-	}
-
-	return data, nil
-}
-
-//CreateUser creates a user to db
-func CreateUser(user, pass, key, perm, desc string) error {
-	db, err := Connect()
-	if err != nil {
-		return err
-	}
-
-	stmt, err := db.Prepare(`INSERT INTO users
-		(user, pass, sessionKey, permission, desc, created, updated)
-		VALUES (?, ?, ?, ?, ?, ?, ?)`)
-
-	if err != nil {
-		return err
-	}
-
-	created := time.Now().Format("02/01/2006 15:04")
-	updated := created
-
-	stmt.Exec(user, pass, key, perm, desc, created, updated)
-
-	return nil
-}
-
-//CheckUserExist is checks user already exist or not
-func CheckUserExist(user string) (bool, error) {
-	db, err := Connect()
-	if err != nil {
-		return true, err
-	}
-	var count int
-	err = db.QueryRow("SELECT count(user) FROM users WHERE user = ?", user).Scan(&count)
-
-	if count != 0 {
-		return true, err
-	}
-
-	return false, nil
 }
