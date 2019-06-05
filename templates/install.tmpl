@@ -1,54 +1,59 @@
 {{ template "header" }}
-       <div class="sidebar">
-        </div>
-        <div class="page">
-            <nav class="navbar navbar-light bg-light">
-                <a class="navbar-brand" style="margin-left: 10px;">
-                    <div>
-                        <h5 id="title">
-                            Install
-                        </h5>
-                    </div>
-                    <div>
-                        <h6>
-                            <small>Thank you for using Liman. Please set your root password.</small>
-                        </h6>
-                    </div>
-                </a>
-            </nav>
-            <div class="container-fluid">
-                <div class="container text-center col-sm-3">
-                    <div class="login-body pt-5 mt-5">
-                        <form class="form-signin" action="/install" method="POST">
-                            <img class="mb-0" src="/img/liman.png" alt="" width="200" height="200">
-                            <label for="inputUser" class="sr-only">User</label>
-                            <input type="user" id="inputUser" name="inputUser" style="margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0;"
-                                class="form-control" placeholder="root">
-                            <label for="inputPassword" class="sr-only">Password</label>
-                            <input type="password" id="inputPassword" name="inputPassword" style="margin-bottom: 10px; border-top-left-radius: 0; border-top-right-radius: 0;"
-                                class="form-control" placeholder="Password" required>
-                            <button class="btn btn-block" style="background-color:#22252b; color: white;" type="submit">Install</button>
-                            <p class="mt-5 mb-3 text-muted">
-                                <a href="https://github.com/salihciftci/liman" style="color:#22252b;" target="_blank">
-                                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
-                                </a>
-                            </p>
-                        </form>
-                    </div>
+<div class="sidebar"></div>
+<div class="page">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" style="margin-left: 10px;">
+            <div>
+                <h5 id="title">
+                    Install
+                </h5>
+            </div>
+            <div>
+                <h6>
+                    <small>Thank you for using Liman. Please set your root
+                        password.</small>
+                </h6>
+            </div>
+        </a>
+    </nav>
+    <div class="container-fluid">
+        <div class="card container">
+            <div class="m-5">
+                {{ if index . 0 }}
+                <div class="alert alert-danger" role="alert">
+                    {{ index . 0 }}
                 </div>
+                {{ end }}
+                <form class="form-signin" action="/install" method="POST">
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Username</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" placeholder="Username" name="inputUser" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" placeholder="Password" name="inputPassword" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row">
+                        <label for="Liman Base URL" class="col-sm-2 col-form-label">Path</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" placeholder="http://example.com/liman/" name="inputURL" />
+                            <small id="emailHelp" class="form-text text-muted">Base address for HTTP(S) clone
+                                URLs</small>
+                        </div>
+                    </div>
+                    <div style="float:right;">
+                        <button class="btn" style="background-color:#22252b; color: white;" type="submit">
+                            Install Liman
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
-        crossorigin="anonymous"></script>
-</body>
-
-</html>
+</div>
+{{ template "footer" }}
