@@ -23,6 +23,8 @@ var (
 	//Version of Liman
 	Version = "0.6-develop"
 
+	err = ""
+
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 )
 
@@ -120,10 +122,22 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return
 	}
+
 	if r.Method == "POST" {
 		if !IsInstalled {
 			inputPassword := r.FormValue("inputPassword")
 			inputUser := r.FormValue("inputUser")
+			inputURL := r.FormValue("inputURL")
+
+			if len(inputPassword) == 0 || len(inputUser) == 0 {
+				err = "Username and Password fields are required!"
+				http.Redirect(w, r, "/install", http.StatusFound)
+				return
+			}
+
+			if len(inputURL) == 0 {
+				inputURL = ""
+			}
 
 			hash, err := bcrypt.GenerateFromPassword([]byte(inputPassword), 14)
 			if err != nil {
@@ -157,7 +171,11 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	err := tpl.ExecuteTemplate(w, "install.tmpl", nil)
+	var data []interface{}
+	data = append(data, err)
+	err = ""
+
+	err := tpl.ExecuteTemplate(w, "install.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
