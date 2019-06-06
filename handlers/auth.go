@@ -17,13 +17,10 @@ import (
 )
 
 var (
-	//IsInstalled boolen for Liman already Installed or not
 	IsInstalled = false
+	Version     = "0.6-develop"
+	BaseURL     = ""
 
-	//Version of Liman
-	Version = "0.6-develop"
-
-	//
 	secretKey  = util.GenerateSecretKey(120)
 	sessionKey = ""
 
@@ -34,13 +31,13 @@ var (
 
 func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 	if !IsInstalled {
-		http.Redirect(w, r, "/install", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/install", http.StatusFound)
 		log.Println("Installation started.")
 		return fmt.Errorf("Not Installed")
 	}
 
 	if len(sessionKey) == 0 {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/login", http.StatusFound)
 		return fmt.Errorf("Session key not generated")
 	}
 
@@ -49,10 +46,10 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 		cookie = &http.Cookie{
 			Name:  "session",
 			Value: "",
-			Path:  "/",
+			Path:  BaseURL,
 		}
 		http.SetCookie(w, cookie)
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/login", http.StatusFound)
 		return fmt.Errorf("Session not found")
 	}
 
@@ -60,7 +57,7 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 		if err != nil {
 			log.Println(err)
 		}
-		http.Redirect(w, r, "/login", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/login", http.StatusFound)
 		log.Println(r.Method, r.URL.Path, "Not logged in")
 	}
 
@@ -69,7 +66,7 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if !IsInstalled {
-		http.Redirect(w, r, "/install", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/install", http.StatusFound)
 	}
 
 	if r.Method == "POST" {
@@ -91,12 +88,12 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			cookie := &http.Cookie{
 				Name:    "session",
 				Value:   sessionKey,
-				Path:    "/",
+				Path:    BaseURL,
 				Expires: time.Now().AddDate(2, 0, 0),
 				MaxAge:  0,
 			}
 			http.SetCookie(w, cookie)
-			http.Redirect(w, r, "/", http.StatusFound)
+			http.Redirect(w, r, BaseURL, http.StatusFound)
 			return
 		}
 	}
@@ -110,26 +107,20 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/logout" {
-		log.Println(r.Method, r.URL.Path)
-		http.Redirect(w, r, "/login", http.StatusFound)
-		return
-	}
-
 	cookie := &http.Cookie{
 		Name:  "session",
 		Value: "",
-		Path:  "/",
+		Path:  BaseURL,
 	}
 
 	http.SetCookie(w, cookie)
 	log.Println(r.Method, r.URL.Path)
-	http.Redirect(w, r, "/login", http.StatusFound)
+	http.Redirect(w, r, BaseURL+"/login", http.StatusFound)
 }
 
 func installHandler(w http.ResponseWriter, r *http.Request) {
 	if IsInstalled {
-		http.Redirect(w, r, "/", http.StatusFound)
+		http.Redirect(w, r, BaseURL+"/", http.StatusFound)
 		return
 	}
 
@@ -137,16 +128,11 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 		if !IsInstalled {
 			inputPassword := r.FormValue("inputPassword")
 			inputUser := r.FormValue("inputUser")
-			inputURL := r.FormValue("inputURL")
 
 			if len(inputPassword) == 0 || len(inputUser) == 0 {
 				err = "Username and Password fields are required!"
-				http.Redirect(w, r, "/install", http.StatusFound)
+				http.Redirect(w, r, BaseURL+"/install", http.StatusFound)
 				return
-			}
-
-			if len(inputURL) == 0 {
-				inputURL = ""
 			}
 
 			hash, err := bcrypt.GenerateFromPassword([]byte(inputPassword), 14)
@@ -170,12 +156,13 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			cookie := &http.Cookie{
 				Name:    "session",
 				Value:   sessionKey,
-				Path:    "/",
+				Path:    BaseURL,
 				Expires: time.Now().AddDate(2, 0, 0),
 				MaxAge:  0,
 			}
 			http.SetCookie(w, cookie)
-			http.Redirect(w, r, "/", http.StatusFound)
+
+			http.Redirect(w, r, BaseURL+"/", http.StatusFound)
 			log.Println("Installation complete.")
 			return
 		}

@@ -6,6 +6,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/salihciftci/liman/cmd"
 	"github.com/salihciftci/liman/db/sqlite"
@@ -18,6 +19,7 @@ func main() {
 	}
 
 	handlers.Version = "v0.7"
+	handlers.BaseURL = os.Getenv("URL")
 
 	err := cmd.CheckNotifications()
 	if err != nil {

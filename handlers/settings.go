@@ -38,7 +38,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println(pass)
 			log.Println(match)
 			log.Println(hash)
-			http.Redirect(w, r, "/settings", http.StatusFound)
+			http.Redirect(w, r, "settings", http.StatusFound)
 			return
 		}
 
@@ -47,21 +47,19 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 
 		if nPass != cNPass {
 			log.Println("Passwords are not equal")
-			http.Redirect(w, r, "/settings", http.StatusFound)
+			http.Redirect(w, r, "settings", http.StatusFound)
 			return
 		}
 
 		match = bcrypt.CompareHashAndPassword([]byte(hash), []byte(nPass))
 
 		if match == nil {
-			log.Println("wut")
-			http.Redirect(w, r, "/settings", http.StatusFound)
+			http.Redirect(w, r, "settings", http.StatusFound)
 			return
 		}
 
 		nHash, err := bcrypt.GenerateFromPassword([]byte(nPass), 14)
 		if err != nil {
-			log.Println("wuuuuut")
 			log.Println(err)
 			return
 		}
@@ -72,7 +70,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		http.Redirect(w, r, "/logout", http.StatusFound)
+		http.Redirect(w, r, "logout", http.StatusFound)
 	}
 
 	bn, _ := cmd.GetNotification()
