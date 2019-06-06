@@ -5,24 +5,29 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/salihciftci/liman/cmd"
 	"github.com/salihciftci/liman/db/sqlite"
+	"github.com/salihciftci/liman/util"
 	"golang.org/x/crypto/bcrypt"
 )
 
 func settingsHandler(w http.ResponseWriter, r *http.Request) {
-	_, err := parseSessionCookie(w, r)
+	err := parseSessionCookie(w, r)
 	if err != nil {
 		return
 	}
 
 	if r.Method == "POST" {
 		pass := r.FormValue("cpass")
+		cookie, err := r.Cookie("session")
+		user := util.ParseJWT(cookie.Value, secretKey)
+		strUser := fmt.Sprintf("%v", user)
 
-		hash, _, err := sqlite.GetUserPasswordAndSessionKey("root")
+		hash, err := sqlite.GetUserPassword(strUser)
 		if err != nil {
 			log.Println(err)
 			return
@@ -30,6 +35,9 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 
 		match := bcrypt.CompareHashAndPassword([]byte(hash), []byte(pass))
 		if match != nil {
+			log.Println(pass)
+			log.Println(match)
+			log.Println(hash)
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
@@ -38,6 +46,7 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 		cNPass := r.FormValue("cnpass")
 
 		if nPass != cNPass {
+			log.Println("Passwords are not equal")
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
@@ -45,17 +54,19 @@ func settingsHandler(w http.ResponseWriter, r *http.Request) {
 		match = bcrypt.CompareHashAndPassword([]byte(hash), []byte(nPass))
 
 		if match == nil {
+			log.Println("wut")
 			http.Redirect(w, r, "/settings", http.StatusFound)
 			return
 		}
 
 		nHash, err := bcrypt.GenerateFromPassword([]byte(nPass), 14)
 		if err != nil {
+			log.Println("wuuuuut")
 			log.Println(err)
 			return
 		}
 
-		err = sqlite.ChangeUserPassword("root", string(nHash))
+		err = sqlite.ChangeUserPassword(strUser, string(nHash))
 		if err != nil {
 			log.Println(err)
 			return

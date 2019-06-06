@@ -15,20 +15,9 @@ import (
 func main() {
 	if sqlite.IsInstalled() {
 		handlers.IsInstalled = true
-
-		key, err := sqlite.ParseAPIKey()
-		if err != nil {
-			log.Println(err)
-		}
-		handlers.APIKey = key
-
-		ver, err := sqlite.ParseVersion()
-		if err != nil {
-			log.Println(err)
-		}
-
-		handlers.Version = ver
 	}
+
+	handlers.Version = "v0.7"
 
 	err := cmd.CheckNotifications()
 	if err != nil {

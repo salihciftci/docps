@@ -5,54 +5,58 @@
 package util
 
 import (
-	"bufio"
+	"fmt"
+	"log"
 	"math/rand"
-	"os/exec"
 	"strings"
 	"time"
+
+	"github.com/dgrijalva/jwt-go"
 )
 
-//GenerateKey for apiKey and cookieValue
-func GenerateKey(l int) string {
+//GenerateSecretKey generates a secret token for jwt
+func GenerateSecretKey(l int) string {
 	rand.Seed(time.Now().UnixNano())
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")
 
 	b := make([]rune, l)
 	for i := range b {
 		b[i] = letters[rand.Intn(len(letters))]
+
 	}
 
 	return string(b)
 }
 
-//Version getting git commit id
-func Version() (string, error) {
-	var version string
+//GenerateJWT generates a jwt key for authentication
+func GenerateJWT(user string, secret string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"user": user,
+	})
 
-	cmd := exec.Command("git", "rev-parse", "HEAD")
-	cmdReader, err := cmd.StdoutPipe()
+	tokenString, err := token.SignedString([]byte(secret))
 	if err != nil {
-		return "", err
+		log.Println(err)
 	}
 
-	scanner := bufio.NewScanner(cmdReader)
-	go func() {
-		for scanner.Scan() {
-			version = scanner.Text()
+	return tokenString
+}
+
+// ParseJWT parses JWT key to pair info
+func ParseJWT(jwtString, secret string) interface{} {
+	token, err := jwt.Parse(jwtString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Something badly happend while parsing JWT")
 		}
-	}()
 
-	err = cmd.Start()
-	if err != nil {
-		return "", err
+		return []byte(secret), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims["user"]
 	}
 
-	err = cmd.Wait()
-	if err != nil {
-		return "", err
-	}
-
-	return version, nil
+	return err
 }
 
 //ShortPorts Parsing containers ports and shoring them

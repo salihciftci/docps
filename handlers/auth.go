@@ -23,16 +23,25 @@ var (
 	//Version of Liman
 	Version = "0.6-develop"
 
+	//
+	secretKey  = util.GenerateSecretKey(120)
+	sessionKey = ""
+
 	err = ""
 
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 )
 
-func parseSessionCookie(w http.ResponseWriter, r *http.Request) (string, error) {
+func parseSessionCookie(w http.ResponseWriter, r *http.Request) error {
 	if !IsInstalled {
 		http.Redirect(w, r, "/install", http.StatusFound)
 		log.Println("Installation started.")
-		return "", fmt.Errorf("100")
+		return fmt.Errorf("Not Installed")
+	}
+
+	if len(sessionKey) == 0 {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return fmt.Errorf("Session key not generated")
 	}
 
 	cookie, err := r.Cookie("session")
@@ -44,22 +53,18 @@ func parseSessionCookie(w http.ResponseWriter, r *http.Request) (string, error) 
 		}
 		http.SetCookie(w, cookie)
 		http.Redirect(w, r, "/login", http.StatusFound)
-		return "", fmt.Errorf("101")
+		return fmt.Errorf("Session not found")
 	}
-	var perm string
-	if cookie.Value != "" {
-		perm, err = sqlite.GetPermissionFromSessionKey(cookie.Value)
+
+	if cookie.Value != sessionKey {
 		if err != nil {
 			log.Println(err)
 		}
-	}
-
-	if perm == "" {
 		http.Redirect(w, r, "/login", http.StatusFound)
-		return "", fmt.Errorf("102")
+		log.Println(r.Method, r.URL.Path, "Not logged in")
 	}
 
-	return perm, nil
+	return nil
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -70,7 +75,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		inputPass := r.FormValue("inputPassword")
 		inputUser := r.FormValue("inputUser")
-		hash, key, err := sqlite.GetUserPasswordAndSessionKey(inputUser)
+		hash, err := sqlite.GetUserPassword(inputUser)
 		if err != nil {
 			log.Println(r.Method, r.URL.Path, "User not found.")
 		}
@@ -78,9 +83,14 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		match := bcrypt.CompareHashAndPassword([]byte(hash), []byte(inputPass))
 
 		if match == nil {
+			if len(sessionKey) == 0 {
+				sessionKey = util.GenerateJWT(inputUser, secretKey)
+				APIKey = util.GenerateJWT(inputUser, secretKey)
+			}
+
 			cookie := &http.Cookie{
 				Name:    "session",
-				Value:   key,
+				Value:   sessionKey,
 				Path:    "/",
 				Expires: time.Now().AddDate(2, 0, 0),
 				MaxAge:  0,
@@ -145,10 +155,10 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			sessionKey := util.GenerateKey(140)
-			apiKey := util.GenerateKey(40)
+			sessionKey := util.GenerateJWT(inputUser, secretKey)
+			apiKey := util.GenerateJWT(inputUser, secretKey)
 
-			err = sqlite.Install(inputUser, string(hash), sessionKey, apiKey, Version)
+			err = sqlite.Install(inputUser, string(hash))
 			if err != nil {
 				log.Println(err)
 				return
