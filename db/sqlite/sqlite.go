@@ -8,7 +8,6 @@ import (
 	"database/sql"
 	"log"
 	"os"
-	"time"
 
 	//_ Sqlite3 Driver
 	_ "github.com/mattn/go-sqlite3"
@@ -52,7 +51,7 @@ func IsInstalled() bool {
 }
 
 //Install creates database, tables and insert configs
-func Install(user, pass, sessionKey, apiKey, ver string) error {
+func Install(user, pass string) error {
 	db, err := Connect()
 	if err != nil {
 		return err
@@ -62,12 +61,7 @@ func Install(user, pass, sessionKey, apiKey, ver string) error {
 		CREATE TABLE IF NOT EXISTS users (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			user TEXT,
-			pass TEXT,
-			sessionKey TEXT,
-			permission TEXT,
-			desc TEXT,
-			created TEXT,
-			updated TEXT)
+			pass TEXT)
 	`)
 
 	if err != nil {
@@ -77,17 +71,14 @@ func Install(user, pass, sessionKey, apiKey, ver string) error {
 	s.Exec()
 
 	stmt, err := db.Prepare(`INSERT INTO users
-		(user, pass, sessionKey, permission, desc, created, updated)
-		VALUES (?, ?, ?, ?, ?, ?, ?)`)
+		(user, pass) 
+		VALUES (?, ?)`)
 
 	if err != nil {
 		return err
 	}
 
-	created := time.Now().Format("02/01/2006 15:04")
-	updated := time.Now().Format("02/01/2006 15:04")
-
-	stmt.Exec(user, pass, sessionKey, "R", "root", created, updated)
+	stmt.Exec(user, pass)
 
 	s, err = db.Prepare(`
 		CREATE TABLE IF NOT EXISTS config (
@@ -104,8 +95,6 @@ func Install(user, pass, sessionKey, apiKey, ver string) error {
 
 	stmt, err = db.Prepare(`INSERT INTO config
 		(value,key) VALUES
-		(?,?),
-		(?,?),
 		(?,?)
 	`)
 
@@ -113,58 +102,24 @@ func Install(user, pass, sessionKey, apiKey, ver string) error {
 		return err
 	}
 
-	stmt.Exec("isInstalled", "true", "apiKey", apiKey, "version", ver)
+	stmt.Exec("isInstalled", "true")
 
 	return nil
 }
 
-//ParseAPIKey parses api key from db
-func ParseAPIKey() (string, error) {
+// GetUserPassword parses user pass from db
+func GetUserPassword(user string) (string, error) {
 	db, err := Connect()
 	if err != nil {
 		return "", err
-	}
-
-	var APIKey string
-	err = db.QueryRow("SELECT key FROM config WHERE value = ?", "apiKey").Scan(&APIKey)
-
-	if err != nil {
-		return "", err
-	}
-
-	return APIKey, nil
-}
-
-// GetUserPasswordAndSessionKey parses user pass and sessionKey
-func GetUserPasswordAndSessionKey(user string) (string, string, error) {
-	db, err := Connect()
-	if err != nil {
-		return "", "", err
 	}
 
 	var hash string
-	var key string
-	err = db.QueryRow("SELECT pass, sessionKey FROM users WHERE user = ?", user).Scan(&hash, &key)
+	err = db.QueryRow("SELECT pass FROM users WHERE user = ?", user).Scan(&hash)
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
-	return hash, key, err
-}
-
-//GetPermissionFromSessionKey gets user permissions from db
-func GetPermissionFromSessionKey(key string) (string, error) {
-	db, err := Connect()
-	if err != nil {
-		log.Println(err)
-	}
-
-	var permission string
-	err = db.QueryRow("SELECT permission from users WHERE sessionKey = ?", key).Scan(&permission)
-	if err != nil {
-		log.Println(err)
-	}
-
-	return permission, nil
+	return hash, err
 }
 
 //ChangeUserPassword changes user password from db
@@ -182,27 +137,4 @@ func ChangeUserPassword(user, pass string) error {
 	stmt.Exec(pass, user)
 
 	return nil
-}
-
-//ParseVersion parses version from db
-func ParseVersion() (string, error) {
-	db, err := Connect()
-	if err != nil {
-		return "", err
-	}
-
-	var version string
-
-	err = db.QueryRow("SELECT key FROM config WHERE value = ?", "version").Scan(&version)
-
-	if err != nil {
-		return "", err
-	}
-
-	return version, nil
-}
-
-type users struct {
-	User string `json:"user"`
-	Desc string `json:"desc"`
 }
