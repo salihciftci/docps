@@ -17,6 +17,7 @@ darwin-build:
 	GOOS=darwin GOARCH=amd64 go build -o $(BINARY_NAME) -v
 
 docker:
+	docker image rm $(BINARY_NAME)
 	docker build -t $(BINARY_NAME) .
 
 clean:
