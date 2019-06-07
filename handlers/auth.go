@@ -24,7 +24,7 @@ var (
 	secretKey  = util.GenerateSecretKey(120)
 	sessionKey = ""
 
-	err = ""
+	pageError = ""
 
 	tpl = template.Must(template.ParseGlob("templates/*.tmpl"))
 )
@@ -74,6 +74,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		inputUser := r.FormValue("inputUser")
 		hash, err := sqlite.GetUserPassword(inputUser)
 		if err != nil {
+			pageError = "Invalid username or password"
 			log.Println(r.Method, r.URL.Path, "User not found.")
 		}
 
@@ -96,9 +97,15 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, BaseURL, http.StatusFound)
 			return
 		}
+
+		pageError = "Invalid username or password"
+		log.Println(r.Method, r.URL.Path, "User not found.")
 	}
 
-	err := tpl.ExecuteTemplate(w, "login.tmpl", nil)
+	var data []interface{}
+	data = append(data, pageError)
+	pageError = ""
+	err := tpl.ExecuteTemplate(w, "login.tmpl", data)
 	if err != nil {
 		log.Println(r.Method, r.URL.Path, err)
 	}
@@ -130,7 +137,7 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 			inputUser := r.FormValue("inputUser")
 
 			if len(inputPassword) == 0 || len(inputUser) == 0 {
-				err = "Username and Password fields are required!"
+				pageError = "Username and Password fields are required!"
 				http.Redirect(w, r, BaseURL+"/install", http.StatusFound)
 				return
 			}
@@ -169,8 +176,8 @@ func installHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var data []interface{}
-	data = append(data, err)
-	err = ""
+	data = append(data, pageError)
+	pageError = ""
 
 	err := tpl.ExecuteTemplate(w, "install.tmpl", data)
 	if err != nil {
