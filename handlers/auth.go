@@ -17,9 +17,12 @@ import (
 )
 
 var (
+	//IsInstalled var for liman insalled or not
 	IsInstalled = false
-	Version     = "0.6-develop"
-	BaseURL     = ""
+	//Version of Liman
+	Version = "0.6-develop"
+	//BaseURL var for if Liman runs in behind proxy
+	BaseURL = ""
 
 	secretKey  = util.GenerateSecretKey(120)
 	sessionKey = ""
