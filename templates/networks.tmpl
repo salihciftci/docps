@@ -1,0 +1,82 @@
+{{ template "header" }}
+{{ template "sidebar" }}
+<div class="page">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" style="margin-left: 10px;">
+            <div>
+                <h5 id="title">
+                    Networks
+                </h5>
+            </div>
+            <div>
+                <h6>
+                    <i class="zmdi zmdi-home" style="color: #f96332"></i>
+                    <small>/ Networks</small>
+                </h6>
+            </div>
+        </a>
+        <div class="nav-right">
+            <div class="inner-addon right-addon">
+                <i class="fas fa-search"></i>
+                <input type="text" class="form-control" placeholder="Search" id="search" onkeyup="Search()" />
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn settings bg-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="far fa-bell"></i>
+                </button>
+                <div class="dropdown-menu notification-drop-down">
+                    {{ if index . 0 }}
+                    <h6 class="dropdown-header">Notifications</h6>
+                    {{ range index . 0 }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header">
+                        {{ if eq .Status "U" }}
+                        <i class="fas fa-check-circle text-success" aria-hidden="true"></i> &nbsp;{{ else }}
+                        <i class="fas fa-times-circle text-danger" aria-hidden="true"></i> &nbsp;&nbsp;{{ end }} {{ .Desc }}
+                    </a>
+                    {{ end }}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-header text-center" href="notifications">Check all notifications</a>
+                    {{ else }}
+                    <a class="dropdown-header">
+                        <i class="fas fa-info-circle text-secondary"></i> No notifications.</a>
+                    {{ end }}
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead bg-ee">
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Driver</th>
+                                            <th scope="col">Scope</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ range index . 1 }}
+                                        <tr>
+                                            <td>{{ .Name }}</td>
+                                            <td>{{ .Driver }}</td>
+                                            <td>{{ .Scope }}</td>
+                                        </tr>
+                                        {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{{ template "footer" }}
