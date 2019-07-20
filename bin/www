@@ -1,0 +1,101 @@
+#!/usr/bin/env node
+
+let app = require("../index");
+let debug = require("debug")("liman:server");
+let http = require("http");
+let db = require("../db/index");
+let knex = db.knex;
+let fs = require("fs");
+let mkdirp = require("mkdirp");
+let path = require("path");
+let bcrypt = require("bcrypt");
+
+
+// Installing Liman
+try {
+    let installPath = path.join(__dirname, "../data");
+    console.log(installPath);
+    if (!fs.existsSync(installPath)) {
+        console.log("Trying to install Liman");
+        mkdirp.sync(installPath, 0o777);
+        let pass = bcrypt.hashSync("liman", 10);
+
+        knex.schema.createTable("users", (table) => {
+            table.increments();
+            table.string("username");
+            table.string("password");
+            table.timestamps();
+        }).then().catch((e) => {
+            console.log(e);
+        });
+
+        knex("users").insert([{
+            "username": "liman",
+            "password": pass,
+            "created_at": knex.fn.now(),
+            "updated_at": knex.fn.now()
+        }]).then();
+
+        console.log("Liman succesfully installed");
+    }
+} catch (e) {
+    console.log(e);
+}
+
+let port = normalizePort(process.env.PORT || "5000");
+app.set("port", port);
+
+let server = http.createServer(app);
+
+
+server.listen(port, () => console.log(`Liman running on port ${port}`));
+server.on("error", onError);
+server.on("listening", onListening);
+
+function normalizePort(val) {
+    let port = parseInt(val, 10);
+
+    if (isNaN(port)) {
+        // named pipe
+        return val;
+    }
+
+    if (port >= 0) {
+        // port number
+        return port;
+    }
+
+    return false;
+}
+
+function onError(error) {
+    if (error.syscall !== "listen") {
+        throw error;
+    }
+
+    let bind = typeof port === "string"
+        ? "Pipe " + port
+        : "Port " + port;
+
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+            break;
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+}
+
+function onListening() {
+    let addr = server.address();
+    let bind = typeof addr === "string"
+        ? "pipe " + addr
+        : "port " + addr.port;
+    debug("Listening on " + bind);
+}

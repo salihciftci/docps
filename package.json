@@ -1,0 +1,23 @@
+{
+  "name": "liman",
+  "version": "0.7.0",
+  "scripts": {
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "lint": "eslint --fix ."
+  },
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.19.0",
+    "mkdirp": "^0.5.1",
+    "morgan": "~1.9.1",
+    "sqlite3": "^4.0.9"
+  },
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "nodemon": "^1.19.1"
+  }
+}
