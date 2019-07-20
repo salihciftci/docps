@@ -2,13 +2,14 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const os = require("os");
+const uuid = require("uuid/v5");
 
-const db = require("../../db/sqlite");
-let { secretKey } = require("../../util/config");
+const db = require("../../db/index");
+const knex = db.knex;
 
 // POST create user
 router.post("/", async (req, res) => {
-    //todo check user already exist or not
     try {
         let username = req.body.username;
         let password = req.body.password;
@@ -21,13 +22,20 @@ router.post("/", async (req, res) => {
 
         let encryped = bcrypt.hashSync(password, 10);
 
-        let params = [username, encryped];
-        let query = "INSERT INTO users(user, pass) VALUES (?,?)";
-
-        await db.query(query, params);
+        await knex("users").insert([{
+            "username": username,
+            "password": encryped,
+            "created_at": knex.fn.now(),
+            "updated_at": knex.fn.now()
+        }]);
 
         res.sendStatus(200);
     } catch (e) {
+        if (e.errno = 19) {
+            console.log("user already exist");
+            res.sendStatus(409);
+            return;
+        }
         console.log(e);
         res.sendStatus(500);
     }
@@ -39,28 +47,25 @@ router.post("/:username", async (req, res) => {
         let password = req.body.password;
         let user = req.params.username;
 
-        let query = "SELECT COUNT(user) AS 'count' FROM users WHERE user = ?";
-        let params = [user];
-        let result = await db.query(query, params);
+        let result = await knex("users").count("username as count").where("username", user);
+        let count = result[0].count;
 
-        if (result[0].count !== 1) {
+        if (count !== 1) {
             console.log("User not found");
             res.sendStatus(404);
             return;
         }
 
-        query = "SELECT pass FROM users WHERE user = ?";
-        result = await db.query(query, params);
+        result = await knex.select("password").from("users").where("username", user);
 
-
-        let match = bcrypt.compareSync(password, result[0].pass);
+        let match = bcrypt.compareSync(password, result[0].password);
         if (!match) {
             console.log("Passwords are not match");
-            res.status(404);
+            res.sendStatus(404);
             return;
         }
 
-        let token = jwt.sign({}, secretKey, { expiresIn: "1w" });
+        let token = jwt.sign({}, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
         res.json({ "token": token });
     } catch (e) {
         console.log(e);
