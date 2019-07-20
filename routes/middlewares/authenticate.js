@@ -1,5 +1,6 @@
 let jwt = require("jsonwebtoken");
-let { secretKey } = require("../../util/config");
+let os = require("os");
+let uuid = require("uuid/v5");
 
 module.exports = (req, res, next) => {
     console.log(req.path);
@@ -20,7 +21,7 @@ module.exports = (req, res, next) => {
         token = bearer[1];
 
         try {
-            let decoded = jwt.verify(token, secretKey);
+            let decoded = jwt.verify(token, uuid(os.hostname(), uuid.DNS));
             if (!decoded) {
                 res.sendStatus(403);
             }

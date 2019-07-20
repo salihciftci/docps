@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "build"))); //todo
 
 // Using middleware
-// app.use(auth);
+app.use(auth);
 
 // API Routes
 app.use("/api/users", usersRouter);
