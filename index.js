@@ -4,9 +4,6 @@ const logger = require("morgan");
 
 const auth = require("./routes/middlewares/authenticate");
 
-const usersRouter = require("./routes/api/users");
-const containersRouter = require("./routes/api/containers");
-
 const app = express();
 
 app.use(logger("dev"));
@@ -20,7 +17,10 @@ app.use(express.static(path.join(__dirname, "build"))); //todo
 app.use(auth);
 
 // API Routes
-app.use("/api/users", usersRouter);
-app.use("/api/containers", containersRouter);
+app.use("/api/users", require("./routes/api/users"));
+app.use("/api/containers", require("./routes/api/containers"));
+app.use("/api/images/", require("./routes/api/images"));
+app.use("/api/volumes/", require("./routes/api/volumes"));
+app.use("/api/networks/", require("./routes/api/networks"));
 
 module.exports = app;
