@@ -3,22 +3,32 @@ const router = express.Router();
 const Docker = require("../../lib/docker");
 
 router.get("/", async (req, res) => {
-    res.json("sa");
-    // let container = new Docker.Container();
-    // try {
-    //     let containers = await container.ls();
-    //     res.json(containers);
-    // } catch (e) {
-    //     console.log(e);
-    // }
+    let container = new Docker.Container();
+    try {
+        let containers = await container.ls();
+        res.json(containers);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
 });
 
-// router.get("/:id", function (req, res) {
-//     console.log("2");
-// });
+router.get("/:id", function (req, res) {
 
-// router.get("/:id/logs", function (req, res) {
-//     console.log("3");
-// });
+});
+
+router.get("/:name/logs", async (req, res) => {
+    //todo check id if name is []
+    let containerName = req.params.name;
+    let lineCount = req.body.lines || 10;
+    let container = new Docker.Container();
+    try {
+        let logs = await container.logs(containerName, lineCount);
+        res.json(logs);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
 
 module.exports = router;
