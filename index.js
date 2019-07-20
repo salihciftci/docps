@@ -22,5 +22,6 @@ app.use("/api/containers", require("./routes/api/containers"));
 app.use("/api/images/", require("./routes/api/images"));
 app.use("/api/volumes/", require("./routes/api/volumes"));
 app.use("/api/networks/", require("./routes/api/networks"));
+app.use("/api/", require("./routes/api/index"));
 
 module.exports = app;
