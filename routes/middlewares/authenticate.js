@@ -3,7 +3,6 @@ let os = require("os");
 let uuid = require("uuid/v5");
 
 module.exports = (req, res, next) => {
-    console.log(req.path);
     if (req.method === "POST") {
         let split = req.path.split("/");
         if (split.length > 3 && split[2] === "users") {
