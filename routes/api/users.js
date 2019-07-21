@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
 
         res.sendStatus(200);
     } catch (e) {
-        if (e.errno = 19) {
+        if (e.errno === 19) {
             console.log("user already exist");
             res.sendStatus(409);
             return;
