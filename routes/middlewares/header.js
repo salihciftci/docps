@@ -3,10 +3,15 @@ let os = require("os");
 let uuid = require("uuid/v5");
 
 module.exports = (req, res, next) => {
+    let paths = req.path.split("/");
+    if (paths[1] !== "api") {
+        next();
+        return;
+    }
+
     if (req.method === "POST") {
-        let split = req.path.split("/");
-        if (split.length > 3 && split[2] === "users") {
-            if (split[3]) {
+        if (paths.length > 3 && paths[2] === "users") {
+            if (paths[3]) {
                 next();
                 return;
             }
