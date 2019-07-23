@@ -14,14 +14,13 @@ body {
   height: 50px !important;
 }
 
-.social {
-  /* font-size: 1.3rem; */
+.github {
   color: #22252b;
 }
 
 #sidebar-wrapper {
   min-height: 100vh;
-  margin-left: -5rem;
+  margin-left: 0rem;
   -webkit-transition: margin 0.25s ease-out;
   -moz-transition: margin 0.25s ease-out;
   -o-transition: margin 0.25s ease-out;
@@ -52,24 +51,8 @@ body {
 }
 
 #page-content-wrapper {
-  min-width: 100vw;
-}
-
-#wrapper.toggled #sidebar-wrapper {
-  margin-left: 0;
-}
-
-@media (min-width: 768px) {
-  #sidebar-wrapper {
-    margin-left: 0;
-  }
-  #page-content-wrapper {
-    min-width: 0;
-    width: 100%;
-  }
-  #wrapper.toggled #sidebar-wrapper {
-    margin-left: -5rem;
-  }
+  min-width: 0;
+  width: 100%;
 }
 
 .avatar {
