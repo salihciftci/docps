@@ -1,0 +1,37 @@
+{{> header}}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto mt-5">
+            <img class="mx-auto d-block" alt="liman" src="/img/liman.png" height="150" />
+            {{#if error}}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {{/if}}
+            <div class="card card-signin mt-4">
+                <div class="card-body m-5">
+                    <h4 class="card-title mb-5 text-center">Sign In</h4>
+                    <form class="form-signin" method="POST" action="/login">
+                        <div class="form-label-group">
+                            <input type="email" name="email" class="login form-control rounded-0"
+                                placeholder="Email address" required>
+                        </div>
+
+                        <div class="form-label-group mt-3">
+                            <input type="password" name="password" class="login form-control rounded-0"
+                                placeholder="Password" required>
+                        </div>
+                        <button class="login mt-4 btn btn-dark btn-block text-uppercase" type="submit">Sign in</button>
+                    </form>
+                </div>
+            </div>
+            <p class="mt-5 text-center">
+                <a href="https://github.com/salihciftci/liman" class="social" target="_blank">
+                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{{> footer}}
