@@ -6,8 +6,16 @@
         <button class="btn avatar" type="button">
             <i class="far fa-bell"></i>
         </button>
-        <button class="btn" type="button">
-            <img src="https://www.gravatar.com/avatar/6b890c9fc3ba836945c5538583bf6369" alt="avatar" class="avatar" />
-        </button>
+
+        <div class="dropdown">
+            <button class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="https://www.gravatar.com/avatar/6b890c9fc3ba836945c5538583bf6369" alt="avatar"
+                    class="avatar" />
+            </button>
+
+            <div class="dropdown-menu dropdown-menu-right ">
+                <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+        </div>
     </div>
 </nav>
