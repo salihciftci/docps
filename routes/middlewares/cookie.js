@@ -4,12 +4,7 @@ const uuid = require("uuid/v5");
 
 module.exports = (req, res, next) => {
     let path = req.path.split("/")[1];
-    if (path === "api") {
-        next();
-        return;
-    }
-
-    if (path === "login") {
+    if (path === "api" || path === "install" || path === "login") {
         next();
         return;
     }
@@ -21,7 +16,10 @@ module.exports = (req, res, next) => {
             if (!decoded) {
                 console.log("Login Attemp: Invalid cookie");
                 res.redirect("/login");
+                next();
+                return;
             }
+            req.liman = decoded;
             next();
         } catch (e) {
             if (e.name === "TokenExpiredError") {
