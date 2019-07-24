@@ -26,7 +26,7 @@ app.engine("tmpl", hbs.express4({
 // Serving Static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// Using middleware
+// Using middlewares
 app.use(header, cookie, install);
 
 // API Routes
@@ -37,8 +37,11 @@ app.use("/api/volumes/", require("./routes/api/volumes"));
 app.use("/api/networks/", require("./routes/api/networks"));
 app.use("/api/", require("./routes/api/index"));
 
+// SSR Routes
 app.use("/", require("./routes/web/index"));
 app.use("/install", require("./routes/web/install"));
 app.use("/login", require("./routes/web/login"));
+
+app.use("/logout", (req, res) => { res.clearCookie("liman"); res.redirect("/login"); });
 
 module.exports = app;
