@@ -3,45 +3,6 @@
 let app = require("../index");
 let debug = require("debug")("liman:server");
 let http = require("http");
-let db = require("../db/index");
-let knex = db.knex;
-let fs = require("fs");
-let mkdirp = require("mkdirp");
-let path = require("path");
-let bcrypt = require("bcrypt");
-
-
-// Installing Liman
-try {
-    let installPath = path.join(__dirname, "../data");
-    if (!fs.existsSync(installPath)) {
-        console.log("Trying to install Liman");
-        mkdirp.sync(installPath, 0o777);
-        let pass = bcrypt.hashSync("liman", 10);
-
-        knex.schema.createTable("users", (table) => {
-            table.increments().primary();
-            table.string("username").unique();
-            table.string("password");
-            table.timestamps();
-        }).then().catch((e) => {
-            console.log(e);
-        });
-
-        knex("users").insert([{
-            "username": "liman",
-            "password": pass,
-            "created_at": knex.fn.now(),
-            "updated_at": knex.fn.now()
-        }]).then().catch((e) => {
-            console.log(e);
-        });
-
-        console.log("Liman succesfully installed");
-    }
-} catch (e) {
-    console.log(e);
-}
 
 let port = normalizePort(process.env.PORT || "5000");
 app.set("port", port);
