@@ -19,7 +19,7 @@ module.exports = (req, res, next) => {
                 next();
                 return;
             }
-            req.liman = decoded;
+            req.user = decoded.user;
             next();
         } catch (e) {
             if (e.name === "TokenExpiredError") {
