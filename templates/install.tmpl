@@ -1,0 +1,51 @@
+{{> header}}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto mt-5">
+            <img class="mx-auto d-block" alt="liman" src="/img/liman.png" height="150" />
+            {{#if error}}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+            {{/if}}
+            <div class="card card-signin mt-4">
+                <div class="card-body m-5">
+                    <h4 class="card-title mb-5 text-center">Install Liman</h4>
+                    <form class="form-signin" method="POST" action="/install">
+                        <div class="form-label-group">
+                            <input type="text" name="username" class="login form-control rounded-0"
+                                placeholder="Username" required>
+                        </div>
+
+                        <div class="form-label-group mt-3">
+                            <input type="password" name="password" class="login form-control rounded-0"
+                                placeholder="Password" required>
+                        </div>
+
+                        <div class="form-label-group mt-3">
+                            <input type="email" name="email" class="login form-control rounded-0"
+                                placeholder="Email address">
+                        </div>
+                        <small class="form-text text-muted">Email only used for fetching gravatar. Not required.</small>
+
+                        <div class="form-label-group mt-3">
+                            <select class="form-control" disabled>
+                                <option>SQLite</option>
+                            </select>
+                        </div>
+                        <small class="form-text text-muted">Only SQLite database is available right now.</small>
+
+                        <button class="login mt-4 btn btn-dark btn-block text-uppercase" type="submit">Install</button>
+                    </form>
+                </div>
+            </div>
+            <p class="mt-5 text-center">
+                <a href="https://github.com/salihciftci/liman" class="github" target="_blank">
+                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{{> footer}}
