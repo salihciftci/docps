@@ -27,16 +27,16 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
     try {
         let password = req.body.password;
-        let email = req.body.email;
+        let username = req.body.username;
 
-        if (!password || !email) {
+        if (!password || !username) {
             console.log("Login Attemp: Username or password not included in body");
             error = "Invalid email or password";
             res.redirect("/login");
             return;
         }
 
-        let result = await knex.select("password").from("users").where("username", email);
+        let result = await knex.select("password").from("users").where("username", username);
 
         if (!result.length) {
             console.log("Login Attemp: User not found");
@@ -55,7 +55,15 @@ router.post("/", async (req, res) => {
             return;
         }
 
-        let token = jwt.sign({}, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
+        result = await knex.select("admin").select("email").from("users").where("username", username);
+
+        let user = {
+            "username": username,
+            "email": result[0].email,
+            "admin": result[0].admin
+        };
+
+        let token = jwt.sign({ user }, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
         res.cookie("liman", token, { "path": "/", maxAge: "999999999999999" }); // todo: fix maxAge
         res.redirect("/");
     } catch (e) {
