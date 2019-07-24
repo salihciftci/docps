@@ -45,9 +45,9 @@ router.post("/", async (req, res) => {
 router.post("/:username", async (req, res) => {
     try {
         let password = req.body.password;
-        let user = req.params.username;
+        let username = req.params.username;
 
-        let result = await knex("users").count("username as count").where("username", user);
+        let result = await knex("users").count("username as count").where("username", username);
         let count = result[0].count;
 
         if (count !== 1) {
@@ -56,7 +56,7 @@ router.post("/:username", async (req, res) => {
             return;
         }
 
-        result = await knex.select("password").from("users").where("username", user);
+        result = await knex.select("password").from("users").where("username", username);
 
         let match = bcrypt.compareSync(password, result[0].password);
         if (!match) {
@@ -65,7 +65,16 @@ router.post("/:username", async (req, res) => {
             return;
         }
 
-        let token = jwt.sign({}, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
+        result = await knex.select("admin").select("email").from("users").where("username", username);
+
+        let user = {
+            "username": username,
+            "email": result[0].email,
+            "admin": result[0].admin
+        };
+
+
+        let token = jwt.sign({ user }, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
         res.json({ "token": token });
     } catch (e) {
         console.log(e);
@@ -75,7 +84,7 @@ router.post("/:username", async (req, res) => {
 
 // GET user info
 router.get("/:username", async (req, res) => {
-
+    res.json(req.user);
 });
 
 module.exports = router;
