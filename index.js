@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const header = require("./routes/middlewares/header");
 const cookie = require("./routes/middlewares/cookie");
 const install = require("./routes/middlewares/install");
+const error = require("./routes/middlewares/error");
 
 const app = express();
 
@@ -27,7 +28,7 @@ app.engine("tmpl", hbs.express4({
 app.use(express.static(path.join(__dirname, "public")));
 
 // Using middlewares
-app.use(header, cookie, install);
+app.use(header, cookie, install, error);
 
 // API Routes
 app.use("/api/users", require("./routes/api/users"));
