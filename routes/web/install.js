@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
+const { generateKeyPairSync } = require("crypto");
 
 const db = require("../../db");
 const knex = db.knex;
@@ -36,14 +37,15 @@ router.post("/", async (req, res) => {
         }
 
         if (!email) {
-            email = "example@example.com";
+            email = "example@example.com"; //todo fix in production
         }
 
         let encrypted = bcrypt.hashSync(password, 10);
 
+        // Generating SQLite Database
         let installPath = path.join(__dirname, "../../data");
-        if (!fs.existsSync(installPath)) {
-            mkdirp.sync(installPath, 0o777);
+        if (!fs.existsSync(installPath + "/db")) {
+            mkdirp.sync(installPath + "/db", 0o777);
 
             knex.schema.createTable("users", (table) => {
                 table.increments().primary();
@@ -60,16 +62,37 @@ router.post("/", async (req, res) => {
                 "username": username,
                 "password": encrypted,
                 "email": email,
-                "admin": false,
+                "admin": true,
                 "created_at": knex.fn.now(),
                 "updated_at": knex.fn.now()
             }]).then().catch((e) => {
                 console.log(e);
             });
-
-            console.log("Liman succesfully installed");
-            res.status(301).redirect("/login");
+            console.log("Database succesfully created");
         }
+
+        // Generating RSA Keys
+        if (!fs.existsSync(installPath + "/keys")) {
+            mkdirp.sync(installPath + "/keys", 0o777);
+            const { publicKey, privateKey } = generateKeyPairSync("rsa", {
+                modulusLength: 4096,
+                publicKeyEncoding: {
+                    type: "spki",
+                    format: "pem"
+                },
+                privateKeyEncoding: {
+                    type: "pkcs8",
+                    format: "pem",
+                }
+            });
+
+            fs.writeFileSync(installPath + "/keys/private.pem", privateKey);
+            fs.writeFileSync(installPath + "/keys/public.pem", publicKey);
+            console.log("RSA keys succesfully created");
+        }
+
+        console.log("Liman succesfully installed");
+        res.status(301).redirect("/login");
     } catch (e) {
         console.log(e);
     }
