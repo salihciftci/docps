@@ -6,7 +6,7 @@ const sqlPath = path.join(__dirname, "../data");
 let knexInstance = knex({
     client: "sqlite3",
     connection: {
-        filename: sqlPath + "/liman.db"
+        filename: sqlPath + "/db/liman.sqlite3"
     },
     "useNullAsDefault": true
 });
