@@ -1,6 +1,6 @@
 let jwt = require("jsonwebtoken");
-let os = require("os");
-let uuid = require("uuid/v5");
+const path = require("path");
+const fs = require("fs");
 
 module.exports = (req, res, next) => {
     let paths = req.path.split("/");
@@ -21,11 +21,12 @@ module.exports = (req, res, next) => {
     const bearerHeader = req.headers["authorization"];
     let token;
     if (typeof bearerHeader !== "undefined") {
-        const bearer = bearerHeader.split(" ");
-        token = bearer[1];
-
         try {
-            let decoded = jwt.verify(token, uuid(os.hostname(), uuid.DNS));
+            let privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+            const bearer = bearerHeader.split(" ");
+            token = bearer[1];
+
+            let decoded = jwt.verify(token, privateKey, { algorithms: "RS256" });
             if (!decoded) {
                 res.sendStatus(403);
             }
@@ -39,6 +40,9 @@ module.exports = (req, res, next) => {
                 return;
             } else if (e.name === "NotBeforeError") {
                 res.status(401).json({ "error": e.message });
+                return;
+            } else if (e.errno === -2) {
+                res.status(501).json({ "error": "Liman is not installed yet" });
                 return;
             }
             console.log(e);

@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const uuid = require("uuid/v5");
-const os = require("os");
+const fs = require("fs");
+const path = require("path");
 
 const db = require("../../db");
 const knex = db.knex;
@@ -63,7 +63,8 @@ router.post("/", async (req, res) => {
             "admin": result[0].admin
         };
 
-        let token = jwt.sign({ user }, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
+        const privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+        let token = jwt.sign({ user }, privateKey, { expiresIn: "1w", algorithm: "RS256" });
         res.cookie("liman", token, { "path": "/", maxAge: "999999999999999" }); // todo: fix maxAge
         res.redirect("/");
     } catch (e) {

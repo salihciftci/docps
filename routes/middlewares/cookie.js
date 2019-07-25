@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
-const os = require("os");
-const uuid = require("uuid/v5");
+const nodePath = require("path");
+const fs = require("fs");
 
 module.exports = (req, res, next) => {
     let path = req.path.split("/")[1];
@@ -12,7 +12,8 @@ module.exports = (req, res, next) => {
     let cookie = req.cookies.liman;
     if (typeof cookie !== "undefined") {
         try {
-            let decoded = jwt.verify(cookie, uuid(os.hostname(), uuid.DNS));
+            let privateKey = fs.readFileSync(nodePath.join(__dirname, "../../data/keys/private.pem"));
+            let decoded = jwt.verify(cookie, privateKey, { algorithms: "RS256" });
             if (!decoded) {
                 console.log("Login Attemp: Invalid cookie");
                 res.redirect("/login");
@@ -28,6 +29,8 @@ module.exports = (req, res, next) => {
                 console.log("Login Attemp: JsonWebTokenError");
             } else if (e.name === "NotBeforeError") {
                 console.log("Login Attemp: NotBeforeError");
+            } else if (e.errno === -2) {
+                console.log("Liman is not installed yet. Redirected to /install");
             } else {
                 console.log(e);
             }

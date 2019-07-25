@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const os = require("os");
-const uuid = require("uuid/v5");
+const fs = require("fs");
+const path = require("path");
 
 const db = require("../../db/index");
 const knex = db.knex;
@@ -73,8 +73,8 @@ router.post("/:username", async (req, res) => {
             "admin": result[0].admin
         };
 
-
-        let token = jwt.sign({ user }, uuid(os.hostname(), uuid.DNS), { expiresIn: "1w" });
+        const privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+        let token = jwt.sign({ user }, privateKey, { expiresIn: "1w", algorithm: "RS256" });
         res.json({ "token": token });
     } catch (e) {
         console.log(e);
