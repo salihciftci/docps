@@ -3,9 +3,8 @@ const router = express.Router();
 const Docker = require("../../lib/docker");
 
 router.get("/", async (req, res) => {
-    let volume = new Docker.Volume();
     try {
-        let volumes = await volume.ls();
+        let volumes = await Docker.Volume.ls();
         res.json(volumes);
     } catch (e) {
         console.log(e);

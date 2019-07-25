@@ -3,9 +3,8 @@ const router = express.Router();
 const Docker = require("../../lib/docker");
 
 router.get("/", async (req, res) => {
-    let container = new Docker.Container();
     try {
-        let containers = await container.ls();
+        let containers = await Docker.Container.ls();
         res.json(containers);
     } catch (e) {
         console.log(e);
@@ -21,9 +20,8 @@ router.get("/:name/logs", async (req, res) => {
     //todo check id if name is []
     let containerName = req.params.name;
     let lineCount = req.body.lines || 10;
-    let container = new Docker.Container();
     try {
-        let logs = await container.logs(containerName, lineCount);
+        let logs = await Docker.Container.logs(containerName, lineCount);
         res.json(logs);
     } catch (e) {
         console.log(e);

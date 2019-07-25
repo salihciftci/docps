@@ -4,8 +4,7 @@ const { Docker } = require("../../lib/docker");
 
 router.get("/", async (req, res) => {
     try {
-        let docker = new Docker();
-        let info = await docker.info();
+        let info = await Docker.info();
         res.json(info);
     } catch (e) {
         console.log(e);
@@ -15,8 +14,7 @@ router.get("/", async (req, res) => {
 
 router.get("/stats", async (req, res) => {
     try {
-        let docker = new Docker();
-        let stats = await docker.stats();
+        let stats = await Docker.stats();
         res.json(stats);
     } catch (e) {
         console.log(e);

@@ -3,9 +3,8 @@ const router = express.Router();
 const Docker = require("../../lib/docker");
 
 router.get("/", async (req, res) => {
-    let network = new Docker.Network();
     try {
-        let networks = await network.ls();
+        let networks = await Docker.Network.ls();
         res.json(networks);
     } catch (e) {
         console.log(e);
