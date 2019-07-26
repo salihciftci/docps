@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 // Handlebars configs
 app.set("view engine", "tmpl");
-app.set("views", __dirname + "/templates");
+app.set("views", path.join(__dirname ,"/templates"));
 app.engine("tmpl", hbs.express4({
-    partialsDir: __dirname + "/templates/partials/",
+    partialsDir: path.join(__dirname ,"/templates/partials/"),
     extname: ".tmpl"
 }));
 

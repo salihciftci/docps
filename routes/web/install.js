@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
         // Generating SQLite Database
         let installPath = path.join(__dirname, "../../data");
         if (!fs.existsSync(installPath + "/db")) {
-            mkdirp.sync(installPath + "/db", 0o777);
+            mkdirp.sync(installPath + "/db");
 
             knex.schema.createTable("users", (table) => {
                 table.increments().primary();
@@ -72,8 +72,8 @@ router.post("/", async (req, res) => {
         }
 
         // Generating RSA Keys
-        if (!fs.existsSync(installPath + "/keys")) {
-            mkdirp.sync(installPath + "/keys", 0o777);
+        if (!fs.existsSync(path.join(installPath + "/keys"))) {
+            mkdirp.sync(path.join(installPath + "/keys"));
             const { publicKey, privateKey } = generateKeyPairSync("rsa", {
                 modulusLength: 4096,
                 publicKeyEncoding: {
@@ -86,8 +86,8 @@ router.post("/", async (req, res) => {
                 }
             });
 
-            fs.writeFileSync(installPath + "/keys/private.pem", privateKey);
-            fs.writeFileSync(installPath + "/keys/public.pem", publicKey);
+            fs.writeFileSync(path.join(installPath, "/keys/private.pem"), privateKey);
+            fs.writeFileSync(path.join(installPath, "/keys/public.pem"), publicKey);
             console.log("RSA keys succesfully created");
         }
 
