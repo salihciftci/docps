@@ -1,22 +1,18 @@
-FROM golang:alpine AS builder
+FROM node:alpine AS base
 LABEL MAINTAINER="Salih Çiftçi"
 
-WORKDIR /go/src/liman
+WORKDIR /liman
+
 COPY . .
 
-ENV GO111MODULE=on
+RUN yarn install --production
 
-RUN apk add -U --no-cache git gcc musl-dev && \
-    go mod download && \
-    go install -v ./...
+FROM node:alpine
 
-FROM alpine:3.8
-
-COPY --from=builder /go/bin/liman /liman
-COPY --from=builder /go/src/liman/public /public
-COPY --from=builder /go/src/liman/templates /templates
+COPY --from=base /liman /liman
 
 RUN apk add -U --no-cache ca-certificates docker
 
-EXPOSE 8080
-CMD /liman
+EXPOSE 5000
+
+CMD ["node", "liman/bin/www"]
