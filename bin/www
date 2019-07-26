@@ -9,7 +9,6 @@ app.set("port", port);
 
 let server = http.createServer(app);
 
-
 server.listen(port, () => console.log(`Liman running on port ${port}`));
 server.on("error", onError);
 server.on("listening", onListening);
@@ -61,3 +60,7 @@ function onListening() {
         : "port " + addr.port;
     debug("Listening on " + bind);
 }
+
+process.on("SIGINT", function () {
+    process.exit();
+});
