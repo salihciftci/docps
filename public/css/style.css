@@ -78,3 +78,19 @@ body {
 .dropdown-toggle::after {
   display: none;
 }
+
+.table-hover>thead>tr>th {
+  border-top: none !important;
+  border-bottom: 1px solid black;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.table-hover>tbody>tr>td {
+  font-size: 15px;
+  letter-spacing: 0.5px;
+}
+
+.table-hover>tbody>tr>th {
+  font-weight: normal;
+}
