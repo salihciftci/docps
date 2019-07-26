@@ -94,3 +94,8 @@ body {
 .table-hover>tbody>tr>th {
   font-weight: normal;
 }
+
+.logs-link {
+  text-decoration: none;
+  color: #354168;
+}
