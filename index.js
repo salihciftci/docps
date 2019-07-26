@@ -18,9 +18,9 @@ app.use(cookieParser());
 
 // Handlebars configs
 app.set("view engine", "tmpl");
-app.set("views", path.join(__dirname ,"/templates"));
+app.set("views", path.join(__dirname, "/templates"));
 app.engine("tmpl", hbs.express4({
-    partialsDir: path.join(__dirname ,"/templates/partials/"),
+    partialsDir: path.join(__dirname, "/templates/partials/"),
     extname: ".tmpl"
 }));
 
@@ -39,9 +39,10 @@ app.use("/api/networks/", require("./routes/api/networks"));
 app.use("/api/", require("./routes/api/index"));
 
 // SSR Routes
-app.use("/", require("./routes/web/index"));
 app.use("/install", require("./routes/web/install"));
 app.use("/login", require("./routes/web/login"));
+app.use("/", require("./routes/web/index"));
+app.use("/containers", require("./routes/web/containers"));
 
 app.use("/logout", (req, res) => { res.clearCookie("liman"); res.redirect("/login"); });
 
