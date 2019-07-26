@@ -4,8 +4,138 @@
   <div id="page-content-wrapper">
     {{>navbar}}
     <div class="container-fluid">
-      content
-    </div>
+
+      <div class="row p-5">
+        <div class="col-sm-12 col-md-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex row">
+                <div class="col-3 align-self-center">
+                  <i class="fas fa-server fa-3x"></i>
+                </div>
+                <div class="col-8 ml-auto align-self-center text-center">
+                  <div class="m-l-10 float-right">
+                    <h5 class="mt-0">{{containersCount}}</h5>
+                    <p class="mb-0">Containers</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex row">
+                <div class="col-3 align-self-center">
+                  <i class="far fa-clone fa-3x"></i>
+                </div>
+                <div class="col-8 ml-auto align-self-center text-center">
+                  <div class="m-l-10 float-right">
+                    <h5 class="mt-0">{{imagesCount}}</h5>
+                    <p class="mb-0">Images</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-3 mb-2">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex row">
+                <div class="col-3 align-self-center">
+                  <i class="far fa-hdd fa-3x"></i>
+                </div>
+                <div class="col-8 ml-auto align-self-center text-center">
+                  <div class="m-l-10 float-right">
+                    <h5 class="mt-0">{{volumesCount}}</h5>
+                    <p class="mb-0">Volumes</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-xl-3 mb-2">
+          <div class="card db">
+            <div class="card-body">
+              <div class="d-flex row">
+                <div class="col-3 align-self-center">
+                  <i class="fas fa-3x fa-wifi"></i>
+                </div>
+                <div class="col-8 ml-auto align-self-center text-center">
+                  <div class="m-l-10 float-right">
+                    <h5 class="mt-0 round-inner">{{networksCount}}</h5>
+                    <p class="mb-0">Networks</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pt-0 pl-5 pr-5 pb-3">
+        <div class="col-sm-12">
+          <div class="card fcard">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover" id="table">
+                  <thead class="thead">
+                    <tr>
+                      <th style="background-color: none;" colspan="2">Notifications</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="2" style="text-align: center;">No notifications.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row pt-5 pl-5 pr-5">
+        <div class="col-sm-12">
+          <div class="card fcard">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th colspan="2">System Info</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th style="width: 24%;">Name</th>
+                      <td style="width: 100%; text-align: right;">{{docker.Name}}</td>
+                    </tr>
+                    <tr>
+                      <th>Docker version</th>
+                      <td style="width: 100%; text-align: right;">{{docker.Version}}</td>
+                    </tr>
+                    <tr>
+                      <th>CPU</th>
+                      <td style="width: 100%; text-align: right;">{{docker.CPU}}</td>
+                    </tr>
+                    <tr>
+                      <th>Memory</th>
+                      <td style="width: 100%; text-align: right;">{{docker.MemTotal}} GiB</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div> <!-- fluid end -->
   </div>
 </div>
 
