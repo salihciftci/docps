@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
 
         res.render("containers", {
             title: "Containers",
+            user: req.user,
             containers: containers
         });
     } catch (e) {

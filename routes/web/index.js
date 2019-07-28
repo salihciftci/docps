@@ -6,6 +6,7 @@ router.get("/", async (req, res) => {
     try {
         res.render("index", {
             title: "Home",
+            user: req.user,
             containersCount: await Docker.Container.count(),
             imagesCount: await Docker.Image.count(),
             volumesCount: await Docker.Volume.count(),

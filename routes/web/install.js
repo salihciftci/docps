@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const path = require("path");
 const fs = require("fs");
 const mkdirp = require("mkdirp");
-const { generateKeyPairSync } = require("crypto");
+const { generateKeyPairSync, createHash } = require("crypto");
 
 const db = require("../../db");
 const knex = db.knex;
@@ -40,6 +40,7 @@ router.post("/", async (req, res) => {
             email = "example@example.com"; //todo fix in production
         }
 
+        let md5Email = createHash("md5").update(email).digest("hex");
         let encrypted = bcrypt.hashSync(password, 10);
 
         // Generating SQLite Database
@@ -52,6 +53,7 @@ router.post("/", async (req, res) => {
                 table.string("username").unique();
                 table.string("password");
                 table.string("email");
+                table.string("avatarURL");
                 table.boolean("admin");
                 table.timestamps();
             }).then().catch((e) => {
@@ -63,6 +65,7 @@ router.post("/", async (req, res) => {
                 "password": encrypted,
                 "email": email,
                 "admin": true,
+                "avatarURL": md5Email,
                 "created_at": knex.fn.now(),
                 "updated_at": knex.fn.now()
             }]).then().catch((e) => {
