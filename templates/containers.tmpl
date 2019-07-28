@@ -21,7 +21,8 @@
                   </thead>
                   <tbody>
                     {{#each containers}}
-                    <tr>
+                    <tr data-toggle="collapse" href="#{{name}}" role="button" aria-expanded="false"
+                      aria-controls="collapseExample">
                       <td>{{name}}</td>
                       <td>{{image}}</td>
                       <td>{{size}}</td>
@@ -36,6 +37,37 @@
                         {{else}}
                         <span class="fas fa-times text-danger" />
                         {{/if}}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="collapse" id="{{name}}" colspan="5">
+                        <div class="card card-body" style="line-height: 2em">
+                          <div><b>ID:</b> {{id}}</div>
+                          <div><b>Status:</b> {{run}}</div>
+
+                          {{#if IP}}
+                          <div><b>IP address:</b> {{IP}}</div>
+                          {{/if}}
+
+                          <div><b>Restart:</b>
+                            <span style="text-transform: capitalize">{{restartPolicy.Name}}</span>
+                          </div>
+
+
+                          {{#if ports}}
+                          <div><b>Ports:</b>
+                            {{#each ports}}
+                            <br>
+                            {{this}}
+                            {{/each}}
+                          </div>
+                          {{/if}}
+
+                          {{#if volumes}}
+                          <div><b>Volumes:</b>{{#each volumes}}<br> {{Source}}:{{Destination}} {{/each}}</div>
+                          {{/if}}
+
+                        </div>
                       </td>
                     </tr>
                     {{/each}}
