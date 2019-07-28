@@ -27,27 +27,24 @@ body {
   transition: margin 0.25s ease-out;
 }
 
-.list-group, .list-group-item {
+#sidebar-wrapper .list-group, #sidebar-wrapper .list-group-item {
   border: 0;
   border-radius: 0 !important;
   text-align: center;
 }
 
-.list-group {
-  margin-top: 0.5em;
+#sidebar-wrapper .list-group-item {
+  border: 0 !important;
 }
 
-.list-group-item {
-  border: 0 !important;
+#sidebar-wrapper .list-group {
+  width: 5em;
+  margin-top: 0.5em;
 }
 
 #sidebar-wrapper .sidebar-heading {
   padding: 0.875rem 1.25rem;
   font-size: 1.2rem;
-}
-
-#sidebar-wrapper .list-group {
-  width: 5em;
 }
 
 #page-content-wrapper {
