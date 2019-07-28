@@ -17,6 +17,7 @@
     "mkdirp": "^0.5.1",
     "morgan": "~1.9.1",
     "sqlite3": "^4.0.9",
+    "strip-ansi": "^5.2.0",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
