@@ -11,8 +11,6 @@ router.get("/", async (req, res) => {
             containers[i].name = container.name.charAt(0).toUpperCase() + container.name.slice(1);
         }
 
-        console.log(containers[0]);
-
         res.render("containers", {
             title: "Containers",
             containers: containers
