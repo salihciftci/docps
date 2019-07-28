@@ -31,14 +31,17 @@ router.get("/:id", async (req, res) => {
     }
 });
 
-router.get("/:name/logs", async (req, res) => {
-    //todo check id if name is []
-    let containerName = req.params.name;
+router.get("/:id/logs", async (req, res) => {
+    let id = req.params.id;
     let lineCount = req.body.lines || 10;
     try {
-        let logs = await Container.logs(containerName, lineCount);
+        let logs = await Container.logs(id, lineCount);
         res.json(logs);
     } catch (e) {
+        if (e.code === 404) {
+            res.sendStatus(404);
+            return;
+        }
         console.log(e);
         res.sendStatus(500);
     }
