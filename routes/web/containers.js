@@ -22,4 +22,26 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/:id/logs", async (req, res) => {
+    try {
+        let id = req.params.id;
+        let logs = await Container.logs(id, 50);
+
+        res.render("logs", {
+            title: "Logs",
+            user: req.user,
+            logs: logs
+        });
+    } catch (e) {
+        if (e.code === 404) {
+            res.send("404"); //todo fix with real 404 page
+            return;
+        }
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
+
+
 module.exports = router;
