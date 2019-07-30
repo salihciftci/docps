@@ -1,0 +1,37 @@
+{{> header}}
+<div class="d-flex" id="wrapper">
+    {{> sidebar}}
+    <div id="page-content-wrapper">
+        {{>navbar}}
+        <div class="container-fluid">
+            <div class="row p-5">
+                <div class="col-sm-12 mt-2" style="padding: 0;">
+                    <div class="card fcard">
+                        <div class="card-body">
+                            <div class="table-responsive" id="containerTable">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Driver</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{#each volumes}}
+                                        <tr>
+                                            <th>{{name}}</th>
+                                            <th>{{driver}}</th>
+                                        </tr>
+                                        {{/each}}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- fluid end -->
+    </div>
+</div>
+
+{{>footer}}

@@ -45,6 +45,7 @@ app.use("/", require("./routes/web/index"));
 app.use("/containers", require("./routes/web/containers"));
 app.use("/stats", require("./routes/web/stats"));
 app.use("/images", require("./routes/web/images"));
+app.use("/volumes", require("./routes/web/volumes"));
 
 app.use("/logout", (req, res) => { res.clearCookie("liman"); res.redirect("/login"); });
 
