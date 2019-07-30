@@ -1,6 +1,11 @@
-let pageName = document.getElementById("pageName").innerHTML.toLowerCase();
-let sidebarElement = document.getElementById(pageName);
-sidebarElement.style.backgroundColor = "#e9ecef";
+function renderSidebar() {
+    let pageName = document.getElementById("pageName").innerHTML.toLowerCase();
+    if (pageName === "logs") {
+        pageName = "containers";
+    }
+    let sidebarElement = document.getElementById(pageName);
+    sidebarElement.style.backgroundColor = "#e9ecef";
+}
 
 // eslint-disable-next-line
 function containerSearch() {
@@ -68,3 +73,5 @@ function showAllContainers() {
         tr[i].style.display = "";
     }
 }
+
+renderSidebar();
