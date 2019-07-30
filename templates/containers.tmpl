@@ -4,11 +4,30 @@
   <div id="page-content-wrapper">
     {{>navbar}}
     <div class="container-fluid">
-      <div class="row p-5">
-        <div class="col-sm-12" style="padding: 0;">
+      <div class="d-sm-flex align-items-center justify-content-between pt-5 pb-3"
+        style="padding-left: 32px; padding-right: 32px;">
+        <ul class="list-group list-group-horizontal-sm">
+          <a onclick="showLiveContainers()" class="list-group-item list-group-item-action"><i
+              class="fas fa-play"></i></a>
+          <a onclick="showStoppedContainers()" class="list-group-item list-group-item-action"><i
+              class="fas fa-stop"></i></a>
+          <a onclick="showAllContainers()" class="list-group-item list-group-item-action">
+            {{!-- <i class="fas fa-circle"></i> --}}
+            <i class="fas fa-server"></i>
+          </a>
+        </ul>
+
+        <div class="d-none d-sm-inline-block">
+          <input id="containerInput" type="text" class="form-control" placeholder="Search" aria-label="Search"
+            onkeyup="containerSearch()">
+        </div>
+      </div>
+
+      <div class="row pb-5 pl-5 pr-5">
+        <div class="col-sm-12 mt-2" style="padding: 0;">
           <div class="card fcard">
             <div class="card-body">
-              <div class="table-responsive">
+              <div class="table-responsive" id="containerTable">
                 <table class="table table-hover" id="table">
                   <thead class="thead">
                     <tr>
