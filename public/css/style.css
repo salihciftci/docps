@@ -72,6 +72,10 @@ body {
   border-bottom: 1px solid #f1f1f1;
 }
 
+.nav-link {
+  padding: 0.5rem 0.5rem !important;
+}
+
 .dropdown-toggle::after {
   display: none;
 }
