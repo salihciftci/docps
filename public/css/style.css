@@ -76,6 +76,18 @@ body {
   display: none;
 }
 
+.dropdown-menu {
+  min-width: 10rem !important;
+  font-size: .85rem !important;
+  color: #858796 !important;
+  border: 1px solid #e3e6f0 !important;
+  border-radius: .35rem !important;
+}
+
+.dropdown-item {
+  color: #3a3b45 !important;
+}
+
 .table-hover>thead>tr>th {
   border-top: none !important;
   border-bottom: 1px solid black;
