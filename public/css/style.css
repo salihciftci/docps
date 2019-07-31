@@ -106,3 +106,8 @@ body {
 .list-group-horizontal-sm {
   height: 3em;
 }
+
+.no-link, .no-link:hover {
+  text-decoration: none;
+  color: inherit;
+}
