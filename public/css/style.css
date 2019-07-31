@@ -96,3 +96,13 @@ body {
   text-decoration: none;
   color: #354168;
 }
+
+.container-filters {
+  font-weight: bold;
+  text-align: center !important;
+  min-width: 100px;
+}
+
+.list-group-horizontal-sm {
+  height: 3em;
+}

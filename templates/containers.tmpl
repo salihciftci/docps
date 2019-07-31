@@ -7,13 +7,18 @@
       <div class="d-sm-flex align-items-center justify-content-between pt-5 pb-3"
         style="padding-left: 32px; padding-right: 32px;">
         <ul class="list-group list-group-horizontal-sm">
-          <a onclick="showLiveContainers()" class="list-group-item list-group-item-action"><i
-              class="fas fa-play"></i></a>
-          <a onclick="showStoppedContainers()" class="list-group-item list-group-item-action"><i
-              class="fas fa-stop"></i></a>
-          <a onclick="showAllContainers()" class="list-group-item list-group-item-action">
+          <a onclick="showLiveContainers()" id="liveButton"
+            class="container-filters list-group-item list-group-item-action flex-fill">
+            Live
+          </a>
+          <a onclick="showStoppedContainers()" id="stoppedButton"
+            class="container-filters list-group-item list-group-item-action flex-fill">
+            Stopped
+          </a>
+          <a onclick="showAllContainers()" id="allButton"
+            class="container-filters list-group-item list-group-item-action flex-fill">
             {{!-- <i class="fas fa-circle"></i> --}}
-            <i class="fas fa-server"></i>
+            All
           </a>
         </ul>
 
@@ -100,5 +105,12 @@
     </div> <!-- fluid end -->
   </div>
 </div>
+
+<script>
+  window.onload = () => {
+    showLiveContainers();
+  }
+</script>
+
 
 {{>footer}}

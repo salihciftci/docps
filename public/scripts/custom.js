@@ -29,7 +29,6 @@ function containerSearch() {
 
 // eslint-disable-next-line
 function showLiveContainers() {
-    console.log("click");
     var filter, table, tr, td, i;
     filter = "fa-check";
     table = document.getElementById("containerTable");
@@ -44,6 +43,9 @@ function showLiveContainers() {
             }
         }
     }
+    document.getElementById("liveButton").style.backgroundColor = "#e9ecef";
+    document.getElementById("stoppedButton").style.backgroundColor = "inherit";
+    document.getElementById("allButton").style.backgroundColor = "inherit";
 }
 
 // eslint-disable-next-line
@@ -62,6 +64,10 @@ function showStoppedContainers() {
             }
         }
     }
+
+    document.getElementById("liveButton").style.backgroundColor = "inherit";
+    document.getElementById("stoppedButton").style.backgroundColor = "#e9ecef";
+    document.getElementById("allButton").style.backgroundColor = "inherit";
 }
 
 // eslint-disable-next-line
@@ -72,6 +78,11 @@ function showAllContainers() {
     for (i = 0; i < tr.length; i++) {
         tr[i].style.display = "";
     }
+
+    document.getElementById("liveButton").style.backgroundColor = "inherit";
+    document.getElementById("stoppedButton").style.backgroundColor = "inherit";
+    document.getElementById("allButton").style.backgroundColor = "#e9ecef";
 }
+
 
 renderSidebar();
