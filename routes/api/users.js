@@ -4,6 +4,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
+const { createHash } = require("crypto");
 
 const db = require("../../db/index");
 const knex = db.knex;
@@ -13,6 +14,7 @@ router.post("/", async (req, res) => {
     try {
         let username = req.body.username;
         let password = req.body.password;
+        let email = req.body.email || "example@example.com"; //todo fix here
 
         if (!username || !password) {
             console.log("username or password not included in body");
@@ -25,6 +27,9 @@ router.post("/", async (req, res) => {
         await knex("users").insert([{
             "username": username,
             "password": encryped,
+            "email": email,
+            "admin": true,
+            "avatarURL": createHash("md5").update(email).digest("hex"),
             "created_at": knex.fn.now(),
             "updated_at": knex.fn.now()
         }]);
