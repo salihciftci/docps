@@ -121,6 +121,7 @@ body {
 
 .list-group-horizontal-sm {
   height: 3em;
+  letter-spacing: 0.3px;
 }
 
 .no-link, .no-link:hover {
