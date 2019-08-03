@@ -66,7 +66,7 @@ router.post("/", async (req, res) => {
 
         const privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
         let token = jwt.sign({ user }, privateKey, { expiresIn: "1w", algorithm: "RS256" });
-        res.cookie("liman", token, { "path": "/", maxAge: "999999999999999" }); // todo: fix maxAge
+        res.cookie("liman", token, { "path": "/", maxAge: "604800000" }); // 1 week 
         res.redirect("/");
     } catch (e) {
         console.log(e);
