@@ -22,13 +22,18 @@ router.post("/", async (req, res) => {
             return;
         }
 
+        if (!req.user.admin) {
+            res.sendStatus(401);
+            return;
+        }
+
         let encryped = bcrypt.hashSync(password, 10);
 
         await knex("users").insert([{
             "username": username,
             "password": encryped,
             "email": email,
-            "admin": true,
+            "admin": false,
             "avatarURL": createHash("md5").update(email).digest("hex"),
             "created_at": knex.fn.now(),
             "updated_at": knex.fn.now()
