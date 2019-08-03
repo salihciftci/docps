@@ -1,0 +1,81 @@
+{{> header}}
+<div class="d-flex" id="wrapper">
+    {{> sidebar}}
+    <div id="page-content-wrapper">
+        {{>navbar}}
+        <div class="container-fluid">
+            <div class="row p-5">
+                <div class="col-sm-12 p-0">
+                    {{#if error}}
+                    <div class="alert alert-danger text-center" role="alert">
+                        {{ error }}
+                    </div>
+                    {{/if}}
+
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="media">
+                                <img src="{{user.avatarURL}}?s=128" class="mr-3 mt-4 rounded-circle" height="128">
+                                <div class="media-body ml-3">
+                                    <form class="form-signin" action="/settings/profile" method="POST">
+                                        <div class="form-group">
+                                            <label>Username</label>
+                                            <input type="text" class="form-control" name="username"
+                                                placeholder="Username" value="{{user.username}}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" name="email" placeholder="Email"
+                                                value="{{user.email}}" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-dark">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mt-5">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="table">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th scope="col">Change Password</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th class="bg-white">
+                                                <form class="form-signin" action="/settings/password" method="POST">
+                                                    <div class="form-group">
+                                                        <label>Current Password</label>
+                                                        <input type="password" class="form-control" name="password"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>New Password</label>
+                                                        <input type="password" class="form-control" name="newPassword"
+                                                            required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Confirm New Password</label>
+                                                        <input type="password" class="form-control"
+                                                            name="confirmPassword" required>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-dark">Submit</button>
+                                                </form>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>footer}}
