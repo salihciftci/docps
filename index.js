@@ -51,4 +51,6 @@ app.use("/settings", require("./routes/web/settings"));
 
 app.use("/logout", (req, res) => { res.clearCookie("liman"); res.redirect("/login"); });
 
+app.use("*", (req, res) => { res.status(404).render("404", { title: "404" }); });
+
 module.exports = app;
