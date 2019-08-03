@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const installPath = path.join(__dirname, "../../data");
+const installPath = path.join(__dirname, "../../data/db");
 
 module.exports = (req, res, next) => {
     try {
