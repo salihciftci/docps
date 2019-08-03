@@ -34,12 +34,18 @@ router.post("/profile", async (req, res) => {
         }
 
         if (username !== req.user.username) {
-            result = await knex("users").where("username", "=", req.user.username).update({ username: username });
+            result = await knex("users").where("username", req.user.username).update({
+                username: username,
+                "updated_at": knex.fn.now()
+            });
         }
 
         if (email !== req.user.email) {
-            result = await knex("users").where("email", req.user.email).update({ "avatarURL": createHash("md5").update(email).digest("hex") });
-            result = await knex("users").where("email", req.user.email).update({ email: email });
+            result = await knex("users").where("email", req.user.email).update({
+                "avatarURL": createHash("md5").update(email).digest("hex"),
+                email: email,
+                "updated_at": knex.fn.now()
+            });
         }
 
         if (result !== -1) {
@@ -47,6 +53,7 @@ router.post("/profile", async (req, res) => {
             return;
         }
 
+        console.log(result);
         res.redirect("/settings");
 
     } catch (e) {
@@ -82,7 +89,10 @@ router.post("/password", async (req, res) => {
         }
 
         let encrypted = bcrypt.hashSync(newPassword, 10);
-        result = await knex("users").where("username", req.user.username).update({ "password": encrypted });
+        await knex("users").where("username", req.user.username).update({
+            "password": encrypted,
+            "updated_at": knex.fn.now()
+        });
 
         res.redirect("/logout");
     } catch (e) {
