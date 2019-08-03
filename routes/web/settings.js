@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         error = "";
     } catch (e) {
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 
@@ -56,7 +56,7 @@ router.post("/profile", async (req, res) => {
             return;
         }
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 
@@ -87,7 +87,7 @@ router.post("/password", async (req, res) => {
         res.redirect("/logout");
     } catch (e) {
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 

@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
         });
     } catch (e) {
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 

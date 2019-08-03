@@ -21,7 +21,7 @@ router.get("/", (req, res) => {
         error = "";
     } catch (e) {
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 
@@ -98,6 +98,7 @@ router.post("/", async (req, res) => {
         res.status(301).redirect("/login");
     } catch (e) {
         console.log(e);
+        res.render("500", { title: "Error" });
     }
 });
 

@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
         });
     } catch (e) {
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 
@@ -38,7 +38,7 @@ router.get("/:id/logs", async (req, res) => {
             return;
         }
         console.log(e);
-        res.sendStatus(500);
+        res.render("500", { title: "Error" });
     }
 });
 
