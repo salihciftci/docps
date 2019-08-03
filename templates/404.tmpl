@@ -1,0 +1,25 @@
+{{> header}}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-6 mx-auto mt-5">
+            <img class="mx-auto d-block" alt="liman" src="/img/liman.png" height="150" />
+            {{#if error}}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ error }}
+            </div>
+            {{/if}}
+            <div class="card card-signin mt-4">
+                <div class="card-body m-5">
+                    <h4 class="card-title text-center">404 - Page Not Found</h4>
+                </div>
+            </div>
+            <p class="mt-5 text-center">
+                <a href="https://github.com/salihciftci/liman" class="github" target="_blank">
+                    <i class="fab fa-github fa-lg" aria-hidden="true"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{{> footer}}
