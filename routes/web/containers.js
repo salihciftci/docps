@@ -34,7 +34,7 @@ router.get("/:id/logs", async (req, res) => {
         });
     } catch (e) {
         if (e.code === 404) {
-            res.send("404"); //todo fix with real 404 page
+            res.render("404", { title: "404" });
             return;
         }
         console.log(e);
