@@ -4,7 +4,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "test": "mocha ./test/test --exit && rm -rf test-data"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -21,7 +22,10 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
     "eslint": "^6.0.1",
+    "mocha": "^6.2.0",
     "nodemon": "^1.19.1"
   }
 }
