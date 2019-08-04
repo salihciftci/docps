@@ -57,10 +57,10 @@ router.post("/:username", async (req, res) => {
         let password = req.body.password;
         let username = req.params.username;
 
-        // if (!password) {
-        //     res.sendStatus(401);
-        //     return;
-        // }
+        if (!password) {
+            res.sendStatus(401);
+            return;
+        }
 
         let result = await knex("users").count("username as count").where("username", username);
         let count = result[0].count;
