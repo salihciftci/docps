@@ -22,7 +22,12 @@ module.exports = (req, res, next) => {
     let token;
     if (typeof bearerHeader !== "undefined") {
         try {
-            let privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+            let privateKey;
+            if (process.env.NODE_ENV === "test") {
+                privateKey = fs.readFileSync(path.join(__dirname, "../../test-data/keys/private.pem"));
+            } else {
+                privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+            }
             const bearer = bearerHeader.split(" ");
             token = bearer[1];
 

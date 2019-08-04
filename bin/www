@@ -64,3 +64,6 @@ function onListening() {
 process.on("SIGINT", function () {
     process.exit();
 });
+
+
+module.exports = server;

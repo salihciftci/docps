@@ -57,6 +57,11 @@ router.post("/:username", async (req, res) => {
         let password = req.body.password;
         let username = req.params.username;
 
+        // if (!password) {
+        //     res.sendStatus(401);
+        //     return;
+        // }
+
         let result = await knex("users").count("username as count").where("username", username);
         let count = result[0].count;
 
@@ -84,7 +89,12 @@ router.post("/:username", async (req, res) => {
             "avatarURL": "https://www.gravatar.com/avatar/" + result[0].avatarURL
         };
 
-        const privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+        let privateKey;
+        if (process.env.NODE_ENV === "test") {
+            privateKey = fs.readFileSync(path.join(__dirname, "../../test-data/keys/private.pem"));
+        } else {
+            privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));
+        }
         let token = jwt.sign({ user }, privateKey, { expiresIn: "1w", algorithm: "RS256" });
         res.json({ "token": token });
     } catch (e) {
