@@ -98,4 +98,47 @@ router.get("/:username", async (req, res) => {
     res.json(req.user);
 });
 
+router.patch("/:username", async (req, res) => {
+    try {
+        let result = -1;
+
+        let username = req.body.username;
+        let password = req.body.password;
+        let email = req.body.email;
+
+        if (username) {
+            result = await knex("users").where("username", req.user.username).update({
+                "username": username,
+                "updated_at": knex.fn.now()
+            });
+        }
+
+        if (password) {
+            let encryped = bcrypt.hashSync(password.toString(), 10);
+            result = await knex("users").where("username", req.user.username).update({
+                "password": encryped,
+                "updated_at": knex.fn.now()
+            });
+        }
+
+        if (email) {
+            result = await knex("users").where("email", req.user.email).update({
+                "avatarURL": createHash("md5").update(email).digest("hex"),
+                email: email,
+                "updated_at": knex.fn.now()
+            });
+        }
+
+        if (result === -1) {
+            res.sendStatus(404);
+            return;
+        }
+
+        res.sendStatus(200);
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(500);
+    }
+});
+
 module.exports = router;
