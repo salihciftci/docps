@@ -15,4 +15,4 @@ RUN apk add -U --no-cache ca-certificates docker
 
 EXPOSE 5000
 
-CMD ["node", "liman/bin/www"]
+CMD /liman/bin/www
