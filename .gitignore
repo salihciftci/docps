@@ -1,6 +1,7 @@
 # Liman files
 data/
 node_modules/
+test-data/
 
 # VSCode files
 .history/
