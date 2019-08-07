@@ -42,7 +42,7 @@ router.post("/profile", async (req, res) => {
 
         if (email !== req.user.email) {
             result = await knex("users").where("email", req.user.email).update({
-                "avatarURL": createHash("md5").update(email).digest("hex"),
+                "avatarHash": createHash("md5").update(email).digest("hex"),
                 email: email,
                 "updated_at": knex.fn.now()
             });

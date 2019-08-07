@@ -34,7 +34,7 @@ router.post("/", async (req, res) => {
             "password": encryped,
             "email": email,
             "admin": false,
-            "avatarURL": createHash("md5").update(email).digest("hex"),
+            "avatarHash": createHash("md5").update(email).digest("hex"),
             "created_at": knex.fn.now(),
             "updated_at": knex.fn.now()
         }]);
@@ -80,13 +80,13 @@ router.post("/:username", async (req, res) => {
             return;
         }
 
-        result = await knex.select("admin").select("email").select("avatarURL").from("users").where("username", username);
+        result = await knex.select("admin").select("email").select("avatarHash").from("users").where("username", username);
 
         let user = {
             "username": username,
             "email": result[0].email,
             "admin": result[0].admin,
-            "avatarURL": "https://www.gravatar.com/avatar/" + result[0].avatarURL
+            "avatar": "https://www.gravatar.com/avatar/" + result[0].avatarHash
         };
 
         let privateKey;
@@ -133,7 +133,7 @@ router.patch("/:username", async (req, res) => {
 
         if (email) {
             result = await knex("users").where("email", req.user.email).update({
-                "avatarURL": createHash("md5").update(email).digest("hex"),
+                "avatarHash": createHash("md5").update(email).digest("hex"),
                 email: email,
                 "updated_at": knex.fn.now()
             });

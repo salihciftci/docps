@@ -55,13 +55,13 @@ router.post("/", async (req, res) => {
             return;
         }
 
-        result = await knex.select("admin").select("email").select("avatarURL").from("users").where("username", username);
+        result = await knex.select("admin").select("email").select("avatarHash").from("users").where("username", username);
 
         let user = {
             "username": username,
             "email": result[0].email,
             "admin": result[0].admin,
-            "avatarURL": "https://www.gravatar.com/avatar/" + result[0].avatarURL
+            "avatar": "https://www.gravatar.com/avatar/" + result[0].avatarHash
         };
 
         const privateKey = fs.readFileSync(path.join(__dirname, "../../data/keys/private.pem"));

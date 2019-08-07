@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
                 table.string("username").unique();
                 table.string("password");
                 table.string("email");
-                table.string("avatarURL");
+                table.string("avatarHash");
                 table.boolean("admin");
                 table.timestamps();
             }).then().catch((e) => {
@@ -65,7 +65,7 @@ router.post("/", async (req, res) => {
                 "password": encrypted,
                 "email": email,
                 "admin": true,
-                "avatarURL": md5Email,
+                "avatarHash": md5Email,
                 "created_at": knex.fn.now(),
                 "updated_at": knex.fn.now()
             }]).then().catch((e) => {

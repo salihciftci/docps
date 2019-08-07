@@ -18,7 +18,7 @@ before(async () => {
                 table.string("username").unique();
                 table.string("password");
                 table.string("email");
-                table.string("avatarURL");
+                table.string("avatarHash");
                 table.boolean("admin");
                 table.timestamps();
             });
@@ -28,7 +28,7 @@ before(async () => {
                 "password": "$2y$10$Y0BjJwJDSEXZE7SvTpYsJe5JEzGqvU/uoAgj7bnZAUhXWTVV4I54e", //test
                 "email": "test@test.com",
                 "admin": true,
-                "avatarURL": "test url",
+                "avatarHash": "hash",
                 "created_at": knex.fn.now(),
                 "updated_at": knex.fn.now()
             }]);
