@@ -5,7 +5,7 @@
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "lint": "eslint --fix .",
-    "test": "mocha ./test/test --exit && rm -rf test-data"
+    "test": "mocha ./test/test -t 10000 --exit && rm -rf test-data"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
