@@ -21,7 +21,6 @@ Self-hosted web application for monitoring docker.
 
 ----
 
-&nbsp;
 ## Installation
 
 Best way to use Liman is using Docker image.
@@ -38,11 +37,10 @@ Examples and all end points can be found in [wiki](https://github.com/salihciftc
 
 ## Screenshots
 
-
-
 ||||
 |:-------------:|:-------:|:-------:|
 |![Containers](https://user-images.githubusercontent.com/3863655/62650329-50caa400-b95f-11e9-923a-d33fd77faa65.png)|![Stats](https://user-images.githubusercontent.com/3863655/62650333-51633a80-b95f-11e9-837e-6c37901f73f6.png)|![Images](https://user-images.githubusercontent.com/3863655/62650330-50caa400-b95f-11e9-878e-ad1bde3d30ec.png)|
+|![index](https://user-images.githubusercontent.com/3863655/62652773-d00ea680-b964-11e9-93df-10666834685b.png)|![logs](https://user-images.githubusercontent.com/3863655/62652775-d00ea680-b964-11e9-9799-21c0a83d4b69.png)|![settings](https://user-images.githubusercontent.com/3863655/62652776-d00ea680-b964-11e9-9aa9-9ccb324f989e.png)|
 
 ## License
 MIT
