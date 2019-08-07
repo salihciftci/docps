@@ -11,3 +11,4 @@ data/
 .eslintrc
 .history/
 test/
+test-data/
