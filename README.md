@@ -1,4 +1,3 @@
-&nbsp;
 <p align="center">
 <img alt="Liman Logo" src="https://raw.githubusercontent.com/salihciftci/liman/master/public/img/liman.png" width=200>
 </p>
@@ -15,19 +14,17 @@ Self-hosted web application for monitoring docker.
 
 ----
 
-&nbsp;
 <p align="center">
 <img src="https://user-images.githubusercontent.com/3863655/62650331-51633a80-b95f-11e9-850b-f5f4c5b1891e.png">
 </p>
 
-&nbsp;
 
 ----
 
 &nbsp;
 ## Installation
 
-[Download](https://github.com/salihciftci/liman/releases) and run the latest binary or ship with Docker.
+Best way to use Liman is using Docker image.
 
 ```
 $ docker volume create liman
