@@ -29,6 +29,18 @@ Best way to use Liman is using Docker image.
 $ docker volume create liman
 $ docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v liman:/liman/data salihciftci/liman
 ```
+or alternatively, you can use docker-compose using the script below
+```
+version: '3.3'
+services:
+    liman:
+        ports:
+            - '5000:5000'
+        volumes:
+            - '/var/run/docker.sock:/var/run/docker.sock'
+            - './liman:/liman/data'
+        image: salihciftci/liman
+```
 
 Note: the `-v /var/run/docker.sock:/var/run/docker.sock` option can be used in Linux environments only. 
 
